@@ -1,0 +1,41 @@
+version: "3"
+services:
+  java-app:
+    container_name: admission-app
+    build: backend
+    image: "admission-backend"
+    ports:
+      - "8084:8080"
+    depends_on:
+      - db
+      - jupyter
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/siriusone # db = the name of the container; localhost DOES NOT work; "host.docker.internal" works
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - JUPYTER_SERVER_HOST=jupyter
+      - JUPYTER_SERVER_PORT=8888
+
+  jupyter:
+    build: ./playground/python/jupyter
+    image: jupyter-image
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      # JUPYTER_ENABLE_LAB: "yes"
+      - JUPYTER_TOKEN=docker
+    volumes:
+      - ./playground/python/jupyter/files:/home/jovyan/work
+
+  db:
+    image: postgres
+    restart: always
+    ports: # optional; we set it to be able to access it from our local computer
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: siriusone
+
+        

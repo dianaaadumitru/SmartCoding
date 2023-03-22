@@ -1,7 +1,9 @@
 package com.example.backend.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -20,5 +22,8 @@ public class Question {
 
     private String description;
 
-    private String score;
+    private double score;
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<StudentResults> studentResults;
 }

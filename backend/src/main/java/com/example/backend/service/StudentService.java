@@ -1,7 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.StudentDto;
-import com.example.backend.entity.Student;
+import com.example.backend.entity.User;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -18,64 +18,64 @@ public class StudentService {
     }
 
     public StudentDto addStudent(StudentDto studentDto) {
-        Student student = Student.builder()
+        User user = User.builder()
                 .name(studentDto.getName())
                 .username(studentDto.getUsername())
                 .email(studentDto.getEmail())
                 .password(studentDto.getPassword())
                 .build();
-        studentRepository.save(student);
-        studentDto.setStudentId(student.getStudentId());
+        studentRepository.save(user);
+        studentDto.setStudentId(user.getStudentId());
         return studentDto;
     }
 
     public void removeStudent(Long id) {
         studentRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("Student does not exist");
+            throw new CrudOperationException("User does not exist");
         });
 
         studentRepository.deleteById(id);
     }
 
     public StudentDto updateStudent(Long id, StudentDto studentDto) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("Student does not exist");
+        User user = studentRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
         });
 
-        student.setName(studentDto.getName());
-        student.setEmail(studentDto.getEmail());
-        student.setPassword(studentDto.getPassword());
-        student.setUsername(studentDto.getUsername());
-        studentRepository.save(student);
-        studentDto.setStudentId(student.getStudentId());
+        user.setName(studentDto.getName());
+        user.setEmail(studentDto.getEmail());
+        user.setPassword(studentDto.getPassword());
+        user.setUsername(studentDto.getUsername());
+        studentRepository.save(user);
+        studentDto.setStudentId(user.getStudentId());
         return studentDto;
     }
 
     public StudentDto getStudentById(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("Student does not exist");
+        User user = studentRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
         });
 
         return StudentDto.builder()
-                .studentId(student.getStudentId())
-                .name(student.getName())
-                .email(student.getEmail())
-                .username(student.getUsername())
-                .password(student.getPassword())
+                .studentId(user.getStudentId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
                 .build();
     }
 
     public List<StudentDto> getAllStudents() {
-        Iterable<Student> students = studentRepository.findAll();
+        Iterable<User> students = studentRepository.findAll();
         List<StudentDto> studentDtos = new ArrayList<>();
 
-        students.forEach(student ->
+        students.forEach(user ->
                 studentDtos.add(StudentDto.builder()
-                        .studentId(student.getStudentId())
-                        .name(student.getName())
-                        .email(student.getEmail())
-                        .username(student.getUsername())
-                        .password(student.getPassword())
+                        .studentId(user.getStudentId())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .username(user.getUsername())
+                        .password(user.getPassword())
                         .build())
         );
         return studentDtos;

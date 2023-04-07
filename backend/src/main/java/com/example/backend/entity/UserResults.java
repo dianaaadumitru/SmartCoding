@@ -15,6 +15,11 @@ public class UserResults {
     private UserQuestionId userQuestionId;
 
     @ManyToOne
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
     @MapsId("questionId")
     @JoinColumn(name = "question_id")
     private Question question;

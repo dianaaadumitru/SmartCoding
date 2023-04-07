@@ -24,6 +24,6 @@ public class Question {
 
     private double score;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserResults> userResults;
+//    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<UserResults> userResults;
 }

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StudentService {
+public class UserService {
     private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    public UserService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
 

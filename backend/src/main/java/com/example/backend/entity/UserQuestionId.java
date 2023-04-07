@@ -15,10 +15,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class StudentQuestionId implements Serializable {
+public class UserQuestionId implements Serializable {
 
-    @Column(name = "student_id")
-    private Long studentId;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "question_id")
     private Long questionId;

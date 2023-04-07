@@ -10,14 +10,13 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@Table(name = "student_results")
-public class StudentResults {
+public class UserResults {
     @EmbeddedId
-    private StudentQuestionId studentQuestionId;
+    private UserQuestionId userQuestionId;
 
     @ManyToOne
-    @MapsId("studentId")
-    @JoinColumn(name = "student_id")
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne

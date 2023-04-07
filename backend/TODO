@@ -1,7 +1,14 @@
-change crud operations like in db
+DONE --- change crud operations like in db
 create connection with jupyter lab
 login/signup
 design
 react???
-create links between tables
-when deleting a quiz delete all questions
+DONE --- create links between tables
+add field if no of questons has been met
+calculate score for student
+table students result oprations
+DONE --- fix ids when displaying for see all and update
+delete quiz even though it has questions!!!
+connect to jupyterlab
+send code there
+test it

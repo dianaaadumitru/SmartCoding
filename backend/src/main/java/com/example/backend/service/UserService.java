@@ -99,6 +99,62 @@ public class UserService {
         return userDtos;
     }
 
+    public UserDto findUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .userType(user.getRoles().iterator().next().getRole())
+                .build();
+    }
+
+    public UserDto findUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .userType(user.getRoles().iterator().next().getRole())
+                .build();
+    }
+
+    public UserDto findUserByUsernameOrEmail(String username, String email) {
+        User user = userRepository.findByUsernameOrEmail(username, email).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .userType(user.getRoles().iterator().next().getRole())
+                .build();
+    }
+
+    public Boolean userExistsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public Boolean userExistsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     public UserDto assignRoleToUser(Long userId, Long roleId) {
         Role role = roleRepository.findById(roleId).orElseThrow(() -> {
             throw new CrudOperationException("Role does not exist!");

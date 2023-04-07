@@ -3,7 +3,9 @@ package com.example.backend.service;
 import com.example.backend.dto.StudentDto;
 import com.example.backend.entity.User;
 import com.example.backend.exceptions.CrudOperationException;
-import com.example.backend.repository.StudentRepository;
+import com.example.backend.repository.QuestionRepository;
+import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.UserResultsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,73 +13,86 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
-    public UserService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    private final QuestionRepository questionRepository;
+
+    private final UserResultsRepository userResultsRepository;
+
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository) {
+        this.userRepository = userRepository;
+        this.userResultsRepository = userResultsRepository;
+        this.questionRepository = questionRepository;
     }
 
     public StudentDto addStudent(StudentDto studentDto) {
-        User user = User.builder()
-                .name(studentDto.getName())
+        User student = User.builder()
+                .firstName(studentDto.getFirstName())
+                .lastName(studentDto.getLastName())
                 .username(studentDto.getUsername())
                 .email(studentDto.getEmail())
                 .password(studentDto.getPassword())
                 .build();
-        studentRepository.save(user);
-        studentDto.setStudentId(user.getStudentId());
+        userRepository.save(student);
+        studentDto.setStudentId(student.getUserId());
         return studentDto;
     }
 
     public void removeStudent(Long id) {
-        studentRepository.findById(id).orElseThrow(() -> {
+        userRepository.findById(id).orElseThrow(() -> {
             throw new CrudOperationException("User does not exist");
         });
-
-        studentRepository.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     public StudentDto updateStudent(Long id, StudentDto studentDto) {
-        User user = studentRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("User does not exist");
+        User student = userRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("Student does not exist");
         });
 
-        user.setName(studentDto.getName());
-        user.setEmail(studentDto.getEmail());
-        user.setPassword(studentDto.getPassword());
-        user.setUsername(studentDto.getUsername());
-        studentRepository.save(user);
-        studentDto.setStudentId(user.getStudentId());
+        student.setFirstName(studentDto.getFirstName());
+        student.setLastName(studentDto.getLastName());
+        student.setEmail(studentDto.getEmail());
+        student.setPassword(studentDto.getPassword());
+        student.setUsername(studentDto.getUsername());
+        userRepository.save(student);
+        studentDto.setStudentId(student.getUserId());
         return studentDto;
     }
 
     public StudentDto getStudentById(Long id) {
-        User user = studentRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("User does not exist");
+        User student = userRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("Student does not exist");
         });
 
         return StudentDto.builder()
-                .studentId(user.getStudentId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .username(user.getUsername())
-                .password(user.getPassword())
+                .studentId(student.getUserId())
+                .firstName(student.getFirstName())
+                .lastName(student.getLastName())
+                .email(student.getEmail())
+                .username(student.getUsername())
+                .password(student.getPassword())
                 .build();
     }
 
     public List<StudentDto> getAllStudents() {
-        Iterable<User> students = studentRepository.findAll();
+        Iterable<User> students = userRepository.findAll();
         List<StudentDto> studentDtos = new ArrayList<>();
 
-        students.forEach(user ->
+        students.forEach(student ->
                 studentDtos.add(StudentDto.builder()
-                        .studentId(user.getStudentId())
-                        .name(user.getName())
-                        .email(user.getEmail())
-                        .username(user.getUsername())
-                        .password(user.getPassword())
+                        .studentId(student.getUserId())
+                        .firstName(student.getFirstName())
+                        .lastName(student.getLastName())
+                        .email(student.getEmail())
+                        .username(student.getUsername())
+                        .password(student.getPassword())
                         .build())
         );
         return studentDtos;
+    }
+
+    public void addQuestionScoreToStudent(Long studentId, Long questionId, double score) {
+
     }
 }

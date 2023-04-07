@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StudentDto {
-    private long studentId;
+public class UserDto {
+    private long userId;
 
     private String firstName;
 
@@ -22,5 +22,5 @@ public class StudentDto {
 
     private String password;
 
-    private double testResult;
+    private String userType;
 }

@@ -1,14 +1,17 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.StudentDto;
+import com.example.backend.dto.UserDto;
+import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.QuestionRepository;
+import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.UserResultsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -19,77 +22,108 @@ public class UserService {
 
     private final UserResultsRepository userResultsRepository;
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository) {
+    private final RoleRepository roleRepository;
+
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
+        this.roleRepository = roleRepository;
     }
 
-    public StudentDto addStudent(StudentDto studentDto) {
-        User student = User.builder()
-                .firstName(studentDto.getFirstName())
-                .lastName(studentDto.getLastName())
-                .username(studentDto.getUsername())
-                .email(studentDto.getEmail())
-                .password(studentDto.getPassword())
+    public UserDto addUser(UserDto userDto) {
+        User user = User.builder()
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .username(userDto.getUsername())
+                .email(userDto.getEmail())
+                .password(userDto.getPassword())
                 .build();
-        userRepository.save(student);
-        studentDto.setStudentId(student.getUserId());
-        return studentDto;
+        userRepository.save(user);
+        userDto.setUserId(user.getUserId());
+        return userDto;
     }
 
-    public void removeStudent(Long id) {
+    public void removeUser(Long id) {
         userRepository.findById(id).orElseThrow(() -> {
             throw new CrudOperationException("User does not exist");
         });
         userRepository.deleteById(id);
     }
 
-    public StudentDto updateStudent(Long id, StudentDto studentDto) {
-        User student = userRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("Student does not exist");
+    public UserDto updateUser(Long id, UserDto userDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
         });
 
-        student.setFirstName(studentDto.getFirstName());
-        student.setLastName(studentDto.getLastName());
-        student.setEmail(studentDto.getEmail());
-        student.setPassword(studentDto.getPassword());
-        student.setUsername(studentDto.getUsername());
-        userRepository.save(student);
-        studentDto.setStudentId(student.getUserId());
-        return studentDto;
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setUsername(userDto.getUsername());
+        userRepository.save(user);
+        userDto.setUserId(user.getUserId());
+        return userDto;
     }
 
-    public StudentDto getStudentById(Long id) {
-        User student = userRepository.findById(id).orElseThrow(() -> {
-            throw new CrudOperationException("Student does not exist");
+    public UserDto getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
         });
 
-        return StudentDto.builder()
-                .studentId(student.getUserId())
-                .firstName(student.getFirstName())
-                .lastName(student.getLastName())
-                .email(student.getEmail())
-                .username(student.getUsername())
-                .password(student.getPassword())
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
                 .build();
     }
 
-    public List<StudentDto> getAllStudents() {
-        Iterable<User> students = userRepository.findAll();
-        List<StudentDto> studentDtos = new ArrayList<>();
+    public List<UserDto> getAllUsers() {
+        Iterable<User> users = userRepository.findAll();
+        List<UserDto> userDtos = new ArrayList<>();
 
-        students.forEach(student ->
-                studentDtos.add(StudentDto.builder()
-                        .studentId(student.getUserId())
-                        .firstName(student.getFirstName())
-                        .lastName(student.getLastName())
-                        .email(student.getEmail())
-                        .username(student.getUsername())
-                        .password(student.getPassword())
+        users.forEach(user ->
+                userDtos.add(UserDto.builder()
+                        .userId(user.getUserId())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .email(user.getEmail())
+                        .username(user.getUsername())
+                        .password(user.getPassword())
+                        .userType(user.getRoles().iterator().next().getRole())
                         .build())
         );
-        return studentDtos;
+        return userDtos;
+    }
+
+    public UserDto assignRoleToUser(Long userId, Long roleId) {
+        Role role = roleRepository.findById(roleId).orElseThrow(() -> {
+            throw new CrudOperationException("Role does not exist!");
+        });
+
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        if (user.getRoles() == null) {
+            user.setRoles(new HashSet<>());
+        }
+
+        user.getRoles().add(role);
+        userRepository.save(user);
+
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .userType(role.getRole())
+                .build();
     }
 
     public void addQuestionScoreToStudent(Long studentId, Long questionId, double score) {

@@ -28,7 +28,7 @@ public class QuizService {
     }
 
     public void removeQuiz(Long id) {
-        Quiz quiz = quizRepository.findById(id).orElseThrow(() -> {
+        quizRepository.findById(id).orElseThrow(() -> {
             throw new CrudOperationException("Quiz does not exist");
         });
 

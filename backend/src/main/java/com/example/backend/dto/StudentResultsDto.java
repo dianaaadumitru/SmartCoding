@@ -1,8 +1,14 @@
 package com.example.backend.dto;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StudentResultsDto {
+    private Long studentId;
 }

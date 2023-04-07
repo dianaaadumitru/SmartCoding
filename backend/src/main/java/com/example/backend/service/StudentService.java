@@ -3,7 +3,9 @@ package com.example.backend.service;
 import com.example.backend.dto.StudentDto;
 import com.example.backend.entity.Student;
 import com.example.backend.exceptions.CrudOperationException;
+import com.example.backend.repository.QuestionRepository;
 import com.example.backend.repository.StudentRepository;
+import com.example.backend.repository.StudentResultsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,13 +15,20 @@ import java.util.List;
 public class StudentService {
     private final StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    private final StudentResultsRepository studentResultsRepository;
+
+    private final QuestionRepository questionRepository;
+
+    public StudentService(StudentRepository studentRepository, StudentResultsRepository studentResultsRepository, QuestionRepository questionRepository) {
         this.studentRepository = studentRepository;
+        this.studentResultsRepository = studentResultsRepository;
+        this.questionRepository = questionRepository;
     }
 
     public StudentDto addStudent(StudentDto studentDto) {
         Student student = Student.builder()
-                .name(studentDto.getName())
+                .firstName(studentDto.getFirstName())
+                .lastName(studentDto.getLastName())
                 .username(studentDto.getUsername())
                 .email(studentDto.getEmail())
                 .password(studentDto.getPassword())
@@ -42,7 +51,8 @@ public class StudentService {
             throw new CrudOperationException("Student does not exist");
         });
 
-        student.setName(studentDto.getName());
+        student.setFirstName(studentDto.getFirstName());
+        student.setLastName(studentDto.getLastName());
         student.setEmail(studentDto.getEmail());
         student.setPassword(studentDto.getPassword());
         student.setUsername(studentDto.getUsername());
@@ -58,7 +68,8 @@ public class StudentService {
 
         return StudentDto.builder()
                 .studentId(student.getStudentId())
-                .name(student.getName())
+                .firstName(student.getFirstName())
+                .lastName(student.getLastName())
                 .email(student.getEmail())
                 .username(student.getUsername())
                 .password(student.getPassword())
@@ -72,12 +83,17 @@ public class StudentService {
         students.forEach(student ->
                 studentDtos.add(StudentDto.builder()
                         .studentId(student.getStudentId())
-                        .name(student.getName())
+                        .firstName(student.getFirstName())
+                        .lastName(student.getLastName())
                         .email(student.getEmail())
                         .username(student.getUsername())
                         .password(student.getPassword())
                         .build())
         );
         return studentDtos;
+    }
+
+    public void addQuestionScoreToStudent(Long studentId, Long questionId, double score) {
+
     }
 }

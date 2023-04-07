@@ -19,7 +19,8 @@ public class TeacherService {
 
     public TeacherDto addTeacher(TeacherDto teacherDto) {
         Teacher teacher = Teacher.builder()
-                .name(teacherDto.getName())
+                .firstName(teacherDto.getFirstName())
+                .lastName(teacherDto.getLastName())
                 .username(teacherDto.getUsername())
                 .email(teacherDto.getEmail())
                 .password(teacherDto.getPassword())
@@ -42,7 +43,8 @@ public class TeacherService {
             throw new CrudOperationException("Teacher does not exist");
         });
 
-        teacher.setName(teacherDto.getName());
+        teacher.setFirstName(teacherDto.getFirstName());
+        teacher.setLastName(teacherDto.getLastName());
         teacher.setEmail(teacherDto.getEmail());
         teacher.setPassword(teacherDto.getPassword());
         teacher.setUsername(teacherDto.getUsername());
@@ -58,7 +60,8 @@ public class TeacherService {
         });
 
         return TeacherDto.builder()
-                .name(teacher.getName())
+                .firstName(teacher.getFirstName())
+                .lastName(teacher.getLastName())
                 .email(teacher.getEmail())
                 .username(teacher.getUsername())
                 .password(teacher.getPassword())
@@ -72,7 +75,8 @@ public class TeacherService {
         teachers.forEach(teacher ->
                 teacherDtos.add(TeacherDto.builder()
                         .teacherId(teacher.getTeacherId())
-                        .name(teacher.getName())
+                        .firstName(teacher.getFirstName())
+                        .lastName(teacher.getLastName())
                         .email(teacher.getEmail())
                         .username(teacher.getUsername())
                         .password(teacher.getPassword())

@@ -2,10 +2,7 @@ package com.example.backend.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
@@ -18,11 +15,18 @@ public class Teacher {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long teacherId;
 
-    private String name;
+    @Column(nullable = false)
+    private String firstName;
 
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 }

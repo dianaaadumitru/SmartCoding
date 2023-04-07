@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 public class StudentDto {
     private long studentId;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
 
     private String username;
 

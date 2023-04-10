@@ -1,15 +1,15 @@
 package com.example.backend.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
-public class UserDto {
-    private long userId;
-
+public class SignUpDto {
     private String firstName;
 
     private String lastName;
@@ -19,6 +19,4 @@ public class UserDto {
     private String email;
 
     private String password;
-
-    private String userType;
 }

@@ -32,6 +32,14 @@ public class UserService {
     }
 
     public UserDto addUser(UserDto userDto) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
+            throw new CrudOperationException("Email already taken!");
+        }
+
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new CrudOperationException("username already taken!");
+        }
+
         User user = User.builder()
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
@@ -86,15 +94,22 @@ public class UserService {
         List<UserDto> userDtos = new ArrayList<>();
 
         users.forEach(user ->
-                userDtos.add(UserDto.builder()
-                        .userId(user.getUserId())
-                        .firstName(user.getFirstName())
-                        .lastName(user.getLastName())
-                        .email(user.getEmail())
-                        .username(user.getUsername())
-                        .password(user.getPassword())
-                        .userType(user.getRoles().iterator().next().getRole())
-                        .build())
+                {
+                    UserDto userDto = UserDto.builder()
+                            .userId(user.getUserId())
+                            .firstName(user.getFirstName())
+                            .lastName(user.getLastName())
+                            .email(user.getEmail())
+                            .username(user.getUsername())
+                            .password(user.getPassword())
+//                            .userType(user.getRoles().iterator().next().getRole())
+                            .build();
+                    System.out.println("user type: " + user.getRoles().size());
+                    if (user.getRoles().size() > 0) {
+                        userDto.setUserType(user.getRoles().iterator().next().getRole());
+                    }
+                    userDtos.add(userDto);
+                }
         );
         return userDtos;
     }
@@ -166,6 +181,8 @@ public class UserService {
 
         if (user.getRoles() == null) {
             user.setRoles(new HashSet<>());
+        } else {
+            throw new CrudOperationException("this user already has a role!");
         }
 
         user.getRoles().add(role);

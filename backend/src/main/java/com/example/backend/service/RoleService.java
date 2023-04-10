@@ -68,4 +68,15 @@ public class RoleService {
                         .build()));
         return roleDtos;
     }
+
+    public RoleDto findByRole(String givenRoleName) {
+        Role role = roleRepository.findByRole(givenRoleName).orElseThrow(() -> {
+            throw new CrudOperationException("Role does not exist!");
+        });
+
+        return RoleDto.builder()
+                .id(role.getRoleId())
+                .role(role.getRole())
+                .build();
+    }
 }

@@ -20,36 +20,23 @@ public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
 
-    public SecurityConfig(UserDetailsService userDetailsService){
+    public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-                                 AuthenticationConfiguration configuration) throws Exception {
+            AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-//        http.httpBasic().and()
-//
-//                .authorizeHttpRequests((authorize) ->
-////                        authorize.anyRequest().authenticated()
-//                        authorize.antMatchers(HttpMethod.GET, "/*").permitAll()
-//                                .requestMatchers(HttpMethod.POST, "/*").permitAll()
-//                                .antMatchers(HttpMethod.DELETE, "/*").permitAll()
-//                                .antMatchers(HttpMethod.PUT, "/*").permitAll()
-////                                .anyRequest().authenticated()
-//
-//                );
-
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
                 authorizeRequests().antMatchers(HttpMethod.GET, "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/**").permitAll()

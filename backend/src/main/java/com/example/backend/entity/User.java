@@ -34,9 +34,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_test_result_id")
-    private UserTestResult userTestResult;
+    @Column(columnDefinition = "float default 0")
+    private double testResult;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserResults> userResults;

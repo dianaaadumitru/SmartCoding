@@ -1,7 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.UserAndFinalScoreDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserResultsDto;
+import com.example.backend.dto.UserTestResultDto;
 import com.example.backend.entity.*;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.QuestionRepository;
@@ -27,6 +29,7 @@ public class UserService {
     private final UserResultsRepository userResultsRepository;
 
     private final RoleRepository roleRepository;
+
 
     public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
@@ -106,7 +109,7 @@ public class UserService {
                             .email(user.getEmail())
                             .username(user.getUsername())
                             .password(user.getPassword())
-//                            .userType(user.getRoles().iterator().next().getRole())
+                            .testResult(user.getTestResult())
                             .build();
                     System.out.println("user type: " + user.getRoles().size());
                     if (user.getRoles().size() > 0) {
@@ -250,5 +253,43 @@ public class UserService {
                         .answer(userResult.getAnswer())
                         .build()))
                 .collect(Collectors.toList());
+    }
+
+    public UserTestResultDto computeTestScoreForUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
+        double sum = 0;
+        for (UserResults result : userResults) {
+            sum += result.getScore();
+        }
+
+        user.setTestResult(sum);
+        userRepository.save(user);
+
+        return UserTestResultDto.builder()
+                .userId(userId)
+                .userFirstName(user.getFirstName())
+                .userLastName(user.getLastName())
+                .testResult(sum)
+                .build();
+    }
+
+    public List<UserAndFinalScoreDto> getAllUsersFinalScores() {
+        Iterable<User> users = userRepository.findAll();
+        List<UserAndFinalScoreDto> userAndFinalScoreDtos = new ArrayList<>();
+
+        users.forEach(user -> {
+            UserAndFinalScoreDto userAndFinalScoreDto = UserAndFinalScoreDto.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .userId(user.getUserId())
+                    .testResult(user.getTestResult())
+                    .build();
+            userAndFinalScoreDtos.add(userAndFinalScoreDto);
+        });
+        return userAndFinalScoreDtos;
     }
 }

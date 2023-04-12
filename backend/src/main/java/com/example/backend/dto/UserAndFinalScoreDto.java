@@ -7,20 +7,12 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Builder
-public class UserDto {
-    private long userId;
+public class UserAndFinalScoreDto {
+    private Long userId;
 
     private String firstName;
 
     private String lastName;
-
-    private String username;
-
-    private String email;
-
-    private String password;
-
-    private String userType;
 
     private double testResult;
 }

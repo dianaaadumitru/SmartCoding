@@ -1,7 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.UserAndFinalScoreDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.dto.UserResultsDto;
+import com.example.backend.dto.UserTestResultDto;
 import com.example.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +60,15 @@ public class UserController {
     @GetMapping("/{userId}/results")
     public ResponseEntity<List<UserResultsDto>> getResultsScores(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getResultsForStudent(userId));
+    }
+
+    @GetMapping("/finalResults/{userId}")
+    public ResponseEntity<UserTestResultDto> getUserFinalScore(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.computeTestScoreForUser(userId));
+    }
+
+    @GetMapping("/finalResults")
+    public ResponseEntity<List<UserAndFinalScoreDto>> getAllUsersFinalScore() {
+        return ResponseEntity.ok(userService.getAllUsersFinalScores());
     }
 }

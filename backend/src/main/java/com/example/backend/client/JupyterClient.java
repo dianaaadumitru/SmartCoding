@@ -4,14 +4,26 @@ import com.example.backend.jupyter.model.CreateSessionJson;
 import com.example.backend.jupyter.model.JupyterSessionDto;
 import com.example.backend.jupyter.model.Kernel;
 import com.example.backend.jupyter.model.SessionResponse;
+import com.example.backend.utils.WebSocketUtility;
+import com.example.backend.websocket.CodeExecutionResult;
+import com.example.backend.websocket.CodeWebSocketHandler;
+import com.example.backend.websocket.RunRequestResult;
+import com.example.backend.websocket.WebSocketEndpoint;
+import com.example.backend.websocket.handler.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.Getter;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketHttpHeaders;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -22,12 +34,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 @Component
-@Log
 @Getter
+@Slf4j
 public class JupyterClient {
 
     private final String host;
@@ -42,6 +55,8 @@ public class JupyterClient {
 
     private final String cookie;
 
+    private final CopyOnWriteArrayList<RunRequestResult> runRequestResultCopyOnWriteArrayList;
+
     private final int webSocketTextMessageMaxSize;
 
     public JupyterClient(@Value("${jupyter.server.host}") String host, @Value("${jupyter.server.port}") Long port, @Value("${password}") String password, HttpClient httpClient, @Value("${webSocket.textMessage.maxSize:1000000}") int webSocketTextMessageMaxSize) {
@@ -49,6 +64,7 @@ public class JupyterClient {
         this.port = port;
         this.password = password;
         this.client = httpClient;
+        this.runRequestResultCopyOnWriteArrayList = new CopyOnWriteArrayList<>();
         this.webSocketTextMessageMaxSize = webSocketTextMessageMaxSize;
         xsrf = extractXsrf();
         cookie = extractCookie();
@@ -145,6 +161,56 @@ public class JupyterClient {
         }
     }
 
+    public int runCode(WebSocketEndpoint webSocketEndpoint, String cookie, String code) {
+        int requestId = runRequestResultCopyOnWriteArrayList.size();
+        runRequestResultCopyOnWriteArrayList.add(requestId, new RunRequestResult(RunRequestResult.RequestStatusLevel.PENDING));
+
+        final CodeExecutionResult codeExecutionResult = new CodeExecutionResult();
+
+        try {
+            WebSocketClient webSocketClient = new StandardWebSocketClient();
+
+            WebSocketHttpHeaders webSocketHttpHeaders = new WebSocketHttpHeaders();
+            webSocketHttpHeaders.add("Cookie", cookie);
+
+            CodeWebSocketHandler codeWebSocketHandler = CodeWebSocketHandler.builder()
+                    .requestId(requestId)
+                    .runRequestResultCopyOnWriteArrayList(runRequestResultCopyOnWriteArrayList)
+                    .codeExecutionResult(codeExecutionResult)
+                    .cleanUpCode(() -> cleanupSession(webSocketEndpoint.getSessionId()))
+                    .build();
+
+            WebSocketSession webSocketSession = webSocketClient.doHandshake(codeWebSocketHandler, webSocketHttpHeaders, URI.create(webSocketEndpoint.getUriString())).get();
+
+            webSocketSession.setTextMessageSizeLimit(webSocketTextMessageMaxSize);
+
+            codeWebSocketHandler.setMessageTypeConditionalOperations(Map.of(
+                    "execute_result", new MessageTypeExecuteResultHandler(codeExecutionResult),
+                    "stream", new MessageTypeStreamHandler(codeExecutionResult),
+                    "execute_reply", new MessageTypeExecuteReplyHandler(
+                            codeExecutionResult,
+                            Map.of(
+                                    "ok", new StatusOkHandler(),
+                                    "error", new StatusErrorHandler()
+                            ),
+                            webSocketSession
+                    )));
+
+            code = StringEscapeUtils.escapeJava(code);
+
+            TextMessage message = new TextMessage(WebSocketUtility.getRequestMessagePayload(code));
+            webSocketSession.sendMessage(message);
+            log.info("sent message - code:" + code);
+
+        } catch (IOException e) {
+            log.error("Exception while sending a message", e);
+        } catch (Exception e) {
+            log.error("Exception while accessing websockets", e);
+        }
+        return requestId;
+    }
+
+
     public void cleanupSession(String sessionId) {
         try {
             URI uri = UriComponentsBuilder.fromUriString("http://" + host + ":" + port + "/api/sessions/" + sessionId).queryParam("_xsrf", xsrf).build().toUri();
@@ -156,7 +222,7 @@ public class JupyterClient {
 
             client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
-            log.log(Level.SEVERE, "Could not delete jupyter session with id: " + sessionId + ".", e);
+            throw new RuntimeException("could not delete session " + sessionId + e);
         }
     }
 

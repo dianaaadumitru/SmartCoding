@@ -1,20 +1,24 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.UserDto;
-import com.example.backend.entity.Role;
-import com.example.backend.entity.User;
+import com.example.backend.dto.UserResultsDto;
+import com.example.backend.entity.*;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.QuestionRepository;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.repository.UserResultsRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
 
@@ -199,7 +203,52 @@ public class UserService {
                 .build();
     }
 
-    public void addQuestionScoreToStudent(Long studentId, Long questionId, double score) {
+    @Transactional
+    public UserResultsDto addAnswerAndQuestionScoreToStudent(Long userId, Long questionId, double score, String answer) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
 
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> {
+            throw new CrudOperationException("Question does not exist");
+        });
+
+        if (user.getUserResults() == null) {
+            user.setUserResults(new ArrayList<>());
+        }
+
+        UserResults userResult = UserResults.builder()
+                .userQuestionId(new UserQuestionId(userId, questionId))
+                .user(user)
+                .question(question)
+                .score(score)
+                .answer(answer)
+                .build();
+
+        userResultsRepository.save(userResult);
+
+        return UserResultsDto.builder()
+                .userId(userId)
+                .userFirstName(user.getFirstName())
+                .userLastName(user.getLastName())
+                .questionId(questionId)
+                .questionDescription(question.getDescription())
+                .score(score)
+                .answer(userResult.getAnswer())
+                .build();
+    }
+
+    public List<UserResultsDto> getResultsForStudent(Long userId) {
+        List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
+        return userResults.stream().map((userResult -> UserResultsDto.builder()
+                        .userId(userResult.getUser().getUserId())
+                        .userFirstName(userResult.getUser().getFirstName())
+                        .userLastName(userResult.getUser().getLastName())
+                        .questionId(userResult.getQuestion().getQuestionId())
+                        .questionDescription(userResult.getQuestion().getDescription())
+                        .score(userResult.getScore())
+                        .answer(userResult.getAnswer())
+                        .build()))
+                .collect(Collectors.toList());
     }
 }

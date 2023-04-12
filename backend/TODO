@@ -8,6 +8,6 @@ react???
 DONE --- create links between tables
 add field if no of questions has been met
 calculate score for student
-table students result operations
+table students result operations --- add score and result
 DONE --- fix ids when displaying for see all and update
 delete quiz even though it has questions!!!

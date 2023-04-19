@@ -7,6 +7,8 @@ import com.example.backend.websocket.RunRequestResultIdDto;
 import com.example.backend.websocket.WebSocketEndpoint;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JupyterService {
 
@@ -15,6 +17,26 @@ public class JupyterService {
     public JupyterService(JupyterClient jupyterClient) {
         this.jupyterClient = jupyterClient;
     }
+
+    public List<String> getActiveSessions() {
+        return jupyterClient.getActiveSessionIds();
+    }
+
+    public String getXsrf() {
+        return jupyterClient.extractXsrf();
+    }
+
+    public String getCookie() {
+        return jupyterClient.extractCookie();
+    }
+
+    public JupyterSessionDto getCreatedSession() {
+        return jupyterClient.createSession();
+    }
+
+//    public int restartCodeStatusCode() {
+//        return jupyterClient.restartCode();
+//    }
 
     public RunRequestResultIdDto sendRunRequest(String code) {
         String xsrf = jupyterClient.getXsrf();

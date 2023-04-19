@@ -1,17 +1,18 @@
 DONE --- change crud operations like in db
-create connection with jupyter lab
-send code there
-test it
+DONE --- create connection with jupyter lab
+DONE --- send code there
+test it (needs more complex tests)
+link jl results to student and question id
 DONE --- login/signup
 design
 react???
 DONE --- create links between tables
 add field if no of questions has been met
-calculate score for student
+DONE --- calculate score for student
 table students result operations --- add score and result
 DONE --- fix ids when displaying for see all and update
 delete quiz even though it has questions!!!
-
+create tests for repo and controller
 
 ---- DONE
 renunta la usertTestResults

@@ -23,6 +23,10 @@ public class Question {
 
     private double score;
 
+    private String valuesType;
+
+    private String valuesToCheckCode;
+
 //    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    private List<UserResults> userResults;
 }

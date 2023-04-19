@@ -1,10 +1,12 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.CodeValueToCompileDto;
 import com.example.backend.jupyter.model.JupyterSessionDto;
 import com.example.backend.service.CodeGeneratingService;
 import com.example.backend.service.JupyterService;
 import com.example.backend.websocket.RunRequestResult;
 import com.example.backend.websocket.RunRequestResultIdDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/runCode")
+@Slf4j
 public class JupyterController {
     private final JupyterService jupyterService;
 
@@ -44,9 +47,10 @@ public class JupyterController {
     }
 
     @GetMapping("/run")
-    public ResponseEntity<RunRequestResultIdDto> sendRunRequest(@RequestBody String code) {
-//        String code = codeGeneratingService.generateCode(5L);
-        return ResponseEntity.ok(jupyterService.sendRunRequest(code));
+    public ResponseEntity<RunRequestResultIdDto> sendRunRequest(@RequestBody CodeValueToCompileDto data) {
+        String codeToCompile = codeGeneratingService.generateCode(data.getCode(), data.getValue());
+        log.info("\n" + codeToCompile);
+        return ResponseEntity.ok(jupyterService.sendRunRequest(codeToCompile));
     }
 
 

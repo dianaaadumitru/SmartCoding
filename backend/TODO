@@ -2,7 +2,7 @@ DONE --- change crud operations like in db
 DONE --- create connection with jupyter lab
 DONE --- send code there
 test it (needs more complex tests)
-link jl results to student and question id
+link jl results to student and question id (nu cred ca trebuie de fapt)
 DONE --- login/signup
 design
 react???
@@ -18,3 +18,20 @@ create tests for repo and controller
 renunta la usertTestResults
 tine doar un double in student
 si fa retrieve doar la nume si score
+
+when adding a new problem add also the input type for validating data + validating data
+
+
+
+code snippets for jupyter calls:
+prime:
+{
+    "code": "def isPrim(a):\n if (a < 2 or (a > 2 and a % 2 == 0)): \n\t return False \n for d in range(3, a, 2): \n\t if (a % d == 0): \n\t\t return False\n return True",
+    "value": "401"
+}
+
+vowels:
+{
+    "code": "def noVowels(word):\n\t nr = 0 \n\t for letter in word: \n\t\t if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u':\n\t\t\t nr += 1\n\t return nr",
+    "value": "\"abcdaae\""
+}

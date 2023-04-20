@@ -86,7 +86,7 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        return UserDto.builder()
+        UserDto userDto = UserDto.builder()
                 .userId(user.getUserId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -94,6 +94,10 @@ public class UserService {
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
+        if (user.getRoles() != null && user.getRoles().size() > 0) {
+            userDto.setUserType(user.getRoles().iterator().next().getRole());
+        }
+        return userDto;
     }
 
     public List<UserDto> getAllUsers() {
@@ -111,7 +115,7 @@ public class UserService {
                             .password(user.getPassword())
                             .testResult(user.getTestResult())
                             .build();
-                    if (user.getRoles().size() > 0) {
+                    if (user.getRoles() != null && user.getRoles().size() > 0) {
                         userDto.setUserType(user.getRoles().iterator().next().getRole());
                     }
                     userDtos.add(userDto);
@@ -125,15 +129,19 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        return UserDto.builder()
+        UserDto userDto = UserDto.builder()
                 .userId(user.getUserId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .userType(user.getRoles().iterator().next().getRole())
                 .build();
+
+        if (user.getRoles() != null && user.getRoles().size() > 0) {
+            userDto.setUserType(user.getRoles().iterator().next().getRole());
+        }
+        return userDto;
     }
 
     public UserDto findUserByUsername(String username) {
@@ -141,15 +149,19 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        return UserDto.builder()
+        UserDto userDto = UserDto.builder()
                 .userId(user.getUserId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .userType(user.getRoles().iterator().next().getRole())
                 .build();
+
+        if (user.getRoles() != null && user.getRoles().size() > 0) {
+            userDto.setUserType(user.getRoles().iterator().next().getRole());
+        }
+        return userDto;
     }
 
     public UserDto findUserByUsernameOrEmail(String username, String email) {
@@ -157,23 +169,19 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        return UserDto.builder()
+        UserDto userDto = UserDto.builder()
                 .userId(user.getUserId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .userType(user.getRoles().iterator().next().getRole())
                 .build();
-    }
 
-    public Boolean userExistsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    public Boolean userExistsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+        if (user.getRoles() != null && user.getRoles().size() > 0) {
+            userDto.setUserType(user.getRoles().iterator().next().getRole());
+        }
+        return userDto;
     }
 
     public UserDto assignRoleToUser(Long userId, Long roleId) {

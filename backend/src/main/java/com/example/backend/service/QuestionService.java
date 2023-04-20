@@ -37,7 +37,7 @@ public class QuestionService {
     }
 
     public void removeQuestion(Long id) {
-        Question question = questionRepository.findById(id).orElseThrow(() -> {
+        questionRepository.findById(id).orElseThrow(() -> {
             throw new CrudOperationException("Question does not exist");
         });
 
@@ -67,6 +67,7 @@ public class QuestionService {
         });
 
         return QuestionDto.builder()
+                .questionId(question.getQuestionId())
                 .quizId(question.getQuiz().getQuizId())
                 .description(question.getDescription())
                 .score(question.getScore())

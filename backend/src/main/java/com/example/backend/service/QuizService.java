@@ -53,6 +53,7 @@ public class QuizService {
         });
 
         return QuizDto.builder()
+                .quizId(id)
                 .name(quiz.getName())
                 .noQuestions(quiz.getNoQuestions())
                 .build();

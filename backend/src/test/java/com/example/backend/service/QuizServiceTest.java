@@ -53,7 +53,7 @@ public class QuizServiceTest {
     }
 
     @Test
-    public void givenAllQuizzes_getDatasets_returnAllQuizzes() {
+    public void givenAllQuizzes_getQuizzes_returnAllQuizzes() {
         // given
         List<Quiz> quizzes = new ArrayList<>();
         quizzes.add(Quiz.builder().name("test").build());
@@ -107,108 +107,85 @@ public class QuizServiceTest {
         assertThrows(RuntimeException.class, call);
     }
 
-//    @Test
-//    public void givenQuiz_updateQuiz_updateQuizIfFound() {
-//        // given
-//        Quiz quiz = Quiz.builder()
-//                .quizId(10L)
-//                .name("test")
-//                .build();
-//
-//        QuizDto newQuizDto = QuizDto.builder()
-//                .name("new name").build();
-//
-//        when(quizRepository.findById(quiz.getQuizId())).thenReturn(Optional.of(quiz));
-//
-//        // when
-//        quizService.updateQuiz(quiz.getQuizId(), newQuizDto);
-//
-//        // then
-////        assertEquals(newQuizDto.getName(), quiz.getName());
-//        verify(quizRepository).save(ArgumentMatchers.any(Quiz.class));
-//        verify(quizRepository).deleteById(quiz.getQuizId());
-//    }
+    @Test
+    public void givenQuizAndQuizDto_updateQuiz_updateQuizIfFound() {
+        // given
+        Quiz quiz = Quiz.builder()
+                .quizId(10L)
+                .name("test")
+                .build();
 
-//
-//    // ------------- updateDataset -------------
-//    @Test
-//    public void givenDataset_whenUpdateDataset_thenShouldUpdateDatasetIfFound() {
-//        //given
-//        Dataset dataset = new Dataset();
-//        dataset.setDatasetId(89L);
-//        dataset.setName("Test Name");
-//
-//        DatasetDto newDatasetDto = new DatasetDto();
-//        newDatasetDto.setName("New Test Name");
-//
-//        when(datasetRepository.findById(dataset.getDatasetId())).thenReturn(Optional.of(dataset));
-//
-//        //when
-//        datasetService.updateDataset(dataset.getDatasetId(), newDatasetDto);
-//
-//        //then
-//        assertEquals(newDatasetDto.getName(), dataset.getName());
-//        verify(datasetRepository).save(ArgumentMatchers.any(Dataset.class));
-//        verify(datasetRepository).findById(dataset.getDatasetId());
-//    }
-//
-//    @Test
-//    public void givenDatasetAndNewDatasetDto_whenUpdateDataset_thenShouldThrowExceptionIfDatasetDoesntExist() {
-//        //given
-//        Dataset dataset = new Dataset();
-//        dataset.setDatasetId(89L);
-//        dataset.setName("Test Name");
-//
-//        DatasetDto newDatasetDto = new DatasetDto();
-//        newDatasetDto.setId(90L);
-//        dataset.setName("New Test Name");
-//
-//        when(datasetRepository.findById(anyLong())).thenReturn(Optional.empty());
-//
-//        //when
-//        Executable call = () -> datasetService.updateDataset(dataset.getDatasetId(), newDatasetDto);
-//
-//        //then
-//        assertThrows(RuntimeException.class, call);
-//    }
-//
-//    // ------------- getDatasetById -------------
-//    @Test
-//    public void givenDataset_whenGetDatasetById_thenShouldReturnEqualDatasetIfFound() {
-//        //given
-//        Dataset dataset = new Dataset();
-//        dataset.setDatasetId(89L);
-//
-//        when(datasetRepository.findById(dataset.getDatasetId())).thenReturn(Optional.of(dataset));
-//
-//        //when
-//        DatasetDto expectedDto = datasetService.getDatasetById(dataset.getDatasetId());
-//        DatasetDto actualDto = DatasetDto.builder()
-//                .id(dataset.getDatasetId())
-//                .name(dataset.getName())
-//                .datasetType(dataset.getDatasetType())
-//                .connectionDetails(dataset.getConnectionDetails())
-//                .build();
-//
-//        //then
-//        assertThat(expectedDto).isEqualTo(actualDto);
-//        verify(datasetRepository).findById(dataset.getDatasetId());
-//    }
-//
-//    @Test
-//    public void givenDataset_whenGetDatasetById_thenShouldThrowExceptionIfDatasetDoesntExist() {
-//        //given
-//        Dataset dataset = new Dataset();
-//        dataset.setDatasetId(89L);
-//        dataset.setName("Test Name");
-//
-//        when(datasetRepository.findById(anyLong())).thenReturn(Optional.empty());
-//
-//        //when
-//        Executable call = () -> datasetService.getDatasetById(dataset.getDatasetId());
-//
-//        //then
-//        assertThrows(RuntimeException.class, call);
-//    }
+        QuizDto newQuizDto = QuizDto.builder()
+                .name("new name").build();
 
+        when(quizRepository.findById(quiz.getQuizId())).thenReturn(Optional.of(quiz));
+
+        // when
+        quizService.updateQuiz(quiz.getQuizId(), newQuizDto);
+
+        // then
+        assertEquals(newQuizDto.getName(), quiz.getName());
+        verify(quizRepository).save(ArgumentMatchers.any(Quiz.class));
+        verify(quizRepository).findById(quiz.getQuizId());
+    }
+
+    @Test
+    public void givenQuizAndQuizDto_updateQuiz_throwExceptionIfQuizDoesntExist() {
+        // given
+        Quiz quiz = Quiz.builder()
+                .quizId(10L)
+                .name("test")
+                .build();
+
+        QuizDto newQuizDto = QuizDto.builder()
+                .name("new name").build();
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> quizService.updateQuiz(quiz.getQuizId(), newQuizDto);
+
+        // then
+        assertThrows(RuntimeException.class, call);
+    }
+
+    @Test
+    public void givenQuiz_findQuizById_returnEqualQuizIfFound() {
+        // given
+        Quiz quiz = Quiz.builder()
+                .quizId(10L)
+                .name("test")
+                .build();
+
+        when(quizRepository.findById(quiz.getQuizId())).thenReturn(Optional.of(quiz));
+
+        // when
+        QuizDto expectedDto = quizService.getQuizById(quiz.getQuizId());
+        QuizDto actualDto = QuizDto.builder()
+                .name(quiz.getName())
+                .noQuestions(quiz.getNoQuestions())
+                .quizId(quiz.getQuizId())
+                .build();
+
+        // then
+        assertEquals(actualDto, expectedDto);
+        verify(quizRepository).findById(quiz.getQuizId());
+    }
+
+    @Test
+    public void givenQuiz_findQuizById_throwExceptionIfQuizDoesntExist() {
+        // given
+        Quiz quiz = Quiz.builder()
+                .quizId(10L)
+                .name("test")
+                .build();
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> quizService.getQuizById(quiz.getQuizId());
+
+        // then
+        assertThrows(RuntimeException.class, call);
+    }
 }

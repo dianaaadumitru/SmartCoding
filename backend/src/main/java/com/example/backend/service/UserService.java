@@ -111,7 +111,6 @@ public class UserService {
                             .password(user.getPassword())
                             .testResult(user.getTestResult())
                             .build();
-                    System.out.println("user type: " + user.getRoles().size());
                     if (user.getRoles().size() > 0) {
                         userDto.setUserType(user.getRoles().iterator().next().getRole());
                     }

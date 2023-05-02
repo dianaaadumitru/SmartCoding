@@ -713,7 +713,7 @@ public class UserServiceTest {
         when(userResultsRepository.findByUser_UserId(user.getUserId())).thenReturn(userResults);
 
         // when
-        List<UserResultsDto> expected = userService.getResultsForStudent(user.getUserId());
+        List<UserResultsDto> expected = userService.getQuestionsResultsForStudent(user.getUserId());
         List<UserResultsDto> actual = userResults.stream().map(userResults1 ->
                 UserResultsDto.builder()
                         .userId(userResults1.getUser().getUserId())

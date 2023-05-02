@@ -24,7 +24,7 @@ public class UserProblemResults {
     @JoinColumn(name = "problem_id")
     private Problem problem;
 
-    private double score;
+    private int percentage;
 
     private String answer;
 }

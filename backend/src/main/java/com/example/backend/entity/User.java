@@ -1,6 +1,7 @@
 package com.example.backend.entity;
 
 
+import com.example.backend.dto.UserProblemResultDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,6 +40,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserResults> userResults;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserProblemResults> userProblemResults;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "user_roles",

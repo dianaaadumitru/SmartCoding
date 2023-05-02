@@ -1,7 +1,47 @@
 package com.example.backend.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.example.backend.dto.ProblemDto;
+import com.example.backend.dto.QuestionDto;
+import com.example.backend.service.ProblemService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/problems")
 public class ProblemController {
+    private final ProblemService problemService;
+
+    public ProblemController(ProblemService problemService) {
+        this.problemService = problemService;
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<ProblemDto>> getAllProblrms() {
+        return ResponseEntity.ok(problemService.getAllProblems());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProblemDto> getProblemById(@PathVariable Long id) {
+        return ResponseEntity.ok(problemService.getProblemById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<ProblemDto> addProblem(@RequestBody ProblemDto problemDto) {
+        return ResponseEntity.ok(problemService.addProblem(problemDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProblemDto> updateProblem(@PathVariable Long id, @RequestBody ProblemDto problemDto) {
+        return ResponseEntity.ok(problemService.updateProblem(id, problemDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeProblem(@PathVariable Long id) {
+        problemService.removeProblem(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

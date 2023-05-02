@@ -1,15 +1,9 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.UserAndFinalScoreDto;
-import com.example.backend.dto.UserDto;
-import com.example.backend.dto.UserResultsDto;
-import com.example.backend.dto.UserTestResultDto;
+import com.example.backend.dto.*;
 import com.example.backend.entity.*;
 import com.example.backend.exceptions.CrudOperationException;
-import com.example.backend.repository.QuestionRepository;
-import com.example.backend.repository.RoleRepository;
-import com.example.backend.repository.UserRepository;
-import com.example.backend.repository.UserResultsRepository;
+import com.example.backend.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +24,18 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
+    private final ProblemRepository problemRepository;
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository) {
+    private final UserProblemResultsRepository userProblemResultsRepository;
+
+
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
         this.roleRepository = roleRepository;
+        this.problemRepository = problemRepository;
+        this.userProblemResultsRepository = userProblemResultsRepository;
     }
 
     public UserDto addUser(UserDto userDto) {
@@ -248,7 +248,41 @@ public class UserService {
                 .build();
     }
 
-    public List<UserResultsDto> getResultsForStudent(Long userId) {
+    @Transactional
+    public UserProblemResultDto addAnswerAndProblemPercentageToStudent(Long userId, Long problemId, int percentage, String answer) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        Problem problem = problemRepository.findById(problemId).orElseThrow(() -> {
+            throw new CrudOperationException("Problem does not exist");
+        });
+
+        if (user.getUserProblemResults() == null) {
+            user.setUserProblemResults(new ArrayList<>());
+        }
+
+        UserProblemResults userProblemResult = UserProblemResults.builder()
+                .user(user)
+                .problem(problem)
+                .percentage(percentage)
+                .answer(answer)
+                .build();
+
+        userProblemResultsRepository.save(userProblemResult);
+
+        return UserProblemResultDto.builder()
+                .userId(userId)
+                .userFirstName(user.getFirstName())
+                .userLastName(user.getLastName())
+                .problemId(problemId)
+                .problemDescription(problem.getDescription())
+                .percentage(userProblemResult.getPercentage())
+                .answer(userProblemResult.getAnswer())
+                .build();
+    }
+
+    public List<UserResultsDto> getQuestionsResultsForStudent(Long userId) {
         List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
         return userResults.stream().map((userResult -> UserResultsDto.builder()
                         .userId(userResult.getUser().getUserId())
@@ -260,6 +294,20 @@ public class UserService {
                         .answer(userResult.getAnswer())
                         .build()))
                 .collect(Collectors.toList());
+    }
+
+    public List<UserProblemResultDto> getProblemsResultsForStudent(Long userId) {
+        List<UserProblemResults> userProblemResults = userProblemResultsRepository.findByUser_UserId(userId);
+        return userProblemResults.stream().map((userProblemResult -> UserProblemResultDto.builder()
+                        .userId(userProblemResult.getUser().getUserId())
+                        .userFirstName(userProblemResult.getUser().getFirstName())
+                        .userLastName(userProblemResult.getUser().getLastName())
+                        .problemId(userProblemResult.getProblem().getProblemId())
+                        .problemDescription(userProblemResult.getProblem().getDescription())
+                        .percentage(userProblemResult.getPercentage())
+                        .answer(userProblemResult.getAnswer())
+                .build()))
+                .toList();
     }
 
     public UserTestResultDto computeTestScoreForUser(Long userId) {

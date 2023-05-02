@@ -1,9 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.UserAndFinalScoreDto;
-import com.example.backend.dto.UserDto;
-import com.example.backend.dto.UserResultsDto;
-import com.example.backend.dto.UserTestResultDto;
+import com.example.backend.dto.*;
 import com.example.backend.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,23 +48,34 @@ public class UserController {
         return ResponseEntity.ok(userService.assignRoleToUser(userId, roleId));
     }
 
-    @PutMapping("/{userId}/results/{questionId}")
-    public ResponseEntity<UserResultsDto> addScoreToUser(@PathVariable Long userId, @PathVariable Long questionId, @RequestParam double score, @RequestParam String answer) {
+    @PutMapping("/{userId}/resultsQuestion/{questionId}")
+    public ResponseEntity<UserResultsDto> addAnswerAndQuestionScoreToStudent(@PathVariable Long userId, @PathVariable Long questionId, @RequestParam double score, @RequestParam String answer) {
         var userResultsDto = userService.addAnswerAndQuestionScoreToStudent(userId, questionId, score, answer);
         return ResponseEntity.ok(userResultsDto);
     }
 
-    @GetMapping("/{userId}/results")
-    public ResponseEntity<List<UserResultsDto>> getResultsScores(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.getResultsForStudent(userId));
+    @PutMapping("/{userId}/resultsProblem/{problemId}")
+    public ResponseEntity<UserProblemResultDto> addAnswerAndProblemPercentageToStudent(@PathVariable Long userId, @PathVariable Long problemId, @RequestParam int percentage, @RequestParam String answer) {
+        var userProblemResultsDto = userService.addAnswerAndProblemPercentageToStudent(userId, problemId, percentage, answer);
+        return ResponseEntity.ok(userProblemResultsDto);
     }
 
-    @GetMapping("/finalResults/{userId}")
+    @GetMapping("/{userId}/resultsQuestions")
+    public ResponseEntity<List<UserResultsDto>> getResultsScores(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getQuestionsResultsForStudent(userId));
+    }
+
+    @GetMapping("/{userId}/resultsProblems")
+    public ResponseEntity<List<UserProblemResultDto>> getProblemResultsScores(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getProblemsResultsForStudent(userId));
+    }
+
+    @GetMapping("/resultsQuiz/{userId}")
     public ResponseEntity<UserTestResultDto> getUserFinalScore(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.computeTestScoreForUser(userId));
     }
 
-    @GetMapping("/finalResults")
+    @GetMapping("/resultsQuiz")
     public ResponseEntity<List<UserAndFinalScoreDto>> getAllUsersFinalScore() {
         return ResponseEntity.ok(userService.getAllUsersFinalScores());
     }

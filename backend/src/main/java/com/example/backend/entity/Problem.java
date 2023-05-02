@@ -18,7 +18,7 @@ public class Problem {
 
     private String description;
 
-    private double score;
+    private String difficulty;
 
     private String valuesType;
 

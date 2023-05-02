@@ -11,14 +11,10 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Question {
+public class Problem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long questionId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quiz_id")
-    private Quiz quiz;
+    private long problemId;
 
     private String description;
 

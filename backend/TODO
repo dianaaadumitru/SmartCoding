@@ -9,10 +9,10 @@ react???
 DONE --- create links between tables
 add field if no of questions has been met
 DONE --- calculate score for student
-table students result operations --- add score and result
+DONE --- table students result operations --- add score and result
 DONE --- fix ids when displaying for see all and update
 delete quiz even though it has questions!!!
-create tests for repo and controller
+DONE --- create tests for repo and controller
 
 ---- DONE
 renunta la usertTestResults

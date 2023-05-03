@@ -1,7 +1,6 @@
 package com.example.backend.entity;
 
 
-import com.example.backend.dto.UserProblemResultDto;
 import lombok.*;
 
 import javax.persistence.*;

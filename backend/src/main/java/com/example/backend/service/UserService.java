@@ -306,7 +306,7 @@ public class UserService {
                         .problemDescription(userProblemResult.getProblem().getDescription())
                         .percentage(userProblemResult.getPercentage())
                         .answer(userProblemResult.getAnswer())
-                .build()))
+                        .build()))
                 .toList();
     }
 

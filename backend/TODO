@@ -19,21 +19,24 @@ renunta la usertTestResults
 tine doar un double in student
 si fa retrieve doar la nume si score
 
-when adding a new problem add also the input type for validating data + validating data
+when adding a new problem add also the input type for validating data + validating data --- merge pt problem, trebuie si pt question
 schimba la question adauga fieldurile
 repara testele
 
 
 
 code snippets for jupyter calls:
-prime:
 {
     "code": "def isPrim(a):\n if (a < 2 or (a > 2 and a % 2 == 0)): \n\t return False \n for d in range(3, a, 2): \n\t if (a % d == 0): \n\t\t return False\n return True",
-    "value": "401"
+    "valuesType": "Integer",
+    "valuesToCheckCode": "2,3,4",
+    "resultsToCheckCode": "True, True, False"
 }
 
 vowels:
 {
     "code": "def noVowels(word):\n\t nr = 0 \n\t for letter in word: \n\t\t if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u':\n\t\t\t nr += 1\n\t return nr",
-    "value": "\"abcdaae\""
+    "valuesType": "String",
+        "valuesToCheckCode": "abcdaae,aaaaa,dfsgt",
+        "resultsToCheckCode": "4, 5, 0"
 }

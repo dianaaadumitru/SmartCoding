@@ -19,4 +19,6 @@ public class ProblemDto {
     private String valuesType;
 
     private String valuesToCheckCode;
+
+    private String resultsToCheckCode;
 }

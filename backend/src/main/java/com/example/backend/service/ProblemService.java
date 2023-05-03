@@ -1,9 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.ProblemDto;
-import com.example.backend.dto.QuestionDto;
 import com.example.backend.entity.Problem;
-import com.example.backend.entity.Question;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.ProblemRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +23,7 @@ public class ProblemService {
                 .description(problemDto.getDescription())
                 .valuesToCheckCode(problemDto.getValuesToCheckCode())
                 .difficulty(problemDto.getDifficulty())
+                .resultsToCheckCode(problemDto.getResultsToCheckCode())
                 .build();
 
         problemRepository.save(problem);
@@ -48,6 +47,7 @@ public class ProblemService {
         problem.setDifficulty(problemDto.getDifficulty());
         problem.setValuesType(problemDto.getValuesType());
         problem.setValuesToCheckCode(problemDto.getValuesToCheckCode());
+        problem.setResultsToCheckCode(problemDto.getResultsToCheckCode());
         problemRepository.save(problem);
         problemDto.setProblemId(problem.getProblemId());
         return problemDto;
@@ -64,6 +64,7 @@ public class ProblemService {
                 .difficulty(problem.getDifficulty())
                 .valuesToCheckCode(problem.getValuesToCheckCode())
                 .valuesType(problem.getValuesType())
+                .resultsToCheckCode(problem.getResultsToCheckCode())
                 .build();
     }
 
@@ -73,10 +74,12 @@ public class ProblemService {
 
         problems.forEach(problem ->
                 problemDtos.add(ProblemDto.builder()
+                        .problemId(problem.getProblemId())
                         .valuesType(problem.getValuesType())
                         .valuesToCheckCode(problem.getValuesToCheckCode())
                         .difficulty(problem.getDifficulty())
                         .description(problem.getDescription())
+                        .resultsToCheckCode(problem.getResultsToCheckCode())
                         .build()
 
                 ));

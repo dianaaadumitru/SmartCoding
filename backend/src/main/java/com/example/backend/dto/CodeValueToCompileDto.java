@@ -12,5 +12,9 @@ import lombok.NoArgsConstructor;
 public class CodeValueToCompileDto {
     private String code;
 
-    private String value;
+    private String valuesType;
+
+    private String valuesToCheckCode;
+
+    private String resultsToCheckCode;
 }

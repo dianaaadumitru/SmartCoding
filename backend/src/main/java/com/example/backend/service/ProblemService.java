@@ -1,7 +1,6 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.ProblemDto;
-import com.example.backend.dto.UserProblemResultDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
 import com.example.backend.entity.Problem;
 import com.example.backend.entity.UserProblemResults;

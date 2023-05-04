@@ -29,14 +29,23 @@ code snippets for jupyter calls:
 {
     "code": "def isPrim(a):\n if (a < 2 or (a > 2 and a % 2 == 0)): \n\t return False \n for d in range(3, a, 2): \n\t if (a % d == 0): \n\t\t return False\n return True",
     "valuesType": "Integer",
-    "valuesToCheckCode": "2,3,4",
-    "resultsToCheckCode": "True, True, False"
+    "valuesToCheckCode": "2;3;4",
+    "resultsToCheckCode": "True; True; False"
 }
 
 vowels:
 {
     "code": "def noVowels(word):\n\t nr = 0 \n\t for letter in word: \n\t\t if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u':\n\t\t\t nr += 1\n\t return nr",
     "valuesType": "String",
-    "valuesToCheckCode": "abcdaae,aaaaa,dfsgt",
-    "resultsToCheckCode": "4, 5, 0"
+    "valuesToCheckCode": "abcdaae;aaaaa;dfsgt",
+    "resultsToCheckCode": "4; 5; 0"
 }
+
+seqOfEvenNo
+{
+    "code": "def seqOfEvenNo(seq): \n\t for elem in seq: \n\t\t if elem % 2 == 1: \n\t\t\t return False \n\t return True",
+    "valuesType": "List",
+    "valuesToCheckCode": "[2, 4, 6]; [1,2,4]; [4,5,6]; [8,8,8,8,8,8,9]",
+    "resultsToCheckCode": "True; False; False; False"
+}
+

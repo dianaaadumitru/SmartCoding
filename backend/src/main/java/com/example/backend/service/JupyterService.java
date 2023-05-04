@@ -46,10 +46,6 @@ public class JupyterService {
         return jupyterClient.createSession();
     }
 
-//    public int restartCodeStatusCode() {
-//        return jupyterClient.restartCode();
-//    }
-
     public RunRequestResultIdDto sendRunRequest(String code) {
         String xsrf = jupyterClient.getXsrf();
         String cookie = jupyterClient.getCookie();
@@ -83,13 +79,15 @@ public class JupyterService {
 
     public ResultDto readFinalResult(CodeValueToCompileDto data) throws ExecutionException, InterruptedException {
         int successes = 0;
-        String[] valuesToCheck = data.getValuesToCheckCode().split(",");
-        String[] resultsToCheck = data.getResultsToCheckCode().split(",");
+        String[] valuesToCheck = data.getValuesToCheckCode().split(";");
+        String[] resultsToCheck = data.getResultsToCheckCode().split(";");
         for (int i = 0; i < valuesToCheck.length; i++) {
             String currentValue = "";
             if (Objects.equals(data.getValuesType(), "String")) {
                 currentValue = "\"" + valuesToCheck[i].strip() + "\"";
             } else if (Objects.equals(data.getValuesType(), "Integer")) {
+                currentValue = valuesToCheck[i].strip();
+            } else if (Objects.equals(data.getValuesType(), "List")) {
                 currentValue = valuesToCheck[i].strip();
             }
             System.out.println("value that is checked: " + currentValue + " having result: " + resultsToCheck[i]);

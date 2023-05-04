@@ -19,8 +19,8 @@ renunta la usertTestResults
 tine doar un double in student
 si fa retrieve doar la nume si score
 
-when adding a new problem add also the input type for validating data + validating data --- merge pt problem, trebuie si pt question
-schimba la question adauga fieldurile
+DONE --- when adding a new problem add also the input type for validating data + validating data --- merge pt problem, trebuie si pt question
+DONE --- schimba la question adauga fieldurile
 repara testele
 
 

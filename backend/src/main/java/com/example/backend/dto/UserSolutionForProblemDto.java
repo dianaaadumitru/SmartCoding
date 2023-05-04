@@ -9,18 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserProblemResultDto {
-    private Long userId;
-
-    private String userFirstName;
+public class UserSolutionForProblemDto {
+    private String userFirsName;
 
     private String userLastName;
 
-    private Long problemId;
-
-    private String problemDescription;
-
-    private double percentage;
-
-    private String answer;
+    private double score;
 }

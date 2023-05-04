@@ -9,18 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class QuestionDto {
-    private long questionId;
-
-    private long quizId;
-
-    private String description;
-
+public class ScoreAnswerDto {
     private double score;
 
-    private String valuesType;
-
-    private String valuesToCheckCode;
-
-    private String resultsToCheckCode;
+    private String answer;
 }

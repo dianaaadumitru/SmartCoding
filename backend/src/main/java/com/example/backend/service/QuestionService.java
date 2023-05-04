@@ -30,6 +30,9 @@ public class QuestionService {
                 .quiz(quiz)
                 .description(questionDto.getDescription())
                 .score(questionDto.getScore())
+                .valuesType(questionDto.getValuesType())
+                .resultsToCheckCode(questionDto.getResultsToCheckCode())
+                .valuesToCheckCode(questionDto.getValuesToCheckCode())
                 .build();
         questionRepository.save(question);
         questionDto.setQuestionId(question.getQuestionId());
@@ -56,6 +59,9 @@ public class QuestionService {
         question.setDescription(questionDto.getDescription());
         question.setScore(questionDto.getScore());
         question.setQuiz(quiz);
+        question.setValuesType(questionDto.getValuesType());
+        question.setValuesToCheckCode(questionDto.getValuesToCheckCode());
+        question.setResultsToCheckCode(questionDto.getResultsToCheckCode());
         questionRepository.save(question);
         questionDto.setQuestionId(question.getQuestionId());
         return questionDto;
@@ -71,6 +77,9 @@ public class QuestionService {
                 .quizId(question.getQuiz().getQuizId())
                 .description(question.getDescription())
                 .score(question.getScore())
+                .resultsToCheckCode(question.getResultsToCheckCode())
+                .valuesToCheckCode(question.getValuesToCheckCode())
+                .valuesType(question.getValuesType())
                 .build();
     }
 
@@ -84,6 +93,9 @@ public class QuestionService {
                         .quizId(question.getQuiz().getQuizId())
                         .description(question.getDescription())
                         .score(question.getScore())
+                        .valuesType(question.getValuesType())
+                        .valuesToCheckCode(question.getValuesToCheckCode())
+                        .resultsToCheckCode(question.getResultsToCheckCode())
                         .build())
         );
         return questionDtos;

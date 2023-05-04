@@ -10,7 +10,9 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
+@ToString
 public class UserProblemResults {
+
     @EmbeddedId
     private UserProblemId userProblemId;
 
@@ -24,7 +26,8 @@ public class UserProblemResults {
     @JoinColumn(name = "problem_id")
     private Problem problem;
 
-    private int percentage;
+    private double percentage;
 
     private String answer;
+
 }

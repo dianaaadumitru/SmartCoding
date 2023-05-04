@@ -26,6 +26,6 @@ public class Problem {
 
     private String resultsToCheckCode;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserResults> userResults;
+    @OneToMany(mappedBy = "problem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserProblemResults> userProblemResults;
 }

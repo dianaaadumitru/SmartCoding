@@ -29,13 +29,13 @@ public class UserService {
     private final UserProblemResultsRepository userProblemResultsRepository;
 
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository) {
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, UserProblemResultsRepository userProblemResultsRepository1) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
         this.roleRepository = roleRepository;
         this.problemRepository = problemRepository;
-        this.userProblemResultsRepository = userProblemResultsRepository;
+        this.userProblemResultsRepository = userProblemResultsRepository1;
     }
 
     public UserDto addUser(UserDto userDto) {
@@ -193,7 +193,9 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        if (user.getRoles() == null) {
+        log.info(user.getRoles().toString());
+
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
             user.setRoles(new HashSet<>());
         } else {
             throw new CrudOperationException("this user already has a role!");
@@ -214,7 +216,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResultsDto addAnswerAndQuestionScoreToStudent(Long userId, Long questionId, double score, String answer) {
+    public UserResultsDto addQuestionAnswerAndQuestionScoreToStudent(Long userId, Long questionId, ScoreAnswerDto scoreAnswerDto) {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new CrudOperationException("User does not exist");
         });
@@ -231,8 +233,8 @@ public class UserService {
                 .userQuestionId(new UserQuestionId(userId, questionId))
                 .user(user)
                 .question(question)
-                .score(score)
-                .answer(answer)
+                .score(scoreAnswerDto.getScore())
+                .answer(scoreAnswerDto.getAnswer())
                 .build();
 
         userResultsRepository.save(userResult);
@@ -243,13 +245,13 @@ public class UserService {
                 .userLastName(user.getLastName())
                 .questionId(questionId)
                 .questionDescription(question.getDescription())
-                .score(score)
+                .score(userResult.getScore())
                 .answer(userResult.getAnswer())
                 .build();
     }
 
     @Transactional
-    public UserProblemResultDto addAnswerAndProblemPercentageToStudent(Long userId, Long problemId, int percentage, String answer) {
+    public UserProblemResultDto addAnswerAndProblemPercentageToStudent(Long userId, Long problemId, ScoreAnswerDto scoreAnswerDto) {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new CrudOperationException("User does not exist");
         });
@@ -261,15 +263,21 @@ public class UserService {
         if (user.getUserProblemResults() == null) {
             user.setUserProblemResults(new ArrayList<>());
         }
+        log.info("im here");
 
         UserProblemResults userProblemResult = UserProblemResults.builder()
+                .userProblemId(new UserProblemId(userId, problemId))
                 .user(user)
                 .problem(problem)
-                .percentage(percentage)
-                .answer(answer)
+                .percentage(scoreAnswerDto.getScore())
+                .answer(scoreAnswerDto.getAnswer())
                 .build();
 
+        log.info("created user-problem result: " + userProblemResult);
+
         userProblemResultsRepository.save(userProblemResult);
+
+        log.info("saved it :)");
 
         return UserProblemResultDto.builder()
                 .userId(userId)

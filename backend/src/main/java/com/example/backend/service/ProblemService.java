@@ -1,9 +1,13 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.ProblemDto;
+import com.example.backend.dto.UserProblemResultDto;
+import com.example.backend.dto.UserSolutionForProblemDto;
 import com.example.backend.entity.Problem;
+import com.example.backend.entity.UserProblemResults;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.ProblemRepository;
+import com.example.backend.repository.UserProblemResultsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,8 +17,11 @@ import java.util.List;
 public class ProblemService {
     private final ProblemRepository problemRepository;
 
-    public ProblemService(ProblemRepository problemRepository) {
+    private final UserProblemResultsRepository userProblemResultsRepository;
+
+    public ProblemService(ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository) {
         this.problemRepository = problemRepository;
+        this.userProblemResultsRepository = userProblemResultsRepository;
     }
 
     public ProblemDto addProblem(ProblemDto problemDto) {
@@ -84,6 +91,15 @@ public class ProblemService {
 
                 ));
         return problemDtos;
+    }
+
+    public List<UserSolutionForProblemDto> getAllUsersSolutionsForProblem(Long problemId) {
+        List<UserProblemResults> userProblemResults = userProblemResultsRepository.findByProblem_ProblemId(problemId);
+        return userProblemResults.stream().map((userProblemResult -> UserSolutionForProblemDto.builder()
+                .userLastName(userProblemResult.getUser().getLastName())
+                .userFirsName(userProblemResult.getUser().getFirstName())
+                .score(userProblemResult.getPercentage())
+                .build())).toList();
     }
 
 }

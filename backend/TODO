@@ -37,6 +37,6 @@ vowels:
 {
     "code": "def noVowels(word):\n\t nr = 0 \n\t for letter in word: \n\t\t if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u':\n\t\t\t nr += 1\n\t return nr",
     "valuesType": "String",
-        "valuesToCheckCode": "abcdaae,aaaaa,dfsgt",
-        "resultsToCheckCode": "4, 5, 0"
+    "valuesToCheckCode": "abcdaae,aaaaa,dfsgt",
+    "resultsToCheckCode": "4, 5, 0"
 }

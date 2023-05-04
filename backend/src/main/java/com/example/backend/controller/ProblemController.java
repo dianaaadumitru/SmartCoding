@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.ProblemDto;
+import com.example.backend.dto.UserSolutionForProblemDto;
 import com.example.backend.service.ProblemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,10 @@ public class ProblemController {
     public ResponseEntity<Void> removeProblem(@PathVariable Long id) {
         problemService.removeProblem(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/userScores")
+    public ResponseEntity<List<UserSolutionForProblemDto>> getAllUsersSolutionsForProblem(@PathVariable Long id) {
+        return ResponseEntity.ok(problemService.getAllUsersSolutionsForProblem(id));
     }
 }

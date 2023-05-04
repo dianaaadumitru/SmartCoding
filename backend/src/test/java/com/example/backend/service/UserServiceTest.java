@@ -613,7 +613,7 @@ public class UserServiceTest {
         when(questionRepository.findById(question.getQuestionId())).thenReturn(Optional.of(question));
 
         // when
-        UserResultsDto expected = userService.addAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
+        UserResultsDto expected = userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
 
         UserResultsDto actual = UserResultsDto.builder()
                 .userId(user.getUserId())
@@ -650,7 +650,7 @@ public class UserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call = () -> userService.addAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
+        Executable call = () -> userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
 
         // then
         assertThrows(RuntimeException.class, call);
@@ -676,7 +676,7 @@ public class UserServiceTest {
         when(questionRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call = () -> userService.addAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
+        Executable call = () -> userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
 
         // then
         assertThrows(RuntimeException.class, call);

@@ -44,19 +44,19 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/role/{roleId}")
-    public ResponseEntity<UserDto> assignTypeToUser(@PathVariable Long userId, @PathVariable Long roleId) {
+    public ResponseEntity<UserDto> assignRoleToUser(@PathVariable Long userId, @PathVariable Long roleId) {
         return ResponseEntity.ok(userService.assignRoleToUser(userId, roleId));
     }
 
     @PutMapping("/{userId}/resultsQuestion/{questionId}")
-    public ResponseEntity<UserResultsDto> addAnswerAndQuestionScoreToStudent(@PathVariable Long userId, @PathVariable Long questionId, @RequestParam double score, @RequestParam String answer) {
-        var userResultsDto = userService.addAnswerAndQuestionScoreToStudent(userId, questionId, score, answer);
+    public ResponseEntity<UserResultsDto> addAnswerAndQuestionScoreToStudent(@PathVariable Long userId, @PathVariable Long questionId, @RequestBody ScoreAnswerDto scoreAnswerDto) {
+        var userResultsDto = userService.addQuestionAnswerAndQuestionScoreToStudent(userId, questionId, scoreAnswerDto);
         return ResponseEntity.ok(userResultsDto);
     }
 
     @PutMapping("/{userId}/resultsProblem/{problemId}")
-    public ResponseEntity<UserProblemResultDto> addAnswerAndProblemPercentageToStudent(@PathVariable Long userId, @PathVariable Long problemId, @RequestParam int percentage, @RequestParam String answer) {
-        var userProblemResultsDto = userService.addAnswerAndProblemPercentageToStudent(userId, problemId, percentage, answer);
+    public ResponseEntity<UserProblemResultDto> addAnswerAndProblemPercentageToStudent(@PathVariable Long userId, @PathVariable Long problemId, @RequestBody ScoreAnswerDto scoreAnswerDto) {
+        var userProblemResultsDto = userService.addAnswerAndProblemPercentageToStudent(userId, problemId, scoreAnswerDto);
         return ResponseEntity.ok(userProblemResultsDto);
     }
 

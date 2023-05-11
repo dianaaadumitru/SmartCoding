@@ -1,12 +1,12 @@
 nav {
-    background-color: #000000;
+    background-color: transparent;
     color: #fff;
     display: flex;
     justify-content: flex-end;
     padding-right: 35px;
     padding-top: 10px;
     font-family: Arial, sans-serif;
-    font-size: 1.4em;
+    font-size: 1.2em;
 }
 
 nav ul {

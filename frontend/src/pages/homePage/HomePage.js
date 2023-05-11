@@ -10,9 +10,11 @@ function HomePage() {
         <body>
             <HomePageNavBar />
             <div className='content-block'>
-                <h1 className='page-heading page-heading--small'>Smart coding</h1>
-                <p className='page-content page-content--small'>Solve problems, sharpen skills, succeed in <br />programming.</p>
-                <button class="create-account-btn">Create Account</button>
+                <div className='center'>
+                    <h1 className='page-heading page-heading--small'>Smart coding</h1>
+                    <p className='page-content page-content--small'>Solve problems, sharpen skills, succeed in programming.</p>
+                    <button class="create-account-btn">Create Account</button>
+                </div>
             </div>
         </body>
     )

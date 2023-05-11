@@ -1,0 +1,61 @@
+  body {
+      background: url('../../resources/background3.jpg') center center fixed;
+      background-size: cover;
+  }
+
+  .content-block {
+      text-align: right;
+      margin-right: 15%;
+      margin-bottom: 3%;
+      margin-top: 10%;
+      color: #C2C2C2;
+      font-family: Arial, sans-serif;
+  }
+
+  .page-heading {
+      font-size: 3em;
+      font-weight: bold;
+  }
+
+  .page-content {
+      text-align: center;
+      font-size: 1.4em;
+      margin-left: 60%;
+      margin-right: -11%;
+  }
+
+  .create-account-btn {
+      /* display: flex-box; */
+      margin: 0 auto;
+      background-color: #DA5218;
+      color: #FFF;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 1.4em;
+      cursor: pointer;
+      margin-right: 5%;
+      transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+      background-color: #ba3d07;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .page-heading {
+      font-size: 2em;
+    }
+  
+    .page-content {
+      font-size: 1em;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  
+    .create-account-btn {
+      font-size: 1.2em;
+      padding: 0.8em 1.6em;
+    }
+  }

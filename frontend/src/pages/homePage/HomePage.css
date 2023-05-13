@@ -1,134 +1,77 @@
-  /* body {
-      background: url('../../resources/background3.jpg') center center fixed;
-      background-size: cover;
-  }
+.homepage-section {
+  background: url('../../resources/backgroundNew.jpg') center center fixed;
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
+.content-block {
+  position: relative;
+  text-align: right;
+  margin-left: 46%;
+  margin-bottom: 3%;
+  margin-top: 16%;
+  color: #C2C2C2;
+  font-family: Arial, sans-serif;
+  flex: 1;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.page-heading {
+  text-align: center;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+.page-content {
+  text-align: center;
+  font-size: 1.2em;
+  padding-bottom: 4%;
+}
+
+.create-account-btn {
+  display: block;
+  margin: 0 auto;
+  background-color: #DA5218;
+  color: #FFF;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-account-btn:hover {
+  background-color: #ba3d07;
+}
+
+@media screen and (max-width: 768px) {
   .content-block {
-      text-align: right;
-      margin-right: 15%;
-      margin-bottom: 3%;
-      margin-top: 10%;
-      color: #C2C2C2;
-      font-family: Arial, sans-serif;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
   }
 
   .page-heading {
-      font-size: 3em;
-      font-weight: bold;
+    font-size: 2em;
   }
 
   .page-content {
-      text-align: center;
-      font-size: 1.4em;
-      margin-left: 60%;
-      margin-right: -11%;
+    font-size: 1em;
   }
 
   .create-account-btn {
-      margin: 0 auto;
-      background-color: #DA5218;
-      color: #FFF;
-      border: none;
-      border-radius: 20px;
-      padding: 10px 20px;
-      font-size: 1.4em;
-      cursor: pointer;
-      margin-right: 5%;
-      transition: background-color 0.3s ease;
+    font-size: 1.2em;
+    padding: 0.8em 1.6em;
   }
-
-  button:hover {
-      background-color: #ba3d07;
-  }
-
-
-  @media screen and (max-width: 768px) {
-    .page-heading {
-      font-size: 2em;
-    }
-  
-    .page-content {
-      font-size: 1em;
-      margin-left: 0;
-      margin-right: 0;
-    }
-  
-    .create-account-btn {
-      font-size: 1.2em;
-      padding: 0.8em 1.6em;
-    }
-  } */
-
-  body {
-      background: url('../../resources/backgroundNew.jpg') center center fixed;
-      background-size: cover;
-  }
-
-  .content-block {
-      position: relative;
-      text-align: right;
-      margin-left: 46%;
-      margin-bottom: 3%;
-      margin-top: 16%;
-      color: #C2C2C2;
-      font-family: Arial, sans-serif;
-  }
-
-  .center {
-      margin: 0;
-      position: absolute;
-      left: 50%;
-      -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-      text-align: center;
-  }
-
-  .page-heading {
-      text-align: center;
-      font-size: 3em;
-      font-weight: bold;
-  }
-
-  .page-content {
-      text-align: center;
-      font-size: 1.2em;
-      padding-bottom: 4%;
-  }
-
-  .create-account-btn {
-      display: block;
-      margin: 0 auto;
-      background-color: #DA5218;
-      color: #FFF;
-      border: none;
-      border-radius: 20px;
-      padding: 10px 20px;
-      font-size: 1.2em;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  }
-
-  button:hover {
-      background-color: #ba3d07;
-  }
-
-  @media screen and (max-width: 768px) {
-      .content-block {
-          margin-left: 5%;
-          margin-right: 5%;
-          margin-top: 5%;
-      }
-
-      .page-heading {
-          font-size: 2em;
-      }
-
-      .page-content {
-          font-size: 1em;
-      }
-
-      .create-account-btn {
-          font-size: 1.2em;
-          padding: 0.8em 1.6em;
-      }
-  }
+}

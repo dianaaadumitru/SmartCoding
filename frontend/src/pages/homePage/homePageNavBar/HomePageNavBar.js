@@ -1,3 +1,5 @@
+import React from 'react';
+
 import './HomePageNavBar.css'
 
 function HomePageNavBar() {

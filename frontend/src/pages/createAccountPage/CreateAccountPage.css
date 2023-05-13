@@ -11,7 +11,6 @@ body {
     transform: translateX(-50%);
     width: 40%;
     background-color: #FFFFFF;
-    /* height: calc(100% - 50px); */
 }
 
 .rectangle * {
@@ -33,7 +32,7 @@ h2 {
     font-size: 2.5rem;
 }
 
-input {
+.input-class {
     margin-bottom: 1rem;
     padding: 0.5rem;
     border: 2px solid #C2C2C2;
@@ -43,13 +42,12 @@ input {
     font-size: 0.8rem;
 }
 
-input::placeholder {
+.input-class::placeholder {
     color: #C2C2C2;
     font-size: 0.7rem;
 }
 
-button {
-    margin-top: 1rem;
+.signup-button {
     border: none;
     border-radius: 5px;
     background-color: #424242;
@@ -58,7 +56,7 @@ button {
     height: 2.5rem;
 }
 
-button:hover {
+.signup-button :hover {
     background-color: #5c5959;
   }
 
@@ -79,11 +77,11 @@ a {
       width: 80%;
     }
     
-    input {
+    .input-class {
       width: 90%;
     }
     
-    button {
+    .signup-button  {
       width: 90%;
     }
   }

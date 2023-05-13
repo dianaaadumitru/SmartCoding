@@ -9,7 +9,7 @@ function HomePageNavBar() {
                 <ul>
                     <li><a href="#">Explore</a></li>
                     <li><a href="#">Developer</a></li>
-                    <li><a href="#">Sign in</a></li>
+                    <li><a href="/signin">Sign in</a></li>
                 </ul>
             </nav>
         </div>

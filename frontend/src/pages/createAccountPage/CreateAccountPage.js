@@ -10,14 +10,14 @@ function CreateAccountPage() {
       <div className="rectangle">
         <div className="content">
           <h2>Smart coding</h2>
-          <input type="text" placeholder="First Name" className="inputBox" />
-          <input type="text" placeholder="last Name" className="inputBox" />
-          <input type="text" placeholder="Username" className="inputBox" />
-          <input type="email" placeholder="E-mail Address" className="inputBox" />
-          <input type="password" placeholder="Password" className="inputBox" />
-          <input type="password" placeholder="Confirm Password" className="inputBox" />
-          <button>Sign Up</button>
-          <p>Have an account? <a href='#'>Sign in</a></p>
+          <input className="input-class" type="text" placeholder="First Name"/>
+          <input type="text" placeholder="Last Name" className="input-class" />
+          <input type="text" placeholder="Username" className="input-class" />
+          <input type="email" placeholder="E-mail Address" className="input-class" />
+          <input type="password" placeholder="Password" className="input-class" />
+          <input type="password" placeholder="Confirm Password" className="input-class" />
+          <button className='signup-button'>Sign Up</button>
+          <p>Have an account? <a href='/signin'>Sign in</a></p>
         </div>
       </div>
     </div>

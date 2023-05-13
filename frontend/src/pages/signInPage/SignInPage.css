@@ -1,0 +1,94 @@
+.square {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    width: 40%;
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square * {
+    padding: 0.5rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 1rem;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: #424242;
+    font-size: 2.5rem;
+}
+
+input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 2px solid #C2C2C2;
+    border-radius: 5px;
+    width: 120%;
+    color: #424242;
+    font-size: 0.8rem;
+}
+
+input::placeholder {
+    color: #C2C2C2;
+    font-size: 0.7rem;
+}
+
+.signin-button {
+    border: none;
+    border-radius: 5px;
+    background-color: #424242;
+    color: white;
+    width: 127%;
+    height: 2.5rem;
+}
+
+.signin-button :hover {
+    background-color: #5c5959;
+}
+
+.bottom-right-text {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 1rem;
+    color: #0563B9;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+    .square {
+      width: 90%;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    input {
+      font-size: 0.7rem;
+    }
+  
+    input::placeholder {
+      font-size: 0.6rem;
+    }
+  
+    .signin-button {
+      font-size: 0.7rem;
+    }
+  
+    .bottom-right-text {
+      font-size: 0.6rem;
+    }
+  }

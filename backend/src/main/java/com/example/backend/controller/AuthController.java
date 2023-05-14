@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,13 +48,16 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
         Optional<User> userOptionalByUsername = userRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail());
         if (userOptionalByUsername.isEmpty()) {
-            throw new AuthenticationException("Invalid username or password!");
+            throw new AuthenticationException("Invalid username or email!");
         }
         User userByUsername = userOptionalByUsername.get();
-        System.out.println(userByUsername);
 
-        if (!userByUsername.getPassword().equals(loginDto.getPassword())) {
-            throw new AuthenticationException("Invalid username or password!");
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean passwordsMatch = passwordEncoder.matches(loginDto.getPassword(), userByUsername.getPassword());
+        System.out.println(userByUsername.getUserId() + " " + userByUsername.getPassword() + " " + passwordsMatch);
+        if (!passwordsMatch) {
+            throw new AuthenticationException("Invalid password!");
         }
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -90,13 +94,11 @@ public class AuthController {
 
         System.out.println("user signed up");
 
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                user.getUsername(), user.getPassword()));
-//        log.info("created token");
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        log.info("set authentication");
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                user.getUsername(), user.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
+        return new ResponseEntity<>("true", HttpStatus.OK);
 
     }
 }

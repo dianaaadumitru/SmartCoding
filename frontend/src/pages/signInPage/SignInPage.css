@@ -54,7 +54,7 @@ input::placeholder {
     height: 2.5rem;
 }
 
-.signin-button :hover {
+.signin-button:hover {
     background-color: #5c5959;
 }
 
@@ -67,28 +67,38 @@ input::placeholder {
     font-size: 0.8rem;
 }
 
+.error-message {
+    color: red;
+    margin-top: -1.5rem;
+    position: relative;
+}
+
 @media (max-width: 600px) {
     .square {
-      width: 90%;
+        width: 90%;
     }
-  
+
     h2 {
-      font-size: 1.5rem;
+        font-size: 1.5rem;
     }
-  
+
     input {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     input::placeholder {
-      font-size: 0.6rem;
+        font-size: 0.6rem;
     }
-  
+
     .signin-button {
-      font-size: 0.7rem;
+        font-size: 0.7rem;
     }
-  
+
     .bottom-right-text {
-      font-size: 0.6rem;
+        font-size: 0.6rem;
     }
-  }
+
+    .error-message {
+        font-size: 0.6rem;
+    }
+}

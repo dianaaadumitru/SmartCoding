@@ -4,6 +4,7 @@ import com.example.backend.dto.LoginDto;
 import com.example.backend.dto.SignUpDto;
 import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
+import com.example.backend.exceptions.AuthenticationException;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +15,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -40,10 +45,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+        Optional<User> userOptionalByUsername = userRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail());
+        if (userOptionalByUsername.isEmpty()) {
+            throw new AuthenticationException("Invalid username or password!");
+        }
+        User userByUsername = userOptionalByUsername.get();
+        System.out.println(userByUsername);
+
+        if (!userByUsername.getPassword().equals(loginDto.getPassword())) {
+            throw new AuthenticationException("Invalid username or password!");
+        }
+
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println(authentication);
         return new ResponseEntity<>("true", HttpStatus.OK);
     }
 

@@ -78,11 +78,11 @@ public class UserControllerIT {
 
         for (int i = 0; i < TIMES; ++i) {
             UserDto userDto = UserDto.builder()
-                    .userId((long) i)
+                    .userId(i)
                     .firstName("first name")
                     .lastName("last name")
-                    .username("username" + String.valueOf(i))
-                    .email("email" + String.valueOf(i))
+                    .username("username" + i)
+                    .email("email" + i)
                     .password("password")
                     .build();
 

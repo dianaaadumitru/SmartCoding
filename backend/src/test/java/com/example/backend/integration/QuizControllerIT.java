@@ -70,7 +70,7 @@ public class QuizControllerIT {
         final int TIMES = 1000;
 
         for (int i = 0; i < TIMES; ++i) {
-            QuizDto quizDto = QuizDto.builder().quizId((long) i).build();
+            QuizDto quizDto = QuizDto.builder().quizId(i).build();
 
             // add quiz
             QuizDto saved = quizController.addQuiz(quizDto).getBody();

@@ -99,7 +99,7 @@ public class QuestionControllerIT {
         final int TIMES = 1000;
 
         for (int i = 0; i < TIMES; ++i) {
-            QuestionDto quizDto = QuestionDto.builder().quizId(quiz.getQuizId()).questionId((long) i).build();
+            QuestionDto quizDto = QuestionDto.builder().quizId(quiz.getQuizId()).questionId(i).build();
 
             // add question
             QuestionDto saved = questionController.addQuestion(quizDto).getBody();

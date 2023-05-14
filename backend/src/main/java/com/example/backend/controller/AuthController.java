@@ -6,6 +6,7 @@ import com.example.backend.entity.Role;
 import com.example.backend.entity.User;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +20,7 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -36,18 +38,13 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping
-    public String getMessage() {
-        return "path works!";
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed-in successfully!.", HttpStatus.OK);
+        System.out.println(authentication);
+        return new ResponseEntity<>("true", HttpStatus.OK);
     }
 
     @PostMapping("/signup")
@@ -71,11 +68,18 @@ public class AuthController {
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-//        Role roles = roleRepository.findByRole("student").get();
-        Role roles = roleRepository.findById(3L).orElse(null);
+        Role roles = roleRepository.findByRole("student").orElse(null);
         user.setRoles(Collections.singleton(roles));
 
         userRepository.save(user);
+
+        System.out.println("user signed up");
+
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                user.getUsername(), user.getPassword()));
+//        log.info("created token");
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        log.info("set authentication");
 
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
 

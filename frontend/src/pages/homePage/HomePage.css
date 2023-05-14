@@ -1,9 +1,16 @@
 .homepage-section {
-  background: url('../../resources/backgroundNew.jpg') center center fixed;
+  background-image: url('../../resources/backgroundNew.jpg');
   background-size: cover;
+  background-position: center top;
   height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+
+.homepage-content-wrapper {
+  min-height: 100vh;
+  overflow: auto;
 }
 
 .content-block {
@@ -16,6 +23,8 @@
   font-family: Arial, sans-serif;
   flex: 1;
 }
+
+/* Rest of the CSS */
 
 .center {
   margin: 0;

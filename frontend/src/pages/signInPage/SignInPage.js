@@ -35,7 +35,7 @@ function SignInPage() {
     }
 
     return (
-        <div>
+        <div className='page-section'>
             <NavBar />
             <div className='square'>
                 <div className="content">

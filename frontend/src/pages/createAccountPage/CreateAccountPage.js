@@ -88,7 +88,7 @@ function CreateAccountPage() {
   }
 
   return (
-    <div>
+    <div className="page-section">
       <NavBar />
       <div className="rectangle">
         <div className="content">

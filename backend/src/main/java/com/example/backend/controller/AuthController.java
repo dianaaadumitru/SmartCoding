@@ -92,12 +92,6 @@ public class AuthController {
 
         userRepository.save(user);
 
-        System.out.println("user signed up");
-
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                user.getUsername(), user.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
         return new ResponseEntity<>("true", HttpStatus.OK);
 
     }

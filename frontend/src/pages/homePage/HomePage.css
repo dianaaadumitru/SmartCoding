@@ -64,6 +64,21 @@
   background-color: #ba3d07;
 }
 
+.explore-section {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.start-learning {
+  color: #C2C2C2;
+  font-size: 3em;
+}
+
+
+
+
 @media screen and (max-width: 768px) {
   .content-block {
     margin-left: 5%;

@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomePageNavBar from './homePageNavBar/HomePageNavBar';
 import './HomePage.css';
+import Course from 'components/Course/Course';
 
 function HomePage() {
   const navigate = useNavigate()
@@ -23,17 +24,18 @@ function HomePage() {
         <div className='homepage-content-wrapper'>
           <div className='content-block'>
             <div className='center'>
-              <h1 className='page-heading page-heading--small'>Smart coding</h1>
-              <p className='page-content page-content--small'>Solve problems, sharpen skills, succeed in programming.</p>
+              <h1 className='page-heading'>Smart coding</h1>
+              <p className='page-content'>Solve problems, sharpen skills, succeed in programming.</p>
               <button className="create-account-btn" onClick={() => handleClick()}>Create Account</button>
             </div>
           </div>
         </div>
       </section>
-      <div>
-        <h2 ref={targetRef}>Target Section</h2>
+      <section className='explore-section'>
+        <h2 ref={targetRef} className='start-learning'>Start learning</h2>
+        {/* <Course /> */}
         <p>This is the section you want to scroll to.</p>
-      </div>
+      </section>
     </>
   )
 }

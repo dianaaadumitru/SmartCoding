@@ -11,7 +11,6 @@ const signIn = async(usernameOrEmail, password) => {
         return response.data;
     } catch (e) {
         throw new Error(e);
-        // console.log("An error occurred while signing in:", e.response.data.message);
     }
 }
 

@@ -21,9 +21,7 @@ function SignInPage() {
             setErrorMessage('Please enter your password.');
             return;
         }
-
-        console.log(usernameOrEmail, password);
-
+        
         try {
             const result = await signIn(usernameOrEmail, password);
             if (result === true) {

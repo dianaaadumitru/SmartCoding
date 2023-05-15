@@ -33,7 +33,7 @@ function HomePage() {
       </section>
       <section className='explore-section'>
         <h2 ref={targetRef} className='start-learning'>Start learning</h2>
-        {/* <Course /> */}
+        <Course />
         <p>This is the section you want to scroll to.</p>
       </section>
     </>

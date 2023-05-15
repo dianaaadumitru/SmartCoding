@@ -9,7 +9,6 @@ import com.example.backend.repository.LessonRepository;
 import com.example.backend.repository.ProblemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -132,8 +131,6 @@ public class LessonService {
         problemRepository.save(problem);
         lessonRepository.save(lesson);
     }
-
-
 
 
     public List<ProblemDto> getAllLessonProblems(Long lessonId) {

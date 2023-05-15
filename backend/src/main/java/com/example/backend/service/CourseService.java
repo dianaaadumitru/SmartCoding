@@ -1,18 +1,22 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.CourseDto;
-import com.example.backend.dto.CourseTypeDto;
 import com.example.backend.dto.LessonDto;
-import com.example.backend.entity.*;
+import com.example.backend.entity.Course;
+import com.example.backend.entity.CourseType;
+import com.example.backend.entity.Difficulty;
+import com.example.backend.entity.Lesson;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.CourseRepository;
 import com.example.backend.repository.CourseTypeRepository;
 import com.example.backend.repository.LessonRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {

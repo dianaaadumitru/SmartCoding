@@ -9,18 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProblemDto {
-    private long problemId;
+public class CourseDto {
+    private long id;
+
+    private String name;
 
     private String description;
 
     private String difficulty;
 
-    private String valuesType;
-
-    private String valuesToCheckCode;
-
-    private String resultsToCheckCode;
-
-    private String returnType;
+    private String courseType;
 }

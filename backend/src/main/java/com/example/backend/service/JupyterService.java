@@ -114,14 +114,11 @@ public class JupyterService {
 
                     }
                 }
-                System.out.println(result + " " + resultsToCheck[i]);
             }
-            System.out.println(result.getCodeExecutionResult().getReturnedResult());
             if (Objects.equals(result.getCodeExecutionResult().getReturnedResult(), resultsToCheck[i].strip())) {
                 successes++;
             }
         }
-        System.out.println(successes + " " + valuesToCheck.length + " " + ((double) successes / valuesToCheck.length));
         return ResultDto.builder().finalResult(((double) successes / valuesToCheck.length) * 100).build();
     }
 

@@ -2,7 +2,9 @@ package com.example.backend.service;
 
 import com.example.backend.dto.ProblemDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
+import com.example.backend.entity.Difficulty;
 import com.example.backend.entity.Problem;
+import com.example.backend.entity.ReturnType;
 import com.example.backend.entity.UserProblemResults;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.ProblemRepository;
@@ -30,6 +32,7 @@ public class ProblemService {
                 .valuesToCheckCode(problemDto.getValuesToCheckCode())
                 .difficulty(problemDto.getDifficulty())
                 .resultsToCheckCode(problemDto.getResultsToCheckCode())
+                .returnType(ReturnType.valueOf(problemDto.getReturnType()))
                 .build();
 
         problemRepository.save(problem);
@@ -54,6 +57,7 @@ public class ProblemService {
         problem.setValuesType(problemDto.getValuesType());
         problem.setValuesToCheckCode(problemDto.getValuesToCheckCode());
         problem.setResultsToCheckCode(problemDto.getResultsToCheckCode());
+        problem.setReturnType(ReturnType.valueOf(problemDto.getReturnType()));
         problemRepository.save(problem);
         problemDto.setProblemId(problem.getProblemId());
         return problemDto;
@@ -71,6 +75,7 @@ public class ProblemService {
                 .valuesToCheckCode(problem.getValuesToCheckCode())
                 .valuesType(problem.getValuesType())
                 .resultsToCheckCode(problem.getResultsToCheckCode())
+                .returnType(problem.getReturnType().toString())
                 .build();
     }
 
@@ -86,6 +91,7 @@ public class ProblemService {
                         .difficulty(problem.getDifficulty())
                         .description(problem.getDescription())
                         .resultsToCheckCode(problem.getResultsToCheckCode())
+                        .returnType(problem.getReturnType().toString())
                         .build()
 
                 ));

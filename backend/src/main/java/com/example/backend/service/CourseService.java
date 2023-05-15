@@ -3,10 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.CourseTypeDto;
 import com.example.backend.dto.LessonDto;
-import com.example.backend.entity.Course;
-import com.example.backend.entity.CourseType;
-import com.example.backend.entity.Difficulty;
-import com.example.backend.entity.Lesson;
+import com.example.backend.entity.*;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.CourseRepository;
 import com.example.backend.repository.CourseTypeRepository;
@@ -127,6 +124,7 @@ public class CourseService {
         return courseDtos;
     }
 
+    @Transactional
     public LessonDto addLessonToCourse(Long courseId, long lessonId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> {
             throw new CrudOperationException("Course does not exist!");
@@ -140,16 +138,20 @@ public class CourseService {
             course.setLessons(new ArrayList<>());
         }
 
+        lesson.setCourse(course);
         course.getLessons().add(lesson);
         courseRepository.save(course);
 
+
         return LessonDto.builder()
+                .id(lessonId)
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .expectedTime(lesson.getExpectedTime())
                 .build();
     }
 
+    @Transactional
     public void removeLessonFromCourse(Long courseId, long lessonId) {
         Course course = courseRepository.findById(courseId).orElseThrow(() -> {
             throw new CrudOperationException("Course does not exist!");
@@ -159,13 +161,10 @@ public class CourseService {
             throw new CrudOperationException("Lesson does not exist!");
         });
 
-        List<Lesson> lessons = course.getLessons();
+        course.getLessons().remove(lesson);
+        lesson.setCourse(null);
+        lessonRepository.save(lesson);
 
-        if (!CollectionUtils.isEmpty(lessons)) {
-            lessons.removeIf(lesson1 -> lessonId == lesson1.getLessonId());
-        }
-
-        course.setLessons(lessons);
         courseRepository.save(course);
     }
 

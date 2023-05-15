@@ -29,6 +29,6 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "courseType_id"))
     private Set<CourseType> courseTypes;
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Lesson> lessons;
 }

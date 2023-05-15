@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Problem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,7 +29,7 @@ public class Problem {
 
     private ReturnType returnType;
 
-    @OneToMany(mappedBy = "problem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "problem")
     private List<UserProblemResults> userProblemResults;
 
     @ManyToOne(fetch = FetchType.LAZY)

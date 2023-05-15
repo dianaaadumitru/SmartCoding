@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +27,6 @@ public class Lesson {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @OneToMany(mappedBy = "lesson", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "lesson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Problem> problems;
 }

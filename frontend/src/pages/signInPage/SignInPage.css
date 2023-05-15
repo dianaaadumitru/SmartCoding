@@ -42,7 +42,7 @@ input {
     padding: 0.5rem;
     border: 2px solid #C2C2C2;
     border-radius: 5px;
-    width: 120%;
+    width: 80%;
     color: #424242;
     font-size: 0.8rem;
 }
@@ -57,7 +57,7 @@ input::placeholder {
     border-radius: 5px;
     background-color: #424242;
     color: white;
-    width: 127%;
+    width: 87%;
     height: 2.5rem;
 }
 

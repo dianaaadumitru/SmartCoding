@@ -1,9 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.UserAndFinalScoreDto;
-import com.example.backend.dto.UserDto;
-import com.example.backend.dto.UserResultsDto;
-import com.example.backend.dto.UserTestResultDto;
+import com.example.backend.dto.*;
 import com.example.backend.entity.*;
 import com.example.backend.repository.QuestionRepository;
 import com.example.backend.repository.RoleRepository;
@@ -613,8 +610,7 @@ public class UserServiceTest {
         when(questionRepository.findById(question.getQuestionId())).thenReturn(Optional.of(question));
 
         // when
-        UserResultsDto expected = userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
-
+        UserResultsDto expected = userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), new ScoreAnswerDto(score, answer));
         UserResultsDto actual = UserResultsDto.builder()
                 .userId(user.getUserId())
                 .userFirstName(user.getFirstName())
@@ -650,7 +646,7 @@ public class UserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call = () -> userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
+        Executable call = () -> userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), new ScoreAnswerDto(score, answer));
 
         // then
         assertThrows(RuntimeException.class, call);
@@ -676,7 +672,7 @@ public class UserServiceTest {
         when(questionRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call = () -> userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), score, answer);
+        Executable call = () -> userService.addQuestionAnswerAndQuestionScoreToStudent(user.getUserId(), question.getQuestionId(), new ScoreAnswerDto(score, answer));
 
         // then
         assertThrows(RuntimeException.class, call);

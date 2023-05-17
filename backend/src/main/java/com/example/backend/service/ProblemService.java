@@ -2,12 +2,14 @@ package com.example.backend.service;
 
 import com.example.backend.dto.ProblemDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
+import com.example.backend.entity.Difficulty;
 import com.example.backend.entity.Problem;
 import com.example.backend.entity.ReturnType;
 import com.example.backend.entity.UserProblemResults;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.ProblemRepository;
 import com.example.backend.repository.UserProblemResultsRepository;
+import org.apache.commons.lang3.builder.Diff;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class ProblemService {
                 .name(problemDto.getName())
                 .description(problemDto.getDescription())
                 .valuesToCheckCode(problemDto.getValuesToCheckCode())
-                .difficulty(problemDto.getDifficulty())
+                .difficulty(Difficulty.valueOf(problemDto.getDifficulty()))
                 .resultsToCheckCode(problemDto.getResultsToCheckCode())
                 .returnType(ReturnType.valueOf(problemDto.getReturnType()))
                 .build();
@@ -54,7 +56,7 @@ public class ProblemService {
         });
         problem.setName(problemDto.getName());
         problem.setDescription(problemDto.getDescription());
-        problem.setDifficulty(problemDto.getDifficulty());
+        problem.setDifficulty(Difficulty.valueOf(problemDto.getDifficulty()));
         problem.setValuesType(problemDto.getValuesType());
         problem.setValuesToCheckCode(problemDto.getValuesToCheckCode());
         problem.setResultsToCheckCode(problemDto.getResultsToCheckCode());
@@ -73,7 +75,7 @@ public class ProblemService {
                 .problemId(problem.getProblemId())
                 .name(problem.getName())
                 .description(problem.getDescription())
-                .difficulty(problem.getDifficulty())
+                .difficulty(problem.getDifficulty().toString())
                 .valuesToCheckCode(problem.getValuesToCheckCode())
                 .valuesType(problem.getValuesType())
                 .resultsToCheckCode(problem.getResultsToCheckCode())
@@ -91,7 +93,7 @@ public class ProblemService {
                         .name(problem.getName())
                         .valuesType(problem.getValuesType())
                         .valuesToCheckCode(problem.getValuesToCheckCode())
-                        .difficulty(problem.getDifficulty())
+                        .difficulty(problem.getDifficulty().toString())
                         .description(problem.getDescription())
                         .resultsToCheckCode(problem.getResultsToCheckCode())
                         .returnType(problem.getReturnType().toString())

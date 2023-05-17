@@ -4,12 +4,15 @@ import com.example.backend.dto.*;
 import com.example.backend.entity.*;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,14 +31,17 @@ public class UserService {
 
     private final UserProblemResultsRepository userProblemResultsRepository;
 
+    private final CourseRepository courseRepository;
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, UserProblemResultsRepository userProblemResultsRepository1) {
+
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, UserProblemResultsRepository userProblemResultsRepository1, CourseRepository courseRepository) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
         this.roleRepository = roleRepository;
         this.problemRepository = problemRepository;
         this.userProblemResultsRepository = userProblemResultsRepository1;
+        this.courseRepository = courseRepository;
     }
 
     public UserDto addUser(UserDto userDto) {
@@ -354,5 +360,78 @@ public class UserService {
             userAndFinalScoreDtos.add(userAndFinalScoreDto);
         });
         return userAndFinalScoreDtos;
+    }
+
+    public List<CourseDto> findTop8Courses() {
+        var courses = userRepository.findTop8Courses();
+        return courses.stream().map(course ->
+                CourseDto.builder()
+                        .id(course.getCourseId())
+                        .name(course.getName())
+                        .description(course.getDescription())
+                        .difficulty(course.getDifficulty().toString())
+                        .courseType(course.getCourseTypes().iterator().next().getType())
+                        .build()).toList();
+    }
+
+    @Transactional
+    public CourseDto addCourseToStudent(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> {
+            throw new CrudOperationException("Course does not exist!");
+        });
+
+        if (user.getCourses() == null || user.getCourses().isEmpty()) {
+            user.setCourses(new ArrayList<>());
+        }
+
+        user.getCourses().add(course);
+
+        userRepository.save(user);
+
+        return CourseDto.builder()
+                .id(course.getCourseId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .difficulty(course.getDifficulty().toString())
+                .courseType(course.getCourseTypes().iterator().next().getType())
+                .build();
+    }
+
+    public void removeCourseFromStudent(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> {
+            throw new CrudOperationException("Course does not exist!");
+        });
+        List<Course> courses = user.getCourses();
+
+        if (!CollectionUtils.isEmpty(courses)) {
+            courses.removeIf(course1 -> courseId.equals(course1.getCourseId()));
+        }
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public List<CourseDto> getUserCourses(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        List<Course> courses = user.getCourses();
+
+        return courses.stream().map(course ->
+                CourseDto.builder()
+                        .id(course.getCourseId())
+                        .name(course.getName())
+                        .description(course.getDescription())
+                        .difficulty(course.getDifficulty().toString())
+                        .courseType(course.getCourseTypes().iterator().next().getType())
+                        .build()).toList();
     }
 }

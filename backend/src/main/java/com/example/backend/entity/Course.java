@@ -31,4 +31,7 @@ public class Course {
 
     @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Lesson> lessons;
+
+    @ManyToMany(mappedBy = "courses")
+    private Set<User> users;
 }

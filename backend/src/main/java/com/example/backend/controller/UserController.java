@@ -79,4 +79,25 @@ public class UserController {
     public ResponseEntity<List<UserAndFinalScoreDto>> getAllUsersFinalScore() {
         return ResponseEntity.ok(userService.getAllUsersFinalScores());
     }
+
+    @GetMapping("/topCourses")
+    public ResponseEntity<List<CourseDto>> findTop8Courses() {
+        return ResponseEntity.ok(userService.findTop8Courses());
+    }
+
+    @PutMapping("/{userId}/courses/{courseId}")
+    public ResponseEntity<CourseDto> addCourseToStudent(@PathVariable Long userId, @PathVariable Long courseId) {
+        return ResponseEntity.ok(userService.addCourseToStudent(userId, courseId));
+    }
+
+    @DeleteMapping("/{userId}/courses/{courseId}")
+    public ResponseEntity<Void> removeCourseFromStudent(@PathVariable Long userId, @PathVariable Long courseId) {
+        userService.removeCourseFromStudent(userId, courseId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/courses")
+    public ResponseEntity<List<CourseDto>> getUserCourses(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getUserCourses(userId));
+    }
 }

@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from "react";
-import './Course.css';
-import getAllCourses from "services/courseService/getAllCourses";
+import './TopProblems.css'
 import { AiFillSignal } from "react-icons/ai";
+import getTopProblems from "services/problemService/getTopProblems";
 
-function Course() {
-
-    const [courses, setCourses] = useState([]);
+function TopProblems() {
+    const [problems, setProblems] = useState([]);
 
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    const paginatedItems = courses.slice(startIndex, endIndex);
+    const paginatedItems = problems.slice(startIndex, endIndex);
 
-    const totalPages = Math.ceil(courses.length / itemsPerPage);
+    const totalPages = Math.ceil(problems.length / itemsPerPage);
 
     const goToPage = (page) => {
         setCurrentPage(page);
     };
 
-    const getCourses = async () => {
-        const result = await getAllCourses();
-        setCourses(result)
+    const getProblems = async () => {
+        const result = await getTopProblems();
+        setProblems(result)
     }
 
     useEffect(() => {
-        getCourses()
+        getProblems()
       }, [])
 
     return (
@@ -53,6 +52,6 @@ function Course() {
             </div>
         </div>
     );
-};
+}
 
-export default Course;
+export default TopProblems;

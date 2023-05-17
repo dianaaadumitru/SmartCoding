@@ -2,7 +2,8 @@ import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomePageNavBar from './homePageNavBar/HomePageNavBar';
 import './HomePage.css';
-import Course from 'components/Course/Course';
+import TopCourses from 'components/Course/TopCourses';
+import TopProblems from 'components/Problem/TopProblems';
 
 function HomePage() {
   const navigate = useNavigate()
@@ -16,6 +17,7 @@ function HomePage() {
   }, []);
 
   const handleClick = async () => navigate('/createAccount')
+  const handleClickExploreCatalog = async () => navigate('/signin')
 
   return (
     <>
@@ -33,8 +35,12 @@ function HomePage() {
       </section>
       <section className='explore-section'>
         <h2 ref={targetRef} className='start-learning'>Start learning</h2>
-        <Course />
-        <p>This is the section you want to scroll to.</p>
+        <p className='top-courses'>Top courses: </p>
+        <TopCourses />
+        <button className="create-account-btn" onClick={() => handleClickExploreCatalog()}>Explore full catalog</button>
+        <p className='top-courses'>Top problems: </p>
+        <TopProblems />
+        <button className="create-account-btn" onClick={() => handleClickExploreCatalog()}>Explore full catalog</button>
       </section>
     </>
   )

@@ -1,5 +1,3 @@
-// 
-
 import React, { useEffect, useState } from "react";
 import './TopCourses.css'
 import { AiFillSignal } from "react-icons/ai";
@@ -34,8 +32,8 @@ function TopCourses() {
 
     const handleItemClick = (itemId) => {
         // Perform any necessary logic or data manipulation before navigating
-        // navigate(`/problem/${itemId}`); // Replace "/problem" with the desired URL of the destination page
-        navigate('/mainpage')
+        navigate(`/courses/${itemId}`); 
+        // navigate('/mainpage')
     };
 
     return (

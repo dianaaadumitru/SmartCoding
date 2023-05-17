@@ -1,0 +1,141 @@
+.page-section-course {
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    height: 100vh;
+}
+
+.course-rectangle {
+    background-color: #c2c2c2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.rectangle-header {
+    width: 100%;
+}
+
+.rectangle-button {
+    align-self: flex-end;
+    margin-top: 10px;
+}
+
+.header-text {
+    font-size: 16px;
+    margin: 0;
+    font-weight: bold;
+    text-align: left;
+    padding: 5px;
+    background: linear-gradient(to right, #4A8FB8, transparent);
+}
+
+.course-content {
+    flex-grow: 1;
+}
+
+.course-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.course-description {
+    font-size: 16px;
+    text-align: left;
+    margin-bottom: 10px;
+    color: #424242;
+}
+
+.course-difficulty {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.course-difficulty-text {
+    font-size: 16px;
+    text-align: left;
+    color: #424242;
+}
+
+.course-additional-text {
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: left;
+    color: #424242;
+}
+
+.start-btn {
+    display: block;
+    margin-top: auto;
+    background-color: #DA5218;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.start-btn:hover {
+    background-color: #ba3d07;
+}
+
+.course-rectangle-inline {
+    background-color: #c2c2c2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 900px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.course-rectangle-inline .course-difficulty-text .course-additional-text {
+    margin: 0 10px;
+}
+
+.list-rectangle {
+    background-color: #c2c2c2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+}
+
+.list-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.list-items {
+    list-style-type: none;
+    padding: 0;
+}
+
+.list-items li {
+    font-size: 16px;
+    margin-bottom: 5px;
+}

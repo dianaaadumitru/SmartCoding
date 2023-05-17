@@ -1,11 +1,14 @@
+// 
+
 import React, { useEffect, useState } from "react";
-import './TopCourses.css';
-import getTopCourses from "services/courseService/getTopCourses";
+import './TopCourses.css'
 import { AiFillSignal } from "react-icons/ai";
+import { useNavigate } from "react-router-dom"; 
+import getTopCourses from "services/courseService/getTopCourses";
 
 function TopCourses() {
-
     const [courses, setCourses] = useState([]);
+    const navigate = useNavigate(); 
 
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
@@ -27,7 +30,13 @@ function TopCourses() {
 
     useEffect(() => {
         getCourses()
-      }, [])
+    }, [])
+
+    const handleItemClick = (itemId) => {
+        // Perform any necessary logic or data manipulation before navigating
+        // navigate(`/problem/${itemId}`); // Replace "/problem" with the desired URL of the destination page
+        navigate('/mainpage')
+    };
 
     return (
         <div className="list-container">
@@ -38,7 +47,7 @@ function TopCourses() {
                     </button>
                 )}
                 {paginatedItems.map((item) => (
-                    <div key={item.id} className="list-item">
+                    <div key={item.id} className="list-item" onClick={() => handleItemClick(item.id)}>
                         <div className="list-item-header">Course</div>
                         <h3 className="list-item-heading">{item.name}</h3>
                         <p className="list-item-description">{item.description}</p>
@@ -53,6 +62,6 @@ function TopCourses() {
             </div>
         </div>
     );
-};
+}
 
 export default TopCourses;

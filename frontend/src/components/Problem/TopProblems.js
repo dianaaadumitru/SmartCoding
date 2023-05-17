@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import './TopProblems.css'
 import { AiFillSignal } from "react-icons/ai";
 import getTopProblems from "services/problemService/getTopProblems";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 
 function TopProblems() {
     const [problems, setProblems] = useState([]);
+    const navigate = useNavigate(); // Create a navigate function
 
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
@@ -26,7 +28,13 @@ function TopProblems() {
 
     useEffect(() => {
         getProblems()
-      }, [])
+    }, [])
+
+    const handleItemClick = (itemId) => {
+        // Perform any necessary logic or data manipulation before navigating
+        // navigate(`/problem/${itemId}`); // Replace "/problem" with the desired URL of the destination page
+        navigate('/mainpage')
+    };
 
     return (
         <div className="list-container">
@@ -37,7 +45,7 @@ function TopProblems() {
                     </button>
                 )}
                 {paginatedItems.map((item) => (
-                    <div key={item.id} className="list-item">
+                    <div key={item.id} className="list-item" onClick={() => handleItemClick(item.id)}>
                         <div className="list-item-header">Course</div>
                         <h3 className="list-item-heading">{item.name}</h3>
                         <p className="list-item-description">{item.description}</p>

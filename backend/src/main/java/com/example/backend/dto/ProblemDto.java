@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class ProblemDto {
     private long problemId;
 
+    private String name;
+
     private String description;
 
     private String difficulty;

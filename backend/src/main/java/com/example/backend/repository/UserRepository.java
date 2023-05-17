@@ -1,6 +1,7 @@
 package com.example.backend.repository;
 
 import com.example.backend.entity.Course;
+import com.example.backend.entity.Problem;
 import com.example.backend.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -24,4 +25,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
             "GROUP BY c " +
             "ORDER BY courseCount DESC")
     List<Course> findTop8Courses();
+
+    @Query("SELECT p, COUNT(upr.userProblemId.problemId) as problemCount " +
+            "FROM UserProblemResults upr " +
+            "JOIN upr.problem p " +
+            "GROUP BY p " +
+            "ORDER BY problemCount DESC")
+    List<Problem> findTop8Problems();
 }

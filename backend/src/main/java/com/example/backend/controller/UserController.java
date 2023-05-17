@@ -60,6 +60,11 @@ public class UserController {
         return ResponseEntity.ok(userProblemResultsDto);
     }
 
+    @GetMapping("/{userId}/problems")
+    public ResponseEntity<List<ProblemDto>> getAllProblemsSolvedByAUser(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getAllProblemsSolvedByAUser(userId));
+    }
+
     @GetMapping("/{userId}/resultsQuestions")
     public ResponseEntity<List<UserResultsDto>> getResultsScores(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getQuestionsResultsForStudent(userId));
@@ -83,6 +88,11 @@ public class UserController {
     @GetMapping("/topCourses")
     public ResponseEntity<List<CourseDto>> findTop8Courses() {
         return ResponseEntity.ok(userService.findTop8Courses());
+    }
+
+    @GetMapping("/topProblems")
+    public ResponseEntity<List<ProblemDto>> findTop8Problems() {
+        return ResponseEntity.ok(userService.findTop8Problems());
     }
 
     @PutMapping("/{userId}/courses/{courseId}")

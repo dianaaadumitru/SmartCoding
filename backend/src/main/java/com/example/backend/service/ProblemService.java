@@ -27,6 +27,7 @@ public class ProblemService {
     public ProblemDto addProblem(ProblemDto problemDto) {
         Problem problem = Problem.builder()
                 .valuesType(problemDto.getValuesType())
+                .name(problemDto.getName())
                 .description(problemDto.getDescription())
                 .valuesToCheckCode(problemDto.getValuesToCheckCode())
                 .difficulty(problemDto.getDifficulty())
@@ -51,6 +52,7 @@ public class ProblemService {
         Problem problem = problemRepository.findById(id).orElseThrow(() -> {
             throw new CrudOperationException("Problem does not exist");
         });
+        problem.setName(problemDto.getName());
         problem.setDescription(problemDto.getDescription());
         problem.setDifficulty(problemDto.getDifficulty());
         problem.setValuesType(problemDto.getValuesType());
@@ -69,6 +71,7 @@ public class ProblemService {
 
         return ProblemDto.builder()
                 .problemId(problem.getProblemId())
+                .name(problem.getName())
                 .description(problem.getDescription())
                 .difficulty(problem.getDifficulty())
                 .valuesToCheckCode(problem.getValuesToCheckCode())
@@ -85,6 +88,7 @@ public class ProblemService {
         problems.forEach(problem ->
                 problemDtos.add(ProblemDto.builder()
                         .problemId(problem.getProblemId())
+                        .name(problem.getName())
                         .valuesType(problem.getValuesType())
                         .valuesToCheckCode(problem.getValuesToCheckCode())
                         .difficulty(problem.getDifficulty())

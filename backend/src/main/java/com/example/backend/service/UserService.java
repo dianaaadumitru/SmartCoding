@@ -296,6 +296,20 @@ public class UserService {
                 .build();
     }
 
+    public List<ProblemDto> getAllProblemsSolvedByAUser(Long userId) {
+        List<UserProblemResults> userProblemResults = userProblemResultsRepository.findByUser_UserId(userId);
+
+        return userProblemResults.stream().map(userProblemResult -> ProblemDto.builder()
+                .problemId(userProblemResult.getProblem().getProblemId())
+                .name(userProblemResult.getProblem().getName())
+                .difficulty(userProblemResult.getProblem().getDifficulty())
+                .valuesToCheckCode(userProblemResult.getProblem().getValuesToCheckCode())
+                .description(userProblemResult.getProblem().getDescription())
+                .resultsToCheckCode(userProblemResult.getProblem().getResultsToCheckCode())
+                .returnType(userProblemResult.getProblem().getReturnType().toString())
+                .valuesType(userProblemResult.getProblem().getValuesType())
+                .build()).toList();
+    }
     public List<UserResultsDto> getQuestionsResultsForStudent(Long userId) {
         List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
         return userResults.stream().map((userResult -> UserResultsDto.builder()
@@ -363,7 +377,7 @@ public class UserService {
     }
 
     public List<CourseDto> findTop8Courses() {
-        var courses = userRepository.findTop8Courses();
+        List<Course> courses = userRepository.findTop8Courses();
         return courses.stream().map(course ->
                 CourseDto.builder()
                         .id(course.getCourseId())
@@ -372,6 +386,24 @@ public class UserService {
                         .difficulty(course.getDifficulty().toString())
                         .courseType(course.getCourseTypes().iterator().next().getType())
                         .build()).toList();
+    }
+
+    public List<ProblemDto> findTop8Problems() {
+        List<Problem> problems = userRepository.findTop8Problems();
+
+        return problems.stream().map(problem ->
+                ProblemDto.builder()
+                        .problemId(problem.getProblemId())
+                        .name(problem.getName())
+                        .description(problem.getDescription())
+                        .difficulty(problem.getDifficulty())
+                        .valuesToCheckCode(problem.getValuesToCheckCode())
+                        .valuesType(problem.getValuesType())
+                        .resultsToCheckCode(problem.getResultsToCheckCode())
+                        .returnType(problem.getReturnType().toString())
+                        .returnType(problem.getReturnType().toString())
+                        .build()
+                ).toList();
     }
 
     @Transactional

@@ -26,7 +26,7 @@
   .list-item {
     width: 170px; 
     height: 250px; 
-    background-color: #eaeaea; 
+    background-color: #C2C2C2; 
     margin-right: 20px; 
     margin-bottom: 20px; 
     display: flex;
@@ -38,7 +38,7 @@
   .list-item-header {
     font-weight: bold;
     text-align: left;
-    background: linear-gradient(to right, #91edcd, transparent);
+    background: linear-gradient(to right, #4A8FB8, transparent);
     padding: 5px; 
   }
   
@@ -50,6 +50,7 @@
   .list-item-description {
     flex-grow: 1;
     text-align: left;
+    color: black;
   }
   
   .list-item-footer {

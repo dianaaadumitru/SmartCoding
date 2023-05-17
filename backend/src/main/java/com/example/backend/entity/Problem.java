@@ -17,6 +17,8 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long problemId;
 
+    private String name;
+
     private String description;
 
     private String difficulty;

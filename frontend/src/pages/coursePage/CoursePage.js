@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './CoursePage.css';
 import HomePageNavBar from "pages/homePage/homePageNavBar/HomePageNavBar";
 import getCourseById from "services/courseService/getCourseById";
-import { AiFillSignal } from "react-icons/ai";
+import { AiFillSignal, AiOutlineClockCircle } from "react-icons/ai";
 import Lesson from "components/Lesson/Lesson";
 import TopCourses from "components/Course/TopCourses";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
@@ -45,28 +45,52 @@ function CoursePage() {
                 <div className="course-rectangle">
                     <div className="rectangle-header">
                         <h2 className="header-text">Course</h2>
-                    </div>
-                    <h2 className="course-name">{course.name}</h2>
-                    <p className="course-description">{course.description}</p>
-                    <button className="rectangle-button start-btn" onClick={() => handleClick()}>
-                        Start
-                    </button>
-                </div>
-                <div className="course-rectangle-inline">
-                    <p className="course-difficulty-text"><AiFillSignal />{course.difficulty}</p>
-                </div>
+                        <h2 className="course-name">{course.name}</h2>
+                        <p className="course-description">{course.description}</p>
+                        <div className="line"></div>
 
-                <div className="list-rectangle">
-                    <h2 className="list-header">Lessons</h2>
-                    <ul className="list-items">
-                        {lessons.map((item) => (
-                            <li key={item.id} className="list-item-lesson">
-                                <div className="list-item-header-lesson">{item.name}</div>
-                                <div className="list-item-description-lesson">{item.description}</div>
-                            </li>
-                        ))}
-                    </ul>
-                    <button className=" list-button">Start</button>
+                        <div className="bottom-section">
+                            <div className="left-content">
+                                <AiFillSignal className="info-icon" />
+                                <div>
+                                    <p className="bottom-text">Skill level</p>
+                                    <p className="bottom-text second-line">{course.difficulty}</p>
+                                </div>
+                            </div>
+                            <button className="bottom-button" onClick={handleClick}>Start</button>
+                            <div className="right-content">
+                                <AiOutlineClockCircle className="info-icon" />
+                                <div>
+                                    <p className="bottom-text">Time to complete</p>
+                                    <p className="bottom-text second-line">approx. 2 hours</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="additional-rectangle">
+                            <div className="additional-header">Syllabus</div>
+                            <div className="additional-content">
+                                <p className="additional-description">{lessons.length} lessons</p>
+                            </div>
+                            <div className="additional-line"></div>
+
+
+                            {lessons.map((lesson, index) => (
+
+                                <React.Fragment key={lesson.id}>
+                                    <div className="additional-content">
+                                        <p className="additional-description">
+                                            {index + 1}. {lesson.name}
+                                        </p>
+                                        <p className={`additional-description ${index === lessons.length - 1 ? 'last-element' : ''}`}>{lesson.description}</p>
+                                    </div>
+                                    {index !== lessons.length - 1 && <div className="additional-line"></div>}
+                                </React.Fragment>
+                            ))}
+
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

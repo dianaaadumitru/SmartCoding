@@ -6,6 +6,7 @@ import React from 'react';
 import SignInPage from '../pages/signInPage/SignInPage';
 import MainPage from '../pages/mainPage/MainPage';
 import CoursePage from '../pages/coursePage/CoursePage';
+import ExploreCourses from '../pages/exploreCourses/ExploreCourses';
 
 const Routes = () => {
     return (
@@ -15,6 +16,7 @@ const Routes = () => {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/mainpage" element={<MainPage />} />
             <Route path="/courses/:courseId" element={<CoursePage />} />
+            <Route path="/courses" element={<ExploreCourses />} />
         </ReactRoutes>
     )
 }

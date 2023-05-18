@@ -1,45 +1,62 @@
 .nav-bar {
-    background-color: #FFFFFF;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 40px;
-    padding: 0 20px;
-    border-bottom: 1px solid #C2C2C2;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
+  background-color: black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 40px;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
 
 .nav-list {
-    list-style: none;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-item {
-    margin-right: 20px;
+  margin-right: 20px;
+  color: #C2C2C2;
 }
 
 .nav-item a {
-    color: #C2C2C2;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
-    font-size: 0.9em;
+  color: #C2C2C2;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 0.9em;
+}
+
+.profile-button {
+  margin-left: auto;
+  font-size: 0.7em;
+}
+
+.profile-button button {
+  background-color: transparent;
+  border: none;
+  color: #C2C2C2;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+.profile-button button:focus {
+  outline: none;
 }
 
 @media only screen and (max-width: 768px) {
-    .nav-list {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .nav-item {
-      margin: 10px 0;
-    }
+  .nav-list {
+    flex-direction: column;
+    align-items: flex-start;
   }
+
+  .nav-item {
+    margin: 10px 0;
+  }
+}

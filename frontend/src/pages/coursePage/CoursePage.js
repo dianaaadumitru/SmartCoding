@@ -4,8 +4,6 @@ import './CoursePage.css';
 import HomePageNavBar from "pages/homePage/homePageNavBar/HomePageNavBar";
 import getCourseById from "services/courseService/getCourseById";
 import { AiFillSignal, AiOutlineClockCircle } from "react-icons/ai";
-import Lesson from "components/Lesson/Lesson";
-import TopCourses from "components/Course/TopCourses";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 
 function CoursePage() {
@@ -74,21 +72,27 @@ function CoursePage() {
                             </div>
                             <div className="additional-line"></div>
 
-
                             {lessons.map((lesson, index) => (
-
                                 <React.Fragment key={lesson.id}>
-                                    <div className="additional-content">
-                                        <p className="additional-description">
-                                            {index + 1}. {lesson.name}
-                                        </p>
-                                        <p className={`additional-description ${index === lessons.length - 1 ? 'last-element' : ''}`}>{lesson.description}</p>
+                                    <div className="additional-content" onClick={handleClick}>
+                                        <div className="lesson-item">
+                                            <div className="lesson-number">{index + 1}</div>
+                                            <div className="lesson-info">
+                                                <p className="lesson-name">{lesson.name}</p>
+                                                <p className={`lesson-description ${index === lessons.length - 1 ? 'last-element' : ''}`}>{lesson.description}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                     {index !== lessons.length - 1 && <div className="additional-line"></div>}
+
                                 </React.Fragment>
                             ))}
 
+
                         </div>
+
+                        <button className="bottom-button last-padding" onClick={handleClick}>Start</button>
+
 
                     </div>
                 </div>

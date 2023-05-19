@@ -26,7 +26,7 @@ function AllCourses() {
 
   return (
     <div className="list-container-courses">
-      <h2 className="courses-heading">Available courses: </h2>
+      {/* <h2 className="courses-heading">Available courses: </h2> */}
       <div className="list-container-courses">
         
         {courses.map((item, index) => (

@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     justify-content: center; /* Change 'flex-start' to 'center' */
     align-items: center; /* Add this line to center the items vertically */
-    margin-top: 80px;
+    /* margin-top: 80px; */
 }
 
 .list-item-courses {

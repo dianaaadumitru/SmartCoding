@@ -29,4 +29,6 @@ public class Lesson {
 
     @OneToMany(mappedBy = "lesson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Problem> problems;
+
+    private int noLesson;
 }

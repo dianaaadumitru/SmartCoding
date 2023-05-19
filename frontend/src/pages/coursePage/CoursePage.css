@@ -9,14 +9,12 @@
     width: 100%;
     max-width: 1100px;
     margin: 60px auto;
-    /* padding: 20px; */
     box-sizing: border-box;
   }
   
   .course-rectangle {
     background-color: #c2c2c2;
     border: 1px solid #ccc;
-    /* padding: 20px; */
     margin: 0 auto 20px;
     display: flex;
     flex-direction: column;
@@ -209,8 +207,6 @@
     margin-bottom: 30px;
   }
   
-  /* Responsive Styles */
-  
   @media screen and (max-width: 768px) {
     .course-container {
       margin: 30px auto;
@@ -297,3 +293,7 @@
     }
   }
   
+
+
+
+   

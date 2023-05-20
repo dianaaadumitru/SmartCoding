@@ -4,7 +4,7 @@ import './CoursePage.css';
 import getCourseById from "services/courseService/getCourseById";
 import { AiFillSignal, AiOutlineClockCircle } from "react-icons/ai";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
-import NavBar from "pages/navBar/NavBar";
+import HomePageNavBar from "pages/homePage/homePageNavBar/HomePageNavBar";
 
 function CoursePage() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function CoursePage() {
 
     return (
         <div className="page-section-course">
-            <NavBar />
+            <HomePageNavBar />
 
             <div className="course-container">
                 <div className="course-rectangle">

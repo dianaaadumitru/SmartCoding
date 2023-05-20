@@ -10,7 +10,7 @@ function NavBar(props) {
   return (
     <nav className="nav-bar">
       <ul className="nav-list">
-        <li className="nav-item"><a href="/">Home</a></li>
+        {/* <li className="nav-item"><a href="/">Home</a></li> */}
         {/* <li className="nav-item" onClick={handleListItemClick}>Explore</li> */}
         <li className="nav-item" ><a href="/mainpage">Explore</a></li>
 

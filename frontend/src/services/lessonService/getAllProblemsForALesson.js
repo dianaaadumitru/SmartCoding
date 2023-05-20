@@ -1,8 +1,8 @@
 import { API } from "../../utility/api";
 
-const getAllLessonsOfACourse = async (courseId) => {
+const getAllProblemsOfALesson = async (lessonId) => {
     try {
-        const response = await API.get(`/courses/${courseId}/lessons`)
+        const response = await API.get(`/lessons/${lessonId}/problems`)
         console.log(response.data)
         return response.data
       } catch (e) {
@@ -10,4 +10,4 @@ const getAllLessonsOfACourse = async (courseId) => {
       }
 }
 
-export default getAllLessonsOfACourse;
+export default getAllProblemsOfALesson;

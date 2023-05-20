@@ -68,7 +68,7 @@ function AllCourses() {
   };
 
   const handleItemClick = (itemId) => {
-    navigate(`/courses/${itemId}`);
+    navigate(`/auth/courses/${itemId}`);
   };
 
   return (
@@ -103,7 +103,7 @@ function AllCourses() {
         ))}
       </div>
       <div className="all-courses-section">
-        {courses.map((item, index) => (
+        {courses.map((item) => (
           <div
             key={item.id}
             className="list-item-courses"

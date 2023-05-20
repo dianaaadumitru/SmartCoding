@@ -4,6 +4,7 @@ import NavBar from "pages/navBar/NavBar";
 import TopCourses from 'components/Course/TopCourses/TopCourses';
 import TopProblems from "components/Problem/TopProblems/TopProblems";
 import { useNavigate } from "react-router-dom";
+import TopCoursesAuth from "components/Course/TopCoursesAuth/TopCoursesAuth";
 
 function MainPage() {
     const navigate = useNavigate()
@@ -26,7 +27,7 @@ function MainPage() {
             <section className='explore-section'>
                 <h2 ref={targetRef} className='start-learning'>Start learning</h2>
                 <p className='top-courses'>Top courses: </p>
-                <TopCourses />
+                <TopCoursesAuth />
                 <button className="create-account-btn" onClick={handleExploreCoursesOnClick}>Explore full catalog</button>
                 <p className='top-courses'>Top problems: </p>
                 <TopProblems />

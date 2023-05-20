@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.CourseDto;
+import com.example.backend.dto.DifficultiesDto;
 import com.example.backend.dto.LessonDto;
 import com.example.backend.entity.Course;
 import com.example.backend.entity.CourseType;
@@ -188,6 +189,20 @@ public class CourseService {
                         .description(lesson.getDescription())
                         .build()
         ).toList();
+    }
+
+    public List<CourseDto> findByDifficultyIn(List<String> difficulties) {
+        var diff = difficulties.stream().map(Difficulty::valueOf).toList();
+        List<Course> courses = courseRepository.findByDifficultyIn(diff);
+
+        return courses.stream().map(course -> CourseDto.builder()
+                .id(course.getCourseId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .difficulty(course.getDifficulty().toString())
+                .courseType(course.getCourseTypes().iterator().next().getType())
+                .build()).toList();
+
     }
 
 //    public List<CourseDto> getAllCoursesByCourseType(String courseType) {

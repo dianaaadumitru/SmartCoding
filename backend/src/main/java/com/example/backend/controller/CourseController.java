@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.CourseDto;
+import com.example.backend.dto.DifficultiesDto;
 import com.example.backend.dto.LessonDto;
 import com.example.backend.service.CourseService;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,11 @@ public class CourseController {
     @GetMapping("/{courseId}/lessons")
     public ResponseEntity<List<LessonDto>> getAllCourseLessons(@PathVariable Long courseId) {
         return ResponseEntity.ok(courseService.getAllCourseLessons(courseId));
+    }
+
+    @GetMapping("/difficulty")
+    public ResponseEntity<List<CourseDto>> findByDifficultyIn(@RequestParam("difficulties") List<String> difficulties) {
+        return ResponseEntity.ok(courseService.findByDifficultyIn(difficulties));
     }
 
 //    @GetMapping("/courseTypes")

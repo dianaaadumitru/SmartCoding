@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import './CoursePage.css';
-import HomePageNavBar from "pages/homePage/homePageNavBar/HomePageNavBar";
 import getCourseById from "services/courseService/getCourseById";
 import { AiFillSignal, AiOutlineClockCircle } from "react-icons/ai";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
+import NavBar from "pages/navBar/NavBar";
 
 function CoursePage() {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ function CoursePage() {
 
     return (
         <div className="page-section-course">
-            <HomePageNavBar />
+            <NavBar />
 
             <div className="course-container">
                 <div className="course-rectangle">

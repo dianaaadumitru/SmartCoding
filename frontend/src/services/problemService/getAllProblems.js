@@ -1,6 +1,6 @@
 import { API } from "../../utility/api";
 
-const getAllCourses = async() => {
+const getAllProblems = async() => {
     try {
         const response = await API.get('/problems')
         console.log(response.data)
@@ -10,4 +10,4 @@ const getAllCourses = async() => {
     }
 }
 
-export default getAllCourses;
+export default getAllProblems;

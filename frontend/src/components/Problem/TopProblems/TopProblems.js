@@ -31,7 +31,6 @@ function TopProblems() {
     }, [])
 
     const handleItemClick = (itemId) => {
-        // Perform any necessary logic or data manipulation before navigating
         // navigate(`/problem/${itemId}`); // Replace "/problem" with the desired URL of the destination page
         navigate('/mainpage')
     };
@@ -46,7 +45,7 @@ function TopProblems() {
                 )}
                 {paginatedItems.map((item) => (
                     <div key={item.id} className="list-item" onClick={() => handleItemClick(item.id)}>
-                        <div className="list-item-header">Course</div>
+                        <div className="list-item-header">Problem</div>
                         <h3 className="list-item-heading">{item.name}</h3>
                         <p className="list-item-description">{item.description}</p>
                         <div className="list-item-footer"><AiFillSignal />{item.difficulty}</div>

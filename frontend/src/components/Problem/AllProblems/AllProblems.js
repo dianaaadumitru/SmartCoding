@@ -1,22 +1,22 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./AllCourses.css";
+import "./AllProblems.css";
 import { AiFillSignal } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import getAllCourses from "services/courseService/getAllCourses";
 import getDifficulties from "services/difficulty/getDifficulties";
 import { AiTwotoneFilter } from "react-icons/ai";
-import getAllCoursesByDifficulties from "services/courseService/getAllCoursesByDifficulties";
+import getAllProblems from "services/problemService/getAllProblems";
+import getAllProblemsByDifficulties from "services/problemService/getAllProblemsByDifficulty";
 
-function AllCourses() {
-  const [courses, setCourses] = useState([]);
+function AllProblems() {
+  const [problems, setProblems] = useState([]);
   const [difficulties, setDifficulties] = useState([]);
   const [checkedDifficulties, setCheckedDifficulties] = useState([]);
   const navigate = useNavigate();
   const filterRef = useRef(null);
 
-  const getCourses = async () => {
-    const result = await getAllCourses();
-    setCourses(result);
+  const getProblems = async () => {
+    const result = await getAllProblems();
+    setProblems(result);
   };
 
   const getAllDifficulties = async () => {
@@ -24,13 +24,13 @@ function AllCourses() {
     setDifficulties(result);
   }
 
-  const getCoursesByDifficulty = async (checkedDifficulties) => {
+  const getProblemsByDifficulty = async (checkedDifficulties) => {
     if (checkedDifficulties.length === 0) {
-      getCourses();
+        getProblems();
     } else {
       try {
-        const result = await getAllCoursesByDifficulties(checkedDifficulties);
-        setCourses(result);
+        const result = await getAllProblemsByDifficulties(checkedDifficulties);
+        setProblems(result);
       } catch (error) {
         console.error(error);
       }
@@ -39,12 +39,12 @@ function AllCourses() {
 
 
   useEffect(() => {
-    getCourses();
+    getProblems();
     getAllDifficulties();
   }, []);
 
   useEffect(() => {
-    getCoursesByDifficulty(checkedDifficulties);
+    getProblemsByDifficulty(checkedDifficulties);
   }, [checkedDifficulties]);
 
 
@@ -103,13 +103,13 @@ function AllCourses() {
         ))}
       </div>
       <div className="all-courses-section">
-        {courses.map((item, index) => (
+        {problems.map((item, index) => (
           <div
             key={item.id}
             className="list-item-courses"
             onClick={() => handleItemClick(item.id)}
           >
-            <div className="list-item-header-courses">Course</div>
+            <div className="list-item-header-courses">Problem</div>
             <h3 className="list-item-heading-courses">{item.name}</h3>
             <p className="list-item-description-courses">{item.description}</p>
             <div className="list-item-footer-courses">
@@ -123,4 +123,4 @@ function AllCourses() {
   );
 }
 
-export default AllCourses;
+export default AllProblems;

@@ -7,6 +7,7 @@ import SignInPage from '../pages/signInPage/SignInPage';
 import MainPage from '../pages/mainPage/MainPage';
 import CoursePage from '../pages/coursePage/CoursePage';
 import ExploreCourses from '../pages/exploreCourses/ExploreCourses';
+import ExploreProblems from 'pages/exploreProblems/ExploreProblems';
 
 const Routes = () => {
     return (
@@ -17,6 +18,8 @@ const Routes = () => {
             <Route path="/mainpage" element={<MainPage />} />
             <Route path="/courses/:courseId" element={<CoursePage />} />
             <Route path="/courses" element={<ExploreCourses />} />
+            <Route path="/problems" element={<ExploreProblems />} />
+
         </ReactRoutes>
     )
 }

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import HomePageNavBar from './homePageNavBar/HomePageNavBar';
 import './HomePage.css';
 // import TopCourses from '../components/Course/TopCourses';
-import TopProblems from 'components/Problem/TopProblems';
+import TopProblems from 'components/Problem/TopProblems/TopProblems';
 import TopCourses from 'components/Course/TopCourses/TopCourses';
 
 function HomePage() {

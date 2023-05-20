@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import './MainPage.css'
 import NavBar from "pages/navBar/NavBar";
 import TopCourses from 'components/Course/TopCourses/TopCourses';
-import TopProblems from "components/Problem/TopProblems";
+import TopProblems from "components/Problem/TopProblems/TopProblems";
 import { useNavigate } from "react-router-dom";
 
 function MainPage() {
@@ -16,7 +16,8 @@ function MainPage() {
         }
       }, []);
 
-      const handleExploreCoursesOnClick = () => navigate('/courses')
+      const handleExploreCoursesOnClick = () => navigate('/courses');
+      const handleExploreProblemsOnClick = () => navigate('/problems');
 
 
     return (
@@ -29,7 +30,7 @@ function MainPage() {
                 <button className="create-account-btn" onClick={handleExploreCoursesOnClick}>Explore full catalog</button>
                 <p className='top-courses'>Top problems: </p>
                 <TopProblems />
-                <button className="create-account-btn" >Explore full catalog</button>
+                <button className="create-account-btn" onClick={handleExploreProblemsOnClick}>Explore full catalog</button>
             </section>
         </div>
     )

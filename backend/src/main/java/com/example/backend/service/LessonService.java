@@ -29,6 +29,7 @@ public class LessonService {
                 .name(lessonDto.getName())
                 .description(lessonDto.getDescription())
                 .expectedTime(lessonDto.getExpectedTime())
+                .noLesson(lessonDto.getNoLesson())
                 .build();
 
         lessonRepository.save(lesson);
@@ -51,6 +52,7 @@ public class LessonService {
         lesson.setName(lessonDto.getName());
         lesson.setDescription(lessonDto.getDescription());
         lesson.setExpectedTime(lessonDto.getExpectedTime());
+        lesson.setNoLesson(lessonDto.getNoLesson());
 
         lessonRepository.save(lesson);
         lessonDto.setId(lessonDto.getId());
@@ -67,6 +69,7 @@ public class LessonService {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .expectedTime(lesson.getExpectedTime())
+                .noLesson(lesson.getNoLesson())
                 .build();
     }
 
@@ -80,6 +83,7 @@ public class LessonService {
                         .name(lesson.getName())
                         .description(lesson.getDescription())
                         .expectedTime(lesson.getExpectedTime())
+                        .noLesson(lesson.getNoLesson())
                         .build())
         );
 

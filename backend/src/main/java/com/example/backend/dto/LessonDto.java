@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +19,7 @@ public class LessonDto {
     private String description;
 
     private String expectedTime;
+
+    @Column(columnDefinition = "integer default 0")
+    private int noLesson;
 }

@@ -143,7 +143,10 @@ public class CourseService {
             course.setLessons(new ArrayList<>());
         }
 
+        int noLesson = course.getLessons().size() + 1;
+
         lesson.setCourse(course);
+        lesson.setNoLesson(noLesson);
         course.getLessons().add(lesson);
         courseRepository.save(course);
 
@@ -153,6 +156,7 @@ public class CourseService {
                 .name(lesson.getName())
                 .description(lesson.getDescription())
                 .expectedTime(lesson.getExpectedTime())
+                .noLesson(lesson.getNoLesson())
                 .build();
     }
 
@@ -187,6 +191,7 @@ public class CourseService {
                         .id(lesson.getLessonId())
                         .name(lesson.getName())
                         .description(lesson.getDescription())
+                        .noLesson(lesson.getNoLesson())
                         .build()
         ).toList();
     }

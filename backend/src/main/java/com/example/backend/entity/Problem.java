@@ -21,6 +21,7 @@ public class Problem {
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
     private String valuesType;
@@ -29,6 +30,7 @@ public class Problem {
 
     private String resultsToCheckCode;
 
+    @Enumerated(EnumType.STRING)
     private ReturnType returnType;
 
     @OneToMany(mappedBy = "problem")

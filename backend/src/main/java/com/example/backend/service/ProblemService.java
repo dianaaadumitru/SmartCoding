@@ -1,15 +1,12 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.ProblemDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
-import com.example.backend.entity.Difficulty;
-import com.example.backend.entity.Problem;
-import com.example.backend.entity.ReturnType;
-import com.example.backend.entity.UserProblemResults;
+import com.example.backend.entity.*;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.ProblemRepository;
 import com.example.backend.repository.UserProblemResultsRepository;
-import org.apache.commons.lang3.builder.Diff;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ public class ProblemService {
     }
 
     public ProblemDto addProblem(ProblemDto problemDto) {
+        System.out.println(Difficulty.valueOf(problemDto.getDifficulty()));
         Problem problem = Problem.builder()
                 .valuesType(problemDto.getValuesType())
                 .name(problemDto.getName())
@@ -111,5 +109,23 @@ public class ProblemService {
                 .score(userProblemResult.getPercentage())
                 .build())).toList();
     }
+
+    public List<ProblemDto> findByDifficultyIn(List<String> difficulties) {
+        var diff = difficulties.stream().map(Difficulty::valueOf).toList();
+        List<Problem> problems = problemRepository.findByDifficultyIn(diff);
+
+        return problems.stream().map(problem -> ProblemDto.builder()
+                .problemId(problem.getProblemId())
+                .name(problem.getName())
+                .valuesType(problem.getValuesType())
+                .valuesToCheckCode(problem.getValuesToCheckCode())
+                .difficulty(problem.getDifficulty().toString())
+                .description(problem.getDescription())
+                .resultsToCheckCode(problem.getResultsToCheckCode())
+                .returnType(problem.getReturnType().toString())
+                .build()).toList();
+
+    }
+
 
 }

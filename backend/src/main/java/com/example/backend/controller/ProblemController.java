@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.ProblemDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
 import com.example.backend.service.ProblemService;
@@ -48,5 +49,10 @@ public class ProblemController {
     @GetMapping("/{id}/userScores")
     public ResponseEntity<List<UserSolutionForProblemDto>> getAllUsersSolutionsForProblem(@PathVariable Long id) {
         return ResponseEntity.ok(problemService.getAllUsersSolutionsForProblem(id));
+    }
+
+    @GetMapping("/difficulty")
+    public ResponseEntity<List<ProblemDto>> findByDifficultyIn(@RequestParam("difficulties") List<String> difficulties) {
+        return ResponseEntity.ok(problemService.findByDifficultyIn(difficulties));
     }
 }

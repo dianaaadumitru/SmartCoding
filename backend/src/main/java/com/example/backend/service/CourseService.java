@@ -1,7 +1,6 @@
 package com.example.backend.service;
 
 import com.example.backend.dto.CourseDto;
-import com.example.backend.dto.DifficultiesDto;
 import com.example.backend.dto.LessonDto;
 import com.example.backend.entity.Course;
 import com.example.backend.entity.CourseType;
@@ -155,6 +154,7 @@ public class CourseService {
                 .id(lessonId)
                 .name(lesson.getName())
                 .description(lesson.getDescription())
+                .longDescription(lesson.getLongDescription())
                 .expectedTime(lesson.getExpectedTime())
                 .noLesson(lesson.getNoLesson())
                 .build();
@@ -191,6 +191,7 @@ public class CourseService {
                         .id(lesson.getLessonId())
                         .name(lesson.getName())
                         .description(lesson.getDescription())
+                        .longDescription(lesson.getLongDescription())
                         .noLesson(lesson.getNoLesson())
                         .build()
         ).toList();

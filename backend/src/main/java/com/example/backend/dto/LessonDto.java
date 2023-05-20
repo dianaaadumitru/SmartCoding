@@ -18,8 +18,9 @@ public class LessonDto {
 
     private String description;
 
+    private String longDescription;
+
     private String expectedTime;
 
-    @Column(columnDefinition = "integer default 0")
     private int noLesson;
 }

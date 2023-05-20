@@ -21,6 +21,8 @@ public class Lesson {
 
     private String description;
 
+    private String longDescription;
+
     private String expectedTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,5 +32,6 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Problem> problems;
 
+    @Column(columnDefinition = "integer default 0")
     private int noLesson;
 }

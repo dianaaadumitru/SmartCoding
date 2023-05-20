@@ -28,6 +28,7 @@ public class LessonService {
         Lesson lesson = Lesson.builder()
                 .name(lessonDto.getName())
                 .description(lessonDto.getDescription())
+                .longDescription(lessonDto.getLongDescription())
                 .expectedTime(lessonDto.getExpectedTime())
                 .noLesson(lessonDto.getNoLesson())
                 .build();
@@ -53,6 +54,7 @@ public class LessonService {
         lesson.setDescription(lessonDto.getDescription());
         lesson.setExpectedTime(lessonDto.getExpectedTime());
         lesson.setNoLesson(lessonDto.getNoLesson());
+        lesson.setLongDescription(lessonDto.getLongDescription());
 
         lessonRepository.save(lesson);
         lessonDto.setId(lessonDto.getId());
@@ -68,6 +70,7 @@ public class LessonService {
                 .id(lesson.getLessonId())
                 .name(lesson.getName())
                 .description(lesson.getDescription())
+                .longDescription(lesson.getLongDescription())
                 .expectedTime(lesson.getExpectedTime())
                 .noLesson(lesson.getNoLesson())
                 .build();
@@ -82,6 +85,7 @@ public class LessonService {
                         .id(lesson.getLessonId())
                         .name(lesson.getName())
                         .description(lesson.getDescription())
+                        .longDescription(lesson.getLongDescription())
                         .expectedTime(lesson.getExpectedTime())
                         .noLesson(lesson.getNoLesson())
                         .build())
@@ -111,6 +115,7 @@ public class LessonService {
 
         return ProblemDto.builder()
                 .problemId(problem.getProblemId())
+                .name(problem.getName())
                 .valuesType(problem.getValuesType())
                 .valuesToCheckCode(problem.getValuesToCheckCode())
                 .difficulty(problem.getDifficulty().toString())
@@ -150,6 +155,7 @@ public class LessonService {
         return problems.stream().map(problem ->
                 ProblemDto.builder()
                         .problemId(problem.getProblemId())
+                        .name(problem.getName())
                         .valuesType(problem.getValuesType())
                         .valuesToCheckCode(problem.getValuesToCheckCode())
                         .difficulty(problem.getDifficulty().toString())

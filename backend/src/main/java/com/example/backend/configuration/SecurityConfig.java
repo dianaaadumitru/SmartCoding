@@ -44,6 +44,7 @@ public class SecurityConfig {
                         //authorize.anyRequest().authenticated()
                         authorize.requestMatchers(new AntPathRequestMatcher("/**", "GET")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/**", "POST")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/**", "PUT")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
                                 .anyRequest().authenticated()
 

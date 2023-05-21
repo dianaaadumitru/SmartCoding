@@ -38,6 +38,25 @@
   text-align: left;
 }
 
+.editor-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+  /* Adjust the margin as needed */
+}
+
+.button-text {
+  margin-top: 5px;
+  color: black;
+  font-size: 0.9em;
+}
+
 .button {
   position: absolute;
   bottom: 10px;
@@ -50,6 +69,8 @@
   border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-right: 10px;
+  /* Adjust the margin as needed */
 }
 
 .button:hover {
@@ -122,6 +143,33 @@
   background-color: #1E6385;
 }
 
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+
+
 
 
 @media screen and (max-width: 1200px) {
@@ -141,7 +189,8 @@
     max-width: 100%;
   }
 
-  .left-column, .right-column {
+  .left-column,
+  .right-column {
     width: 100%;
   }
 

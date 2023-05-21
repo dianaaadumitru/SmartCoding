@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import getLessonById from "services/lessonService/getLessonById";
 import * as monacoEditor from "monaco-editor";
 import getAllProblemsOfALesson from "services/lessonService/getAllProblemsForALesson";
+import runCode from "services/jupyterService/runCode";
 
 function LessonPage() {
   const navigate = useNavigate();
@@ -14,12 +15,30 @@ function LessonPage() {
     name: "",
     description: "",
     longDescription: "",
-    expectedTime: ""
+    expectedTime: "",
+    noLesson: 0
   });
 
   const [problems, setProblems] = useState([]);
 
   const [isConditionMet, setIsConditionMet] = useState(false);
+
+  const [textToCompile, setTextToCompile] = useState('');
+
+  const [finalResult, setFinalResult] = useState(-1);
+
+  const [currentProblem, setCurrentProblem] = useState({
+    id: 0,
+    name: "",
+    description: "",
+    difficulty: "",
+    valuesType: "",
+    valuesToCheckCode: "",
+    resultsToCheckCode: "",
+    returnType: ""
+  });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const getProblems = async () => {
     const result = await getAllProblemsOfALesson(lessonId);
@@ -38,7 +57,7 @@ function LessonPage() {
     const editor = monacoEditor.editor.create(document.getElementById("editor"), {
       value: "",
       language: "python",
-      theme: "vs",
+      theme: "vs-dark",
       fontSize: 14,
       automaticLayout: true,
       wordWrap: "on",
@@ -50,7 +69,8 @@ function LessonPage() {
 
     editor.onDidChangeModelContent(() => {
       const value = editor.getValue();
-      // Handle the updated value
+      const modifiedText = JSON.stringify(value).replace(/"/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+      setTextToCompile(modifiedText);
     });
 
     return () => {
@@ -58,6 +78,12 @@ function LessonPage() {
       editor.dispose();
     };
   }, []);
+
+  useEffect(() => {
+    if (problems.length > 0) {
+      setCurrentProblem(problems[0]);
+    }
+  }, [problems]);
 
   const renderText = (someText) => {
     return someText.split("\n").map((line, index) => (
@@ -67,19 +93,20 @@ function LessonPage() {
     ));
   };
 
-  const handleClick = (problem) => {
-    // Replace this with your condition logic
-    // For example, if the problem name contains 'condition', return true
-    // return problem.name.toLowerCase().includes("condition");
-    setIsConditionMet(!isConditionMet);
+  const handleClick = async () => {
+    setIsLoading(true);
+    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode)
+    setFinalResult(result.finalResult);
+    if (result.finalResult == 100) { setIsConditionMet(true); }
+    setIsLoading(false);
   };
 
   const handleNextProblem = () => {
-    
+
   };
 
   const handlePreviousProblem = () => {
-    
+
   };
 
   return (
@@ -95,7 +122,7 @@ function LessonPage() {
           <div className="line"></div>
           <h2 className="course-name problems-title">Problems</h2>
 
-          {problems.map((problem, index) => (
+          {problems.map((problem) => (
             <React.Fragment key={problem.id}>
               <div className="additional-content">
                 <div className="problem-item">
@@ -118,8 +145,23 @@ function LessonPage() {
           ))}
         </div>
         <div className="right-column">
-          <div id="editor" className="monaco-editor-wrapper"></div>
-          <button className="button" onClick={handleClick}>Run</button>
+          <div className="editor-wrapper">
+            <div id="editor" className="monaco-editor-wrapper"></div>
+            <div className="button-wrapper">
+              {isLoading ? (
+                <div className="loading-indicator">
+                  <div className="loader"></div>
+                </div>
+              ) : (
+                <>
+                  {finalResult !== -1 && (
+                    <p className="button-text">This code works for {finalResult}% of cases.</p>
+                  )}
+                  <button className="button" onClick={handleClick}>Run</button>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

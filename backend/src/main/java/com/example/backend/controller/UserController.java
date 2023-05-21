@@ -75,6 +75,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getProblemsResultsForStudent(userId));
     }
 
+    @GetMapping("/{userId}/resultsProblem/{problemId}")
+    public ResponseEntity<Double> getProblemScoreForAProblemSoledByUser(@PathVariable Long userId, @PathVariable Long problemId) {
+        Double score = userService.getProblemScoreForAProblemSoledByUser(userId, problemId);
+        return new ResponseEntity<>(score, HttpStatus.OK);
+    }
+
     @GetMapping("/resultsQuiz/{userId}")
     public ResponseEntity<UserTestResultDto> getUserFinalScore(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.computeTestScoreForUser(userId));

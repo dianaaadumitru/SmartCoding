@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -310,6 +307,14 @@ public class UserService {
                 .valuesType(userProblemResult.getProblem().getValuesType())
                 .build()).toList();
     }
+
+    public double getProblemScoreForAProblemSoledByUser(Long userId, Long problemId) {
+        Optional<UserProblemResults> problemResultOptional = userProblemResultsRepository.findById(new UserProblemId(userId, problemId));
+        if (problemResultOptional.isEmpty())
+            return -1;
+        return problemResultOptional.get().getPercentage();
+    }
+
     public List<UserResultsDto> getQuestionsResultsForStudent(Long userId) {
         List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
         return userResults.stream().map((userResult -> UserResultsDto.builder()

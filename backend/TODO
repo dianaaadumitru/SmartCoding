@@ -25,6 +25,27 @@ repara testele
 
 
 
+TODO
+create another table user-lesson where keep track of all lessons completed by a user
+??? how to do that  - many to many with additional flag
+check if all lessons of a course are completed - if yes mark the course as completed
+when viewing a course only see the completed lessons - if none is completed have access only on the first lesson
+in lesson page enable disable prev next buttons based on completeness
+
+
+TODO
+for enrol to course:
+    - make call to back
+    - if user already enrolled - display enrolled message ind=stead of start button
+    - check in db if the course exists for student
+    - when enrolling - navigate to first lesson
+    - also when enrolling check the first lesson checkbox and remove lock icon
+    - after enrolling add a checkbox near course title which will be automatically checked when course is done
+
+also in course page always check if already enrolled - if yes unblock all lessons that are done, if none is done only lesson no 1
+
+
+
 code snippets for jupyter calls:
 primes:
 {

@@ -7,10 +7,7 @@ import com.example.backend.service.CodeGeneratingService;
 import com.example.backend.service.JupyterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -59,7 +56,7 @@ public class JupyterController {
 //        return ResponseEntity.ok(jupyterService.readRunRequestResult(requestId));
 //    }
 
-    @GetMapping("/run/results")
+    @PostMapping("/run/results")
     public ResponseEntity<ResultDto> readFinalResult(@RequestBody CodeValueToCompileDto data) throws ExecutionException, InterruptedException {
         return ResponseEntity.ok(jupyterService.readFinalResult(data));
     }

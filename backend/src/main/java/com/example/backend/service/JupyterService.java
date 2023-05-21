@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.client.JupyterClient;
 import com.example.backend.dto.CodeValueToCompileDto;
 import com.example.backend.dto.ResultDto;
+import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.jupyter.model.JupyterSessionDto;
 import com.example.backend.websocket.RunRequestResult;
 import com.example.backend.websocket.RunRequestResultIdDto;
@@ -78,11 +79,16 @@ public class JupyterService {
     }
 
     public ResultDto readFinalResult(CodeValueToCompileDto data) throws ExecutionException, InterruptedException {
+        System.out.println("input: " + data.getCode());
+        System.out.println("given input: " + data);
+        if (data.getCode().isEmpty()) {
+            throw new CrudOperationException("empty code");
+        }
         int successes = 0;
         String[] valuesToCheck = data.getValuesToCheckCode().split(";");
         String[] resultsToCheck = data.getResultsToCheckCode().split(";");
         for (int i = 0; i < valuesToCheck.length; i++) {
-            String currentValue = "";
+            String currentValue = valuesToCheck[i];
             if (Objects.equals(data.getValuesType(), "String")) {
                 currentValue = "\"" + valuesToCheck[i].strip() + "\"";
             } else if (Objects.equals(data.getValuesType(), "Integer")) {
@@ -92,7 +98,7 @@ public class JupyterService {
             }
             System.out.println("value that is checked: " + currentValue + " having result: " + resultsToCheck[i]);
             String codeToCompile = codeGeneratingService.generateCode(data.getCode(), currentValue);
-            log.info("\n" + codeToCompile);
+            log.info("code to compile\n" + codeToCompile);
 
             ExecutorService threadpool = Executors.newCachedThreadPool();
             Future<RunRequestResultIdDto> futureTask = threadpool.submit(() -> sendRunRequest(codeToCompile));

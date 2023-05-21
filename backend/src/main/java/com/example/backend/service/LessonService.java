@@ -147,10 +147,7 @@ public class LessonService {
             throw new CrudOperationException("Lesson does not exist!");
         });
 
-        System.out.println(lesson.getLessonId());
-
         List<Problem> problems = lesson.getProblems();
-        System.out.println("in retrieve: " + problems.size());
 
         return problems.stream().map(problem ->
                 ProblemDto.builder()

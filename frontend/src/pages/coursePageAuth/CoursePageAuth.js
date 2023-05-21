@@ -2,26 +2,33 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import './CoursePageAuth.css';
 import getCourseById from "services/courseService/getCourseById";
-import { AiFillSignal, AiOutlineClockCircle } from "react-icons/ai";
+import { AiFillSignal, AiOutlineClockCircle, AiOutlineLock } from "react-icons/ai";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 import NavBar from "pages/navBar/NavBar";
+import addCourseToUser from "services/userService/addCourseToUser";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
+    const [userId, setUserId] = useState(0);
     const { courseId } = useParams();
     const [course, setCourse] = useState({
         id: courseId,
         name: '',
         description: '',
         difficulty: '',
-        courseType: '', 
+        courseType: '',
         noLesson: 0
     });
     const [lessons, setLessons] = useState([]);
 
+    const getUserId = () => {
+        setUserId(parseInt(localStorage.getItem('userId')));
+    }
+
     const getLessons = async () => {
         const result = await getAllLessonsOfACourse(courseId);
-        setLessons(result)
+        const sortedLessons = result.sort((a, b) => a.noLesson - b.noLesson);
+        setLessons(sortedLessons);
     }
 
     const getCourse = async () => {
@@ -32,10 +39,19 @@ function CoursePageAuth() {
     useEffect(() => {
         getCourse()
         getLessons()
+        getUserId()
     }, [])
 
-    const handleClick = async () => navigate('/')
-    const handleClickLesson = async (itemId) =>  navigate(`/auth/lessons/${itemId}`);;
+    const enrolUserToCourse = async () => {
+        const result = await addCourseToUser(userId, courseId);
+    }
+
+    const handleClick = async () => {
+        enrolUserToCourse();
+        // navigate('/')
+    }
+
+    const handleClickLesson = async (itemId) => navigate(`/auth/lessons/${itemId}`);;
 
     return (
         <div className="page-section-course">
@@ -78,17 +94,26 @@ function CoursePageAuth() {
                                 <React.Fragment key={lesson.id}>
                                     <div className="additional-content" onClick={() => handleClickLesson(lesson.id)}>
                                         <div className="lesson-item">
+
+                                            <div className="lesson-addons">
+                                                <input type="checkbox" readOnly className="lesson-checkbox" />
+                                                <AiOutlineLock className="lesson-icon" />
+                                            </div>
+
                                             <div className="lesson-number">{lesson.noLesson}</div>
                                             <div className="lesson-info">
                                                 <p className="lesson-name">{lesson.name}</p>
                                                 <p className={`lesson-description ${index === lessons.length - 1 ? 'last-element' : ''}`}>{lesson.description}</p>
                                             </div>
+
+
+
                                         </div>
                                     </div>
                                     {index !== lessons.length - 1 && <div className="additional-line"></div>}
-
                                 </React.Fragment>
                             ))}
+
 
 
                         </div>

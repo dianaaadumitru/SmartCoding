@@ -7,10 +7,11 @@ import * as monacoEditor from "monaco-editor";
 import getAllProblemsOfALesson from "services/lessonService/getAllProblemsForALesson";
 import runCode from "services/jupyterService/runCode";
 import addAnswerAndProblemPercentageToStudent from "services/userService/addAnswerAndProblemPercentageToStudent";
+import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
 
 function LessonPage() {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState(-1);
+  const [userId, setUserId] = useState(0);
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState({
     id: lessonId,
@@ -52,6 +53,15 @@ function LessonPage() {
     setLesson(result);
   };
 
+  const getProblemResult = async () => {
+    const result =  await getProblemScoreForAProblemSoledByUser(userId, currentProblem.problemId);
+    if (result === 100) {
+      setIsConditionMet(true);
+    } else {
+      setIsConditionMet(false);
+    }
+  }
+
   const getUserId = () => {
     setUserId(parseInt(localStorage.getItem('userId')));
   }
@@ -92,6 +102,13 @@ function LessonPage() {
     }
   }, [problems]);
 
+  useEffect(() => {
+    if (userId !== -1 && currentProblem.problemId !== 0) {
+      getProblemResult();
+    }
+  }, [userId, currentProblem]);
+  
+
   const renderText = (someText) => {
     return someText.split("\n").map((line, index) => (
       <p key={index} className="course-description">
@@ -106,7 +123,11 @@ function LessonPage() {
     setFinalResult(result.finalResult);
     console.log("id: ", currentProblem)
     const callResult = await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
-    if (result.finalResult == 100) { setIsConditionMet(true); }
+    if (result.finalResult == 100) { 
+      setIsConditionMet(true); 
+    } else {
+      setIsConditionMet(false);
+    }
     setIsLoading(false);
   };
 

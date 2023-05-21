@@ -12,6 +12,3 @@ const addAnswerAndProblemPercentageToStudent = async (userId, problemId, answer,
 };
 
 export default addAnswerAndProblemPercentageToStudent;
-
-
-

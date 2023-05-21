@@ -20,7 +20,8 @@ function CoursePage() {
 
     const getLessons = async () => {
         const result = await getAllLessonsOfACourse(courseId);
-        setLessons(result)
+        const sortedLessons = result.sort((a, b) => a.noLesson - b.noLesson);
+        setLessons(sortedLessons);
     }
 
     const getCourse = async () => {

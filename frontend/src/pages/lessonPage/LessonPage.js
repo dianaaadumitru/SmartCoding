@@ -6,9 +6,11 @@ import getLessonById from "services/lessonService/getLessonById";
 import * as monacoEditor from "monaco-editor";
 import getAllProblemsOfALesson from "services/lessonService/getAllProblemsForALesson";
 import runCode from "services/jupyterService/runCode";
+import addAnswerAndProblemPercentageToStudent from "services/userService/addAnswerAndProblemPercentageToStudent";
 
 function LessonPage() {
   const navigate = useNavigate();
+  const [userId, setUserId] = useState(-1);
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState({
     id: lessonId,
@@ -28,7 +30,7 @@ function LessonPage() {
   const [finalResult, setFinalResult] = useState(-1);
 
   const [currentProblem, setCurrentProblem] = useState({
-    id: 0,
+    problemId: 0,
     name: "",
     description: "",
     difficulty: "",
@@ -50,9 +52,14 @@ function LessonPage() {
     setLesson(result);
   };
 
+  const getUserId = () => {
+    setUserId(parseInt(localStorage.getItem('userId')));
+  }
+
   useEffect(() => {
     getLesson();
     getProblems();
+    getUserId();
 
     const editor = monacoEditor.editor.create(document.getElementById("editor"), {
       value: "",
@@ -97,6 +104,8 @@ function LessonPage() {
     setIsLoading(true);
     const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode)
     setFinalResult(result.finalResult);
+    console.log("id: ", currentProblem)
+    const callResult = await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
     if (result.finalResult == 100) { setIsConditionMet(true); }
     setIsLoading(false);
   };

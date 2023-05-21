@@ -6,7 +6,7 @@ const signIn = async(usernameOrEmail, password) => {
             usernameOrEmail,
             password
         })
-        return response.data;
+        return response;
     } catch (e) {
         throw new Error(e);
     }

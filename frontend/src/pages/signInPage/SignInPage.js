@@ -24,8 +24,9 @@ function SignInPage() {
         
         try {
             const result = await signIn(usernameOrEmail, password);
-            if (result === true) {
+            if (result.status === 200) {
                 setIsLoggedIn(true);
+                localStorage.setItem('userId', result.data);
                 navigate('/mainpage');
             }
         } catch (error) {

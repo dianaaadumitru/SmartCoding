@@ -1,7 +1,7 @@
 package com.example.backend.repository;
 
 import com.example.backend.entity.Course;
-import com.example.backend.entity.Difficulty;
+import com.example.backend.entity.enums.Difficulty;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

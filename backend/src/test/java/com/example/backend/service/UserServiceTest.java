@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.*;
+import com.example.backend.entity.embeddableIds.UserQuestionId;
 import com.example.backend.repository.QuestionRepository;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
@@ -696,21 +697,21 @@ public class UserServiceTest {
         String answer = "answer";
         double score = 3;
 
-        UserResults userResult = UserResults.builder()
+        UserQuestionResults userResult = UserQuestionResults.builder()
                 .userQuestionId(new UserQuestionId(user.getUserId(), question.getQuestionId()))
                 .user(user)
                 .question(question)
                 .score(score)
                 .answer(answer)
                 .build();
-        List<UserResults> userResults = new ArrayList<>();
-        userResults.add(userResult);
+        List<UserQuestionResults> userQuestionResults = new ArrayList<>();
+        userQuestionResults.add(userResult);
 
-        when(userResultsRepository.findByUser_UserId(user.getUserId())).thenReturn(userResults);
+        when(userResultsRepository.findByUser_UserId(user.getUserId())).thenReturn(userQuestionResults);
 
         // when
         List<UserResultsDto> expected = userService.getQuestionsResultsForStudent(user.getUserId());
-        List<UserResultsDto> actual = userResults.stream().map(userResults1 ->
+        List<UserResultsDto> actual = userQuestionResults.stream().map(userResults1 ->
                 UserResultsDto.builder()
                         .userId(userResults1.getUser().getUserId())
                         .userFirstName(userResults1.getUser().getFirstName())
@@ -739,7 +740,7 @@ public class UserServiceTest {
                 .roles(new HashSet<>(Collections.singletonList(role)))
                 .build();
 
-        UserResults userResult = UserResults.builder()
+        UserQuestionResults userResult = UserQuestionResults.builder()
                 .userQuestionId(new UserQuestionId(user.getUserId(), question.getQuestionId()))
                 .user(user)
                 .question(question)
@@ -747,12 +748,12 @@ public class UserServiceTest {
                 .answer("answer")
                 .build();
 
-        List<UserResults> userResults = new ArrayList<>();
-        userResults.add(userResult);
-        userResults.add(userResult);
+        List<UserQuestionResults> userQuestionResults = new ArrayList<>();
+        userQuestionResults.add(userResult);
+        userQuestionResults.add(userResult);
 
         when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
-        when(userResultsRepository.findByUser_UserId(user.getUserId())).thenReturn(userResults);
+        when(userResultsRepository.findByUser_UserId(user.getUserId())).thenReturn(userQuestionResults);
 
         // when
         UserTestResultDto expected = userService.computeTestScoreForUser(user.getUserId());

@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.example.backend.entity.embeddableIds.UserQuestionId;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-public class UserResults {
+public class UserQuestionResults {
     @EmbeddedId
     private UserQuestionId userQuestionId;
 

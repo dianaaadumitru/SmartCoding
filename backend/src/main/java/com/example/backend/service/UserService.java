@@ -2,9 +2,10 @@ package com.example.backend.service;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.*;
+import com.example.backend.entity.embeddableIds.UserProblemId;
+import com.example.backend.entity.embeddableIds.UserQuestionId;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -228,11 +229,11 @@ public class UserService {
             throw new CrudOperationException("Question does not exist");
         });
 
-        if (user.getUserResults() == null) {
-            user.setUserResults(new ArrayList<>());
+        if (user.getUserQuestionResults() == null) {
+            user.setUserQuestionResults(new ArrayList<>());
         }
 
-        UserResults userResult = UserResults.builder()
+        UserQuestionResults userResult = UserQuestionResults.builder()
                 .userQuestionId(new UserQuestionId(userId, questionId))
                 .user(user)
                 .question(question)
@@ -316,8 +317,8 @@ public class UserService {
     }
 
     public List<UserResultsDto> getQuestionsResultsForStudent(Long userId) {
-        List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
-        return userResults.stream().map((userResult -> UserResultsDto.builder()
+        List<UserQuestionResults> userQuestionResults = userResultsRepository.findByUser_UserId(userId);
+        return userQuestionResults.stream().map((userResult -> UserResultsDto.builder()
                         .userId(userResult.getUser().getUserId())
                         .userFirstName(userResult.getUser().getFirstName())
                         .userLastName(userResult.getUser().getLastName())
@@ -348,9 +349,9 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        List<UserResults> userResults = userResultsRepository.findByUser_UserId(userId);
+        List<UserQuestionResults> userQuestionResults = userResultsRepository.findByUser_UserId(userId);
         double sum = 0;
-        for (UserResults result : userResults) {
+        for (UserQuestionResults result : userQuestionResults) {
             sum += result.getScore();
         }
 
@@ -425,7 +426,10 @@ public class UserService {
             user.setCourses(new ArrayList<>());
         }
 
-        user.getCourses().add(course);
+        if (!user.getCourses().contains(course)) {
+            user.getCourses().add(course);
+        }
+
 
         userRepository.save(user);
 

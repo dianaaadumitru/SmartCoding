@@ -4,7 +4,7 @@ import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.LessonDto;
 import com.example.backend.entity.Course;
 import com.example.backend.entity.CourseType;
-import com.example.backend.entity.Difficulty;
+import com.example.backend.entity.enums.Difficulty;
 import com.example.backend.entity.Lesson;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.CourseRepository;

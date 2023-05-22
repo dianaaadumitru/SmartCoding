@@ -1,6 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.entity.Difficulty;
+import com.example.backend.entity.enums.Difficulty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

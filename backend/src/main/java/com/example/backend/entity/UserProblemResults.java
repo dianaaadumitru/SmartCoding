@@ -1,5 +1,6 @@
 package com.example.backend.entity;
 
+import com.example.backend.entity.embeddableIds.UserProblemId;
 import lombok.*;
 
 import javax.persistence.*;

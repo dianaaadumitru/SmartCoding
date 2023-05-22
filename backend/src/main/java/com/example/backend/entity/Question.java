@@ -31,5 +31,5 @@ public class Question {
     private String resultsToCheckCode;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserResults> userResults;
+    private List<UserQuestionResults> userQuestionResults;
 }

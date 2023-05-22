@@ -1,9 +1,10 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.ProblemDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
 import com.example.backend.entity.*;
+import com.example.backend.entity.enums.Difficulty;
+import com.example.backend.entity.enums.ReturnType;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.ProblemRepository;
 import com.example.backend.repository.UserProblemResultsRepository;

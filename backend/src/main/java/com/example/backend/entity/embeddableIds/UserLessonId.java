@@ -1,5 +1,4 @@
-package com.example.backend.entity;
-
+package com.example.backend.entity.embeddableIds;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +14,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserQuestionId implements Serializable {
+public class UserLessonId implements Serializable {
 
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "question_id")
-    private Long questionId;
-
+    @Column(name = "lesson_id")
+    private Long lessonId;
 }

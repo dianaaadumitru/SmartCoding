@@ -1,4 +1,4 @@
-package com.example.backend.entity;
+package com.example.backend.entity.embeddableIds;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

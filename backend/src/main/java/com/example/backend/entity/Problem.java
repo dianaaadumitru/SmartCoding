@@ -1,5 +1,7 @@
 package com.example.backend.entity;
 
+import com.example.backend.entity.enums.Difficulty;
+import com.example.backend.entity.enums.ReturnType;
 import lombok.*;
 
 import javax.persistence.*;

@@ -7,6 +7,8 @@ import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACours
 import NavBar from "pages/navBar/NavBar";
 import addCourseToUser from "services/userService/addCourseToUser";
 import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
+import isUserEnrolledToCourse from "services/userService/user-course/isUserEnrolledToCourse";
+import checkIfAUserLessonIsCompleted from "services/userService/user-lesson/checkIfAUserLessonIsComplete";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -21,9 +23,12 @@ function CoursePageAuth() {
         noLesson: 0
     });
     const [lessons, setLessons] = useState([]);
+    const [isEnrolled, setIsEnrolled] = useState(false);
+    const [startButtonVisible, setStartButtonVisible] = useState(true);
 
     const getUserId = () => {
         setUserId(parseInt(localStorage.getItem('userId')));
+        console.log(parseInt(localStorage.getItem('userId')))
     }
 
     const getLessons = async () => {
@@ -37,23 +42,36 @@ function CoursePageAuth() {
         setCourse(result)
     }
 
-    useEffect(() => {
-        getCourse()
-        getLessons()
-        getUserId()
-    }, [])
+    const isUserEnroled = async () => {
+        const result = await isUserEnrolledToCourse(userId, courseId);
+        setIsEnrolled(result);
+    }
 
     const enrolUserToCourse = async () => {
         const result = await addCourseToUser(userId, courseId);
     }
 
-    const handleClick = async () => {
-        enrolUserToCourse();
-        lessons.forEach(async lesson => addEnrolledLessonToUser(userId, lesson.lessonId, courseId));
-        // navigate('/')
+    const isLessonCompleted = async (lessonId) => {
+        const result = await checkIfAUserLessonIsCompleted(userId, lessonId);
     }
 
-    const handleClickLesson = async (itemId) => navigate(`/auth/lessons/${itemId}`);;
+    const handleClick = async () => {
+        enrolUserToCourse();
+        setStartButtonVisible(false);
+        // ... other logic ...
+    }
+
+    const handleClickLesson = async (itemId) => navigate(`/auth/lessons/${itemId}`);
+
+    useEffect(() => {
+        getCourse();
+        getLessons();
+        getUserId();
+    }, []);
+
+    useEffect(() => {
+        isUserEnroled();
+    }, [userId]);
 
     return (
         <div className="page-section-course">
@@ -75,7 +93,17 @@ function CoursePageAuth() {
                                     <p className="bottom-text second-line">{course.difficulty}</p>
                                 </div>
                             </div>
-                            <button className="bottom-button" onClick={handleClick}>Start</button>
+
+                            {isEnrolled ? (
+                                <p className="already-enrolled-text">You are already enrolled</p>
+                            ) : (
+                                startButtonVisible && (
+                                    <button className="bottom-button" onClick={handleClick}>
+                                        Start
+                                    </button>
+                                )
+                            )}
+
                             <div className="right-content">
                                 <AiOutlineClockCircle className="info-icon" />
                                 <div>
@@ -108,20 +136,19 @@ function CoursePageAuth() {
                                                 <p className={`lesson-description ${index === lessons.length - 1 ? 'last-element' : ''}`}>{lesson.description}</p>
                                             </div>
 
-
-
                                         </div>
                                     </div>
                                     {index !== lessons.length - 1 && <div className="additional-line"></div>}
                                 </React.Fragment>
                             ))}
 
-
-
                         </div>
 
-                        <button className="bottom-button last-padding" onClick={handleClick}>Start</button>
-
+                        {!isEnrolled && startButtonVisible && (
+                            <button className="bottom-button last-padding" onClick={handleClick}>
+                                Start
+                            </button>
+                        )}
 
                     </div>
                 </div>

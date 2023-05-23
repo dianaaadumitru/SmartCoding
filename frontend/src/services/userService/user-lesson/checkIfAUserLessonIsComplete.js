@@ -2,7 +2,7 @@ import { API } from "../../../utility/api";
 
 const checkIfAUserLessonIsCompleted = async (userId, lessonId, courseId) => {
     try {
-        const response = await API.get(`/users/${userId}/lessons/completedLessons/${lessonId}`, {params: {courseId}});
+        const response = await API.get(`/users/${userId}/lessons/completedLessons/${lessonId}?courseId=${courseId}`);
         console.log(response.data);
         return response.data;
     } catch (e) {

@@ -197,6 +197,16 @@ public class CourseService {
         ).toList();
     }
 
+
+    public LessonDto getCourseLessonByNoLesson(Long courseId, int noLesson) {
+        List<LessonDto> lessonDtos = getAllCourseLessons(courseId);
+        for (LessonDto lessonDto: lessonDtos) {
+            if (lessonDto.getNoLesson() == noLesson)
+                return lessonDto;
+        }
+        return null;
+    }
+
     public List<CourseDto> findByDifficultyIn(List<String> difficulties) {
         var diff = difficulties.stream().map(Difficulty::valueOf).toList();
         List<Course> courses = courseRepository.findByDifficultyIn(diff);
@@ -210,6 +220,7 @@ public class CourseService {
                 .build()).toList();
 
     }
+
 
 //    public List<CourseDto> getAllCoursesByCourseType(String courseType) {
 //        Set<CourseType> courseTypes = new HashSet<>();

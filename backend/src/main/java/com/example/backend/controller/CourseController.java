@@ -60,6 +60,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getAllCourseLessons(courseId));
     }
 
+    @GetMapping("/{courseId}/lessons/noLesson/{noLesson}")
+    public ResponseEntity<LessonDto> getCourseLessonByNoLesson(@PathVariable Long courseId, @PathVariable int noLesson) {
+        return ResponseEntity.ok(courseService.getCourseLessonByNoLesson(courseId, noLesson));
+    }
+
     @GetMapping("/difficulty")
     public ResponseEntity<List<CourseDto>> findByDifficultyIn(@RequestParam("difficulties") List<String> difficulties) {
         return ResponseEntity.ok(courseService.findByDifficultyIn(difficulties));

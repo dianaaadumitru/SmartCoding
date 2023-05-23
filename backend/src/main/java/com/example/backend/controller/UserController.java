@@ -127,7 +127,7 @@ public class UserController {
         return ResponseEntity.ok(userService.checkIfAUserLessonIsComplete(userId, lessonId, courseId));
     }
 
-    @GetMapping("/{userId}/lessons/completeLesson/{lessonId}")
+    @PostMapping("/{userId}/lessons/completeLesson/{lessonId}")
     public ResponseEntity<Void> markLessonAsCompleted(@PathVariable Long userId, @PathVariable Long lessonId, @RequestParam Long courseId) {
         userService.markLessonAsCompleted(userId, lessonId, courseId);
         return new ResponseEntity<>(HttpStatus.OK);

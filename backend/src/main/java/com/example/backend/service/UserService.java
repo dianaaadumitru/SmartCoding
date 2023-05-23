@@ -13,7 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -413,7 +416,7 @@ public class UserService {
                         .returnType(problem.getReturnType().toString())
                         .returnType(problem.getReturnType().toString())
                         .build()
-                ).toList();
+        ).toList();
     }
 
     @Transactional
@@ -449,6 +452,7 @@ public class UserService {
                 .build();
     }
 
+    @Transactional
     public void removeCourseFromStudent(Long userId, Long courseId) {
         User user = userRepository.findById(userId).orElseThrow(() -> {
             throw new CrudOperationException("User does not exist");
@@ -457,6 +461,9 @@ public class UserService {
         courseRepository.findById(courseId).orElseThrow(() -> {
             throw new CrudOperationException("Course does not exist!");
         });
+        // Initialize and load the courses collection
+        Hibernate.initialize(user.getCourses());
+
         List<Course> courses = user.getCourses();
 
         if (!CollectionUtils.isEmpty(courses)) {
@@ -494,7 +501,7 @@ public class UserService {
 
         List<Course> courses = user.getCourses();
 
-        for (Course course: courses) {
+        for (Course course : courses) {
             if (course.getCourseId() == courseId)
                 return true;
         }
@@ -536,7 +543,7 @@ public class UserService {
     public boolean checkIfAUserLessonIsComplete(Long userId, Long lessonId, Long courseId) {
         Optional<UserLessons> userLessonsOptional = userLessonRepository.findByUserLessonIdAndCourseId(new UserLessonId(userId, lessonId), courseId);
         if (userLessonsOptional.isEmpty()) {
-            throw new CrudOperationException("This user is not enrolled to this course");
+            return false;
         }
 
         UserLessons userLessons = userLessonsOptional.get();
@@ -563,8 +570,8 @@ public class UserService {
         int completedLessons = 0;
 
         List<UserLessons> userLessons = userLessonRepository.findAllByUserAndCourseId(user, courseId);
-        for (UserLessons userLesson: userLessons) {
-            if (userLesson.isCompleted()){
+        for (UserLessons userLesson : userLessons) {
+            if (userLesson.isCompleted()) {
                 completedLessons++;
             }
         }

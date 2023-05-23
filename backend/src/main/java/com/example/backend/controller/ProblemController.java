@@ -1,6 +1,5 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.CourseDto;
 import com.example.backend.dto.ProblemDto;
 import com.example.backend.dto.UserSolutionForProblemDto;
 import com.example.backend.service.ProblemService;

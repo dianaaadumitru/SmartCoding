@@ -1,7 +1,7 @@
 package com.example.backend.repository;
 
-import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.UserProblemResults;
+import com.example.backend.entity.embeddableIds.UserProblemId;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

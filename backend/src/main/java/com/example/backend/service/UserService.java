@@ -285,11 +285,7 @@ public class UserService {
                 .answer(scoreAnswerDto.getAnswer())
                 .build();
 
-        log.info("created user-problem result: " + userProblemResult);
-
         userProblemResultsRepository.save(userProblemResult);
-
-        log.info("saved it :)");
 
         return UserProblemResultDto.builder()
                 .userId(userId)

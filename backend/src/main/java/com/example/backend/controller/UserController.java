@@ -117,6 +117,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserCourses(userId));
     }
 
+    @GetMapping("/{userId}/courses/{courseId}/isEnrolled")
+    public ResponseEntity<Boolean> checkIfUserEnrolledToCourse(@PathVariable Long userId, @PathVariable Long courseId) {
+        return ResponseEntity.ok(userService.checkIfUserEnrolledToCourse(userId, courseId));
+    }
+
     @GetMapping("/{userId}/lessons/completedLessons/{lessonId}")
     public ResponseEntity<Boolean> checkIfAUserLessonIsComplete(@PathVariable Long userId, @PathVariable Long lessonId, @RequestParam Long courseId) {
         return ResponseEntity.ok(userService.checkIfAUserLessonIsComplete(userId, lessonId, courseId));

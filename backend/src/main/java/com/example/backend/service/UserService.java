@@ -454,7 +454,7 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        Course course = courseRepository.findById(courseId).orElseThrow(() -> {
+        courseRepository.findById(courseId).orElseThrow(() -> {
             throw new CrudOperationException("Course does not exist!");
         });
         List<Course> courses = user.getCourses();
@@ -481,6 +481,24 @@ public class UserService {
                         .difficulty(course.getDifficulty().toString())
                         .courseType(course.getCourseTypes().iterator().next().getType())
                         .build()).toList();
+    }
+
+    @Transactional
+    public boolean checkIfUserEnrolledToCourse(Long userId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        // Initialize and load the courses collection
+        Hibernate.initialize(user.getCourses());
+
+        List<Course> courses = user.getCourses();
+
+        for (Course course: courses) {
+            if (course.getCourseId() == courseId)
+                return true;
+        }
+        return false;
     }
 
     public LessonDto addEnrolledLessonToUser(Long userId, Long lessonId, Long courseId) {

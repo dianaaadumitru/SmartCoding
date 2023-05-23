@@ -55,7 +55,6 @@ public class AuthController {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         boolean passwordsMatch = passwordEncoder.matches(loginDto.getPassword(), userByUsername.getPassword());
-        System.out.println(userByUsername.getUserId() + " " + userByUsername.getPassword() + " " + passwordsMatch);
         if (!passwordsMatch) {
             throw new AuthenticationException("Invalid password!");
         }

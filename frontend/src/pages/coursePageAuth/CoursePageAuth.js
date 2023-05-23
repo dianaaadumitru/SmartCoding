@@ -10,6 +10,7 @@ import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolle
 import isUserEnrolledToCourse from "services/userService/user-course/isUserEnrolledToCourse";
 import checkIfAUserLessonIsCompleted from "services/userService/user-lesson/checkIfAUserLessonIsComplete";
 import checkIfCourseIsCompleted from "services/userService/user-course/checkIfCourseIsCompleted";
+import LessonItem from "components/Lesson/LessonItem";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -28,6 +29,7 @@ function CoursePageAuth() {
     const [startButtonVisible, setStartButtonVisible] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isCourseCompleted, setIsCourseCompleted] = useState(false);
+    const [lessonCompleted, setLessonCompleted] = useState(false);
 
     const getUserId = () => {
         setUserId(parseInt(localStorage.getItem("userId")));
@@ -55,8 +57,8 @@ function CoursePageAuth() {
     };
 
     const isLessonCompleted = async (lessonId) => {
-        const result = await checkIfAUserLessonIsCompleted(userId, lessonId, courseId);
-        return result;
+        const result = await checkIfAUserLessonIsCompleted(userId, lessonId, courseId)
+        return Boolean(result);    
     };
 
     const checkIfCourseCompleted = async () => {
@@ -157,27 +159,7 @@ function CoursePageAuth() {
 
                             {lessons.map((lesson, index) => (
                                 <React.Fragment key={lesson.id}>
-                                    <div
-                                        className={`additional-content ${(!isLessonCompleted(lesson.id) || lesson.noLesson !== 1) ? 'disabled' : ''}`}
-                                        onClick={!isLessonCompleted(lesson.id) || lesson.noLesson !== 1 ? null : () => handleClickLesson(lesson.id)}
-                                    >
-                                        <div className="lesson-item">
-                                            <div className="lesson-addons">
-                                                <input type="checkbox" readOnly className="lesson-checkbox" />
-                                                {(!isEnrolled) || (isEnrolled && (!isLessonCompleted(lesson.id) || lesson.noLesson !== 1)) ? (
-                                                    <AiOutlineLock className="lesson-icon" />
-                                                ) : null}
-                                            </div>
-
-                                            <div className="lesson-number">{lesson.noLesson}</div>
-                                            <div className="lesson-info">
-                                                <p className="lesson-name">{lesson.name}</p>
-                                                <p className={`lesson-description ${index === lessons.length - 1 ? 'last-element' : ''}`}>
-                                                    {lesson.description}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <LessonItem lesson={lesson} userId={userId} courseId={courseId} isEnrolled={isEnrolled} index={index} lessons={lessons} handleClickLesson={handleClickLesson}/>
                                     {index !== lessons.length - 1 && <div className="additional-line"></div>}
                                 </React.Fragment>
                             ))}

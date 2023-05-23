@@ -28,9 +28,10 @@ repara testele
 TODO
 create another table user-lesson where keep track of all lessons completed by a user
 ??? how to do that  - many to many with additional flag
-check if all lessons of a course are completed - if yes mark the course as completed
-when viewing a course only see the completed lessons - if none is completed have access only on the first lesson
+DONE --- check if all lessons of a course are completed - if yes mark the course as completed
+DONE --- when viewing a course only see the completed lessons - if none is completed have access only on the first lesson
 in lesson page enable disable prev next buttons based on completeness
+when entering a lesson check if problem already solved - if yes mak as solve and also mark lesson as completed if score is 100
 
 
 TODO

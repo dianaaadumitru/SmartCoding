@@ -6,6 +6,7 @@ import { AiFillSignal, AiOutlineClockCircle, AiOutlineLock } from "react-icons/a
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 import NavBar from "pages/navBar/NavBar";
 import addCourseToUser from "services/userService/addCourseToUser";
+import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -48,6 +49,7 @@ function CoursePageAuth() {
 
     const handleClick = async () => {
         enrolUserToCourse();
+        lessons.forEach(async lesson => addEnrolledLessonToUser(userId, lesson.lessonId, courseId));
         // navigate('/')
     }
 

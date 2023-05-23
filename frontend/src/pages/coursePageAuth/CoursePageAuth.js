@@ -11,6 +11,7 @@ import isUserEnrolledToCourse from "services/userService/user-course/isUserEnrol
 import checkIfAUserLessonIsCompleted from "services/userService/user-lesson/checkIfAUserLessonIsComplete";
 import checkIfCourseIsCompleted from "services/userService/user-course/checkIfCourseIsCompleted";
 import LessonItem from "components/Lesson/LessonItem";
+import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByNoLesson";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ function CoursePageAuth() {
     const [startButtonVisible, setStartButtonVisible] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isCourseCompleted, setIsCourseCompleted] = useState(false);
-    const [lessonCompleted, setLessonCompleted] = useState(false);
+    localStorage.setItem('courseId', courseId);
 
     const getUserId = () => {
         setUserId(parseInt(localStorage.getItem("userId")));
@@ -56,11 +57,6 @@ function CoursePageAuth() {
         await addCourseToUser(userId, courseId);
     };
 
-    const isLessonCompleted = async (lessonId) => {
-        const result = await checkIfAUserLessonIsCompleted(userId, lessonId, courseId)
-        return Boolean(result);    
-    };
-
     const checkIfCourseCompleted = async () => {
         const result = await checkIfCourseIsCompleted(userId, courseId, lessons.length);
         console.log("length: ", lessons.length)
@@ -72,8 +68,13 @@ function CoursePageAuth() {
         await enrolUserToCourse();
         setIsLoading(false);
         setStartButtonVisible(false);
+        // add all lesons to UserLesson
+
+        const result = await getCourseLessonByNoLesson(courseId, 1);
+        navigate(`/auth/lessons/${result.id}`);
+
         // ... other logic ...
-        window.location.reload(); // Refresh the page after loading
+        window.location.reload(); 
     };
 
     const handleClickLesson = async (itemId) => navigate(`/auth/lessons/${itemId}`);

@@ -8,10 +8,12 @@ import getAllProblemsOfALesson from "services/lessonService/getAllProblemsForALe
 import runCode from "services/jupyterService/runCode";
 import addAnswerAndProblemPercentageToStudent from "services/userService/addAnswerAndProblemPercentageToStudent";
 import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
+import markLessonAsCompleted from "services/userService/user-lesson/markLessonAsCompleted";
 
 function LessonPage() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState(0);
+  const [courseId, setCourseId] = useState(0);
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState({
     id: lessonId,
@@ -57,6 +59,7 @@ function LessonPage() {
     const result =  await getProblemScoreForAProblemSoledByUser(userId, currentProblem.problemId);
     if (result === 100) {
       setIsConditionMet(true);
+      await markLessonAsCompleted(userId, lessonId, courseId);
     } else {
       setIsConditionMet(false);
     }
@@ -66,10 +69,16 @@ function LessonPage() {
     setUserId(parseInt(localStorage.getItem('userId')));
   }
 
+  const getCourseId = () => {
+    setCourseId(parseInt(localStorage.getItem('courseId')));
+    console.log("course: ", parseInt(localStorage.getItem('courseId')))
+  }
+
   useEffect(() => {
     getLesson();
     getProblems();
     getUserId();
+    getCourseId();
 
     const editor = monacoEditor.editor.create(document.getElementById("editor"), {
       value: "",
@@ -122,9 +131,10 @@ function LessonPage() {
     const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode)
     setFinalResult(result.finalResult);
     console.log("id: ", currentProblem)
-    const callResult = await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
+    await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
     if (result.finalResult == 100) { 
       setIsConditionMet(true); 
+      await markLessonAsCompleted(userId, lessonId, courseId);
     } else {
       setIsConditionMet(false);
     }

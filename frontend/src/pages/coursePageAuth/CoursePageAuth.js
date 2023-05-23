@@ -6,12 +6,11 @@ import { AiFillSignal, AiOutlineClockCircle, AiOutlineLock } from "react-icons/a
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 import NavBar from "pages/navBar/NavBar";
 import addCourseToUser from "services/userService/addCourseToUser";
-import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
 import isUserEnrolledToCourse from "services/userService/user-course/isUserEnrolledToCourse";
-import checkIfAUserLessonIsCompleted from "services/userService/user-lesson/checkIfAUserLessonIsComplete";
 import checkIfCourseIsCompleted from "services/userService/user-course/checkIfCourseIsCompleted";
 import LessonItem from "components/Lesson/LessonItem";
 import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByNoLesson";
+import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -34,12 +33,12 @@ function CoursePageAuth() {
 
     const getUserId = () => {
         setUserId(parseInt(localStorage.getItem("userId")));
-        console.log(parseInt(localStorage.getItem("userId")));
     };
 
     const getLessons = async () => {
         const result = await getAllLessonsOfACourse(courseId);
         const sortedLessons = result.sort((a, b) => a.noLesson - b.noLesson);
+        localStorage.setItem('lessonsLength', sortedLessons.length);
         setLessons(sortedLessons);
     };
 
@@ -68,14 +67,24 @@ function CoursePageAuth() {
         await enrolUserToCourse();
         setIsLoading(false);
         setStartButtonVisible(false);
-        // add all lesons to UserLesson
+        addLessonsToUser().then( async() => {
+            const result = await getCourseLessonByNoLesson(courseId, 1);
+            navigate(`/auth/lessons/${result.id}`);
+        })
 
-        const result = await getCourseLessonByNoLesson(courseId, 1);
-        navigate(`/auth/lessons/${result.id}`);
+
 
         // ... other logic ...
-        window.location.reload(); 
+        // window.location.reload();
     };
+
+    const addLessonsToUser = async () => {
+        // add all lesons to UserLesson
+        lessons.forEach(async lesson => {
+            await addEnrolledLessonToUser(userId, lesson.id, courseId)
+            console.log("added")
+        });
+    }
 
     const handleClickLesson = async (itemId) => navigate(`/auth/lessons/${itemId}`);
 
@@ -160,7 +169,7 @@ function CoursePageAuth() {
 
                             {lessons.map((lesson, index) => (
                                 <React.Fragment key={lesson.id}>
-                                    <LessonItem lesson={lesson} userId={userId} courseId={courseId} isEnrolled={isEnrolled} index={index} lessons={lessons} handleClickLesson={handleClickLesson}/>
+                                    <LessonItem lesson={lesson} userId={userId} courseId={courseId} isEnrolled={isEnrolled} index={index} lessons={lessons} handleClickLesson={handleClickLesson} />
                                     {index !== lessons.length - 1 && <div className="additional-line"></div>}
                                 </React.Fragment>
                             ))}

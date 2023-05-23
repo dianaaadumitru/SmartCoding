@@ -2,7 +2,7 @@ import { API } from "../../../utility/api";
 
 const addEnrolledLessonToUser = async (userId, lessonId, courseId) => {
     try {
-        const response = await API.post(`/users/${userId}/lessons/addLesson/${lessonId}`, {param: {courseId}});
+        const response = await API.post(`/users/${userId}/lessons/addLesson/${lessonId}?courseId=${courseId}`);
         console.log(response.data);
         return response.data;
     } catch (e) {

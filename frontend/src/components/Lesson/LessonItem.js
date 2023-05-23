@@ -13,8 +13,7 @@ const LessonItem = ({ lesson, userId, courseId, isEnrolled, index, lessons, hand
           setIsLessonCompleted(Boolean(lessonCompleted));
         } catch (error) {
           console.error('Error:', error);
-          // Handle the error case if the Promise rejects
-          // Set the completion status to false or handle the error as needed
+          
         }
       };
   
@@ -40,7 +39,10 @@ const LessonItem = ({ lesson, userId, courseId, isEnrolled, index, lessons, hand
             )}
             
             {(!isEnrolled || (isEnrolled && !isLessonCompleted)) && lesson.noLesson !== 1 ? (
-              <AiOutlineLock className="lesson-icon" />
+              <>
+              {console.log("isEnrolled: ", {isEnrolled}, " isCompleted: ", {isLessonCompleted}, " no lesson: ", lesson.noLesson)}
+                <AiOutlineLock className="lesson-icon" />
+              </>
             ) : null}
           </div>
           <div className="lesson-number">{lesson.noLesson}</div>

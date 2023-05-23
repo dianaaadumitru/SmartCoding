@@ -9,11 +9,13 @@ import runCode from "services/jupyterService/runCode";
 import addAnswerAndProblemPercentageToStudent from "services/userService/addAnswerAndProblemPercentageToStudent";
 import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
 import markLessonAsCompleted from "services/userService/user-lesson/markLessonAsCompleted";
+import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByNoLesson";
 
 function LessonPage() {
   const navigate = useNavigate();
   const [userId, setUserId] = useState(0);
   const [courseId, setCourseId] = useState(0);
+  const [maxLength, setMaxLength] = useState(-1);
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState({
     id: lessonId,
@@ -56,7 +58,7 @@ function LessonPage() {
   };
 
   const getProblemResult = async () => {
-    const result =  await getProblemScoreForAProblemSoledByUser(userId, currentProblem.problemId);
+    const result = await getProblemScoreForAProblemSoledByUser(userId, currentProblem.problemId);
     if (result === 100) {
       setIsConditionMet(true);
       await markLessonAsCompleted(userId, lessonId, courseId);
@@ -71,7 +73,10 @@ function LessonPage() {
 
   const getCourseId = () => {
     setCourseId(parseInt(localStorage.getItem('courseId')));
-    console.log("course: ", parseInt(localStorage.getItem('courseId')))
+  }
+
+  const getMaxLength = () => {
+    setMaxLength(parseInt(localStorage.getItem('lessonsLength')));
   }
 
   useEffect(() => {
@@ -79,6 +84,7 @@ function LessonPage() {
     getProblems();
     getUserId();
     getCourseId();
+    getMaxLength();
 
     const editor = monacoEditor.editor.create(document.getElementById("editor"), {
       value: "",
@@ -100,7 +106,6 @@ function LessonPage() {
     });
 
     return () => {
-      // Dispose of the editor when the component unmounts
       editor.dispose();
     };
   }, []);
@@ -116,7 +121,7 @@ function LessonPage() {
       getProblemResult();
     }
   }, [userId, currentProblem]);
-  
+
 
   const renderText = (someText) => {
     return someText.split("\n").map((line, index) => (
@@ -130,10 +135,9 @@ function LessonPage() {
     setIsLoading(true);
     const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode)
     setFinalResult(result.finalResult);
-    console.log("id: ", currentProblem)
     await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
-    if (result.finalResult == 100) { 
-      setIsConditionMet(true); 
+    if (result.finalResult == 100) {
+      setIsConditionMet(true);
       await markLessonAsCompleted(userId, lessonId, courseId);
     } else {
       setIsConditionMet(false);
@@ -141,12 +145,21 @@ function LessonPage() {
     setIsLoading(false);
   };
 
-  const handleNextProblem = () => {
-
+  const handleNextProblem = async () => {
+    if (lesson.noLesson == maxLength) {
+      navigate(`/auth/courses/${courseId}`);
+      
+    } else {
+      const result = await getCourseLessonByNoLesson(courseId, lesson.noLesson + 1);
+      navigate(`/auth/lessons/${result.id}`);
+      window.location.reload();
+    }
   };
 
-  const handlePreviousProblem = () => {
-
+  const handlePreviousProblem = async () => {
+    const result = await getCourseLessonByNoLesson(courseId, lesson.noLesson - 1);
+    navigate(`/auth/lessons/${result.id}`);
+    window.location.reload();
   };
 
   return (
@@ -206,10 +219,18 @@ function LessonPage() {
       </div>
 
       <div className="problem-navigation-buttons">
-        <button className="navigation-button" onClick={handlePreviousProblem}>
+        <button
+          className="navigation-button"
+          onClick={handlePreviousProblem}
+          disabled={lesson.noLesson === 1}
+        >
           &lt;
         </button>
-        <button className="navigation-button" onClick={handleNextProblem}>
+        <button
+          className="navigation-button"
+          onClick={handleNextProblem}
+          disabled={!isConditionMet}
+        >
           &gt;
         </button>
       </div>

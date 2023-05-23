@@ -2,11 +2,13 @@ package com.example.backend.service;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.*;
+import com.example.backend.entity.embeddableIds.UserLessonId;
 import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.embeddableIds.UserQuestionId;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -31,8 +33,12 @@ public class UserService {
 
     private final CourseRepository courseRepository;
 
+    private final UserLessonRepository userLessonRepository;
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, UserProblemResultsRepository userProblemResultsRepository1, CourseRepository courseRepository) {
+    private final LessonRepository lessonRepository;
+
+
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, UserProblemResultsRepository userProblemResultsRepository1, CourseRepository courseRepository, UserLessonRepository userLessonRepository, LessonRepository lessonRepository) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
@@ -40,6 +46,8 @@ public class UserService {
         this.problemRepository = problemRepository;
         this.userProblemResultsRepository = userProblemResultsRepository1;
         this.courseRepository = courseRepository;
+        this.userLessonRepository = userLessonRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     public UserDto addUser(UserDto userDto) {
@@ -422,6 +430,9 @@ public class UserService {
             throw new CrudOperationException("Course does not exist!");
         });
 
+        // Initialize and load the courses collection
+        Hibernate.initialize(user.getCourses());
+
         if (user.getCourses() == null || user.getCourses().isEmpty()) {
             user.setCourses(new ArrayList<>());
         }
@@ -474,5 +485,75 @@ public class UserService {
                         .difficulty(course.getDifficulty().toString())
                         .courseType(course.getCourseTypes().iterator().next().getType())
                         .build()).toList();
+    }
+
+    public LessonDto addEnrolledLessonToUser(Long userId, Long lessonId, Long courseId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
+            throw new CrudOperationException("Lesson does not exist!");
+        });
+
+        courseRepository.findById(courseId).orElseThrow(() -> {
+            throw new CrudOperationException("Course does not exist!");
+        });
+
+        UserLessons userLessons = UserLessons.builder()
+                .userLessonId(new UserLessonId(userId, lessonId))
+                .lesson(lesson)
+                .user(user)
+                .courseId(courseId)
+                .build();
+
+        userLessonRepository.save(userLessons);
+
+        return LessonDto.builder()
+                .noLesson(lesson.getNoLesson())
+                .id(lessonId)
+                .expectedTime(lesson.getExpectedTime())
+                .description(lesson.getDescription())
+                .longDescription(lesson.getLongDescription())
+                .name(lesson.getName())
+                .build();
+    }
+
+    public boolean checkIfAUserLessonIsComplete(Long userId, Long lessonId, Long courseId) {
+        Optional<UserLessons> userLessonsOptional = userLessonRepository.findByUserLessonIdAndCourseId(new UserLessonId(userId, lessonId), courseId);
+        if (userLessonsOptional.isEmpty()) {
+            throw new CrudOperationException("This user is not enrolled to this course");
+        }
+
+        UserLessons userLessons = userLessonsOptional.get();
+
+        return userLessons.isCompleted();
+    }
+
+    public void markLessonAsCompleted(Long userId, Long lessonId, Long courseId) {
+        Optional<UserLessons> userLessonsOptional = userLessonRepository.findByUserLessonIdAndCourseId(new UserLessonId(userId, lessonId), courseId);
+        if (userLessonsOptional.isEmpty()) {
+            throw new CrudOperationException("This user is not enrolled to this course");
+        }
+
+        UserLessons userLessons = userLessonsOptional.get();
+        userLessons.setCompleted(true);
+        userLessonRepository.save(userLessons);
+    }
+
+    public boolean checkIfAllLessonsOfACourseAreComplete(Long userId, Long courseId, int length) {
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+
+        int completedLessons = 0;
+
+        List<UserLessons> userLessons = userLessonRepository.findAllByUserAndCourseId(user, courseId);
+        for (UserLessons userLesson: userLessons) {
+            if (userLesson.isCompleted()){
+                completedLessons++;
+            }
+        }
+        return completedLessons == length;
     }
 }

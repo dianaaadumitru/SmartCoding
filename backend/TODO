@@ -47,11 +47,14 @@ also in course page always check if already enrolled - if yes unblock all lesson
 
 create a new table: user,lesson, courseId, completed(true/false)
 DONE    - many to many between user - lesson (embededId)
-    - methods: check if a lesson is complete, add lesson - user - course - check if all lessons of a course are completed
-    - change flag if lesson is complete
-    - check if all lessons from a course are completed
-    - add lessons for user in this table when enrol button is click (all lessons of a course with flag false)
+methods:
+DONE    - check if a lesson is complete
+DONE    - change flag if lesson is complete
+DONE    - check if all lessons from a course are completed
+DONE    - add lessons for user in this table when enrol button is click (all lessons of a course with flag false)
 
+
+DONE !!!! user enrol to course doesnt work bc i changed fetch type to lazy, if i let it ear app crashes !!!!
 
 code snippets for jupyter calls:
 primes:

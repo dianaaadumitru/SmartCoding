@@ -116,4 +116,25 @@ public class UserController {
     public ResponseEntity<List<CourseDto>> getUserCourses(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getUserCourses(userId));
     }
+
+    @GetMapping("/{userId}/lessons/completedLessons/{lessonId}")
+    public ResponseEntity<Boolean> checkIfAUserLessonIsComplete(@PathVariable Long userId, @PathVariable Long lessonId, @RequestParam Long courseId) {
+        return ResponseEntity.ok(userService.checkIfAUserLessonIsComplete(userId, lessonId, courseId));
+    }
+
+    @GetMapping("/{userId}/lessons/completeLesson/{lessonId}")
+    public ResponseEntity<Void> markLessonAsCompleted(@PathVariable Long userId, @PathVariable Long lessonId, @RequestParam Long courseId) {
+        userService.markLessonAsCompleted(userId, lessonId, courseId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/courses/completedCourse/{courseId}")
+    public ResponseEntity<Boolean> checkIfAllLessonsOfACourseAreComplete(@PathVariable Long userId, @PathVariable Long courseId, @RequestParam int length) {
+        return ResponseEntity.ok(userService.checkIfAllLessonsOfACourseAreComplete(userId, courseId, length));
+    }
+
+    @PostMapping("/{userId}/lessons/addLesson/{lessonId}")
+    public ResponseEntity<LessonDto> addEnrolledLessonToUser(@PathVariable Long userId, @PathVariable Long lessonId, @RequestParam Long courseId) {
+        return ResponseEntity.ok(userService.addEnrolledLessonToUser(userId, lessonId, courseId));
+    }
 }

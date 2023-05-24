@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import './TopCourses.css'
 import { AiFillSignal } from "react-icons/ai";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import getTopCourses from "services/courseService/getTopCourses";
 
 function TopCourses() {
     const [courses, setCourses] = useState([]);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,9 +31,7 @@ function TopCourses() {
     }, [])
 
     const handleItemClick = (itemId) => {
-        // Perform any necessary logic or data manipulation before navigating
-        navigate(`/courses/${itemId}`); 
-        // navigate('/mainpage')
+        navigate(`/courses/${itemId}`);
     };
 
     return (

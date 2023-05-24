@@ -71,15 +71,9 @@ function CoursePageAuth() {
             const result = await getCourseLessonByNoLesson(courseId, 1);
             navigate(`/auth/lessons/${result.id}`);
         })
-
-
-
-        // ... other logic ...
-        // window.location.reload();
     };
 
     const addLessonsToUser = async () => {
-        // add all lesons to UserLesson
         lessons.forEach(async lesson => {
             await addEnrolledLessonToUser(userId, lesson.id, courseId)
             console.log("added")

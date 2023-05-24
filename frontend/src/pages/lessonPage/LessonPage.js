@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./LessonPage.css";
 import NavBar from "pages/navBar/NavBar";
+import Modal from "react-modal";
 import { useNavigate, useParams } from "react-router-dom";
 import getLessonById from "services/lessonService/getLessonById";
 import * as monacoEditor from "monaco-editor";
@@ -46,6 +47,8 @@ function LessonPage() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const getProblems = async () => {
     const result = await getAllProblemsOfALesson(lessonId);
@@ -132,6 +135,11 @@ function LessonPage() {
   };
 
   const handleClick = async () => {
+    if (textToCompile.trim() === "") {
+      setIsPopupOpen(true);
+      return;
+    }
+
     setIsLoading(true);
     const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode)
     setFinalResult(result.finalResult);
@@ -148,7 +156,7 @@ function LessonPage() {
   const handleNextProblem = async () => {
     if (lesson.noLesson == maxLength) {
       navigate(`/auth/courses/${courseId}`);
-      
+
     } else {
       const result = await getCourseLessonByNoLesson(courseId, lesson.noLesson + 1);
       navigate(`/auth/lessons/${result.id}`);
@@ -160,6 +168,41 @@ function LessonPage() {
     const result = await getCourseLessonByNoLesson(courseId, lesson.noLesson - 1);
     navigate(`/auth/lessons/${result.id}`);
     window.location.reload();
+  };
+
+  const popUpComponent = () => {
+    return (
+      <Modal
+        isOpen={isPopupOpen}
+        onRequestClose={() => setIsPopupOpen(false)}
+        contentLabel="No Code to Compile"
+        style={{
+          overlay: {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)"
+          },
+          content: {
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "300px",
+            padding: "20px",
+            background: "white",
+            borderRadius: "4px",
+            outline: "none"
+          }
+        }}
+      >
+        <h1>No code to compile!</h1>
+        <p>Please enter your code before running.</p>
+        <button className="button" onClick={() => setIsPopupOpen(false)}>Close</button>
+      </Modal>
+    );
   };
 
   return (
@@ -234,7 +277,7 @@ function LessonPage() {
           &gt;
         </button>
       </div>
-
+      {popUpComponent()}
     </div>
   );
 }

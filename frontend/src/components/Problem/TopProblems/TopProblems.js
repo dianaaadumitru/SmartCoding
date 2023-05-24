@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate from react
 
 function TopProblems() {
     const [problems, setProblems] = useState([]);
-    const navigate = useNavigate(); // Create a navigate function
+    const navigate = useNavigate(); 
 
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,8 +31,8 @@ function TopProblems() {
     }, [])
 
     const handleItemClick = (itemId) => {
-        // navigate(`/problem/${itemId}`); // Replace "/problem" with the desired URL of the destination page
-        navigate('/mainpage')
+        navigate(`/auth/problems/${itemId}`); 
+        // navigate('/mainpage')
     };
 
     return (
@@ -44,7 +44,7 @@ function TopProblems() {
                     </button>
                 )}
                 {paginatedItems.map((item) => (
-                    <div key={item.id} className="list-item" onClick={() => handleItemClick(item.id)}>
+                    <div key={item.problemId} className="list-item" onClick={() => handleItemClick(item.problemId)}>
                         <div className="list-item-header">Problem</div>
                         <h3 className="list-item-heading">{item.name}</h3>
                         <p className="list-item-description">{item.description}</p>

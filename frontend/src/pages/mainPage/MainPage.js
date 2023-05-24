@@ -6,6 +6,7 @@ import TopProblems from "components/Problem/TopProblems/TopProblems";
 import { useNavigate } from "react-router-dom";
 import TopCoursesAuth from "components/Course/TopCoursesAuth/TopCoursesAuth";
 import TopProblemsAuth from "components/Problem/TopProblemsAuth/TopProblemsAuth";
+import DeveloperComponent from "components/Developer/DeveloperComponent";
 
 function MainPage() {
     const navigate = useNavigate()
@@ -14,17 +15,17 @@ function MainPage() {
 
     useEffect(() => {
         if (window.location.hash === '#target') {
-          targetRef.current.scrollIntoView({ behavior: 'smooth' });
+            targetRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-      }, []);
+    }, []);
 
-      const handleExploreCoursesOnClick = () => navigate('/courses');
-      const handleExploreProblemsOnClick = () => navigate('/problems');
+    const handleExploreCoursesOnClick = () => navigate('/courses');
+    const handleExploreProblemsOnClick = () => navigate('/problems');
 
 
     return (
         <div className="page-section-main">
-            <NavBar targetRef={targetRef}/>
+            <NavBar targetRef={targetRef} />
             <section className='explore-section'>
                 <h2 ref={targetRef} className='start-learning'>Start learning</h2>
                 <p className='top-courses'>Top courses: </p>
@@ -34,6 +35,12 @@ function MainPage() {
                 <TopProblemsAuth />
                 <button className="create-account-btn" onClick={handleExploreProblemsOnClick}>Explore full catalog</button>
             </section>
+
+            <section className='developer-section'>
+                <h2 className='start-learning'>Developer</h2>
+                <DeveloperComponent />
+            </section>
+            
         </div>
     )
 }

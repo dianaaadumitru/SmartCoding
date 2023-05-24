@@ -4,6 +4,7 @@ import HomePageNavBar from './homePageNavBar/HomePageNavBar';
 import './HomePage.css';
 import TopProblems from 'components/Problem/TopProblems/TopProblems';
 import TopCourses from 'components/Course/TopCourses/TopCourses';
+import DeveloperComponent from 'components/Developer/DeveloperComponent';
 
 function HomePage() {
   const navigate = useNavigate()
@@ -41,6 +42,10 @@ function HomePage() {
         <p className='top-courses'>Top problems: </p>
         <TopProblems />
         <button className="create-account-btn" onClick={() => handleClickExploreCatalog()}>Explore full catalog</button>
+      </section>
+      <section className='developer-section'>
+        <h2 className='start-learning'>Developer</h2>
+        <DeveloperComponent />
       </section>
     </>
   )

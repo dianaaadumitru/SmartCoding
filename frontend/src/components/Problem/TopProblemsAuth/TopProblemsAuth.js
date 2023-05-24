@@ -31,8 +31,7 @@ function TopProblemsAuth() {
     }, [])
 
     const handleItemClick = (itemId) => {
-        // navigate(`/auth/problem/${itemId}`); // Replace "/problem" with the desired URL of the destination page
-        navigate('/mainpage')
+        navigate(`/auth/problems/${itemId}`); 
     };
 
     return (
@@ -44,7 +43,7 @@ function TopProblemsAuth() {
                     </button>
                 )}
                 {paginatedItems.map((item) => (
-                    <div key={item.id} className="list-item" onClick={() => handleItemClick(item.id)}>
+                    <div key={item.problemId} className="list-item" onClick={() => handleItemClick(item.problemId)}>
                         <div className="list-item-header">Problem</div>
                         <h3 className="list-item-heading">{item.name}</h3>
                         <p className="list-item-description">{item.description}</p>

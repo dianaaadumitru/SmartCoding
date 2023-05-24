@@ -23,17 +23,18 @@
 
 .nav-item {
   margin-right: 20px;
-  color: #C2C2C2;
+  color: #c2c2c2;
 }
 
 .nav-item a {
-  color: #C2C2C2;
+  color: #c2c2c2;
   text-decoration: none;
   font-family: Arial, sans-serif;
   font-size: 0.9em;
 }
 
 .profile-button {
+  position: relative;
   margin-left: auto;
   font-size: 0.7em;
 }
@@ -41,13 +42,66 @@
 .profile-button button {
   background-color: transparent;
   border: none;
-  color: #C2C2C2;
+  color: #c2c2c2;
   font-size: 1.2em;
   cursor: pointer;
 }
 
 .profile-button button:focus {
   outline: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100%);
+  left: 0;
+  width: 90%;
+  background-color: #c2c2c2;
+  border-radius: 4px;
+  padding: 10px;
+  z-index: 2;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  display: block;
+  margin-bottom: 10px;
+  color: #000000;
+  text-decoration: none;
+  font-size: 0.9em;
+  font-family: Arial, sans-serif;
+  width: 100%; /* Add this line */
+  border: none; /* Add this line */
+  background-color: transparent; /* Add this line */
+  cursor: pointer;
+  padding: 0; /* Add this line */
+}
+
+.dropdown-menu button:hover {
+  text-decoration: none; /* Remove this line */
+}
+.dropdown-menu a {
+  display: block;
+  margin-bottom: 10px;
+  color: #000000;
+  text-decoration: none;
+}
+
+.dropdown-menu button {
+  display: block;
+  margin-bottom: 10px;
+  background-color: transparent;
+  border: none;
+  color: #000000;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.dropdown-line {
+  border: none;
+  height: 1px;
+  background-color: black;
+  margin: 10px 0;
 }
 
 @media only screen and (max-width: 768px) {

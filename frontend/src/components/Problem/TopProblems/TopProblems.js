@@ -31,8 +31,7 @@ function TopProblems() {
     }, [])
 
     const handleItemClick = (itemId) => {
-        navigate(`/auth/problems/${itemId}`); 
-        // navigate('/mainpage')
+        navigate(`/problems/${itemId}`); 
     };
 
     return (

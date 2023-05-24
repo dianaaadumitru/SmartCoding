@@ -11,6 +11,7 @@ import ExploreProblems from 'pages/exploreProblems/ExploreProblems';
 import CoursePageAuth from 'pages/coursePageAuth/CoursePageAuth';
 import LessonPage from 'pages/lessonPage/LessonPage';
 import ProblemPageAuth from 'pages/problemPageAuth/ProblemPageAuth';
+import ProblemPage from 'pages/problemPage/ProblemPage';
 
 const Routes = () => {
     return (
@@ -23,8 +24,10 @@ const Routes = () => {
             <Route path="auth/courses/:courseId" element={<CoursePageAuth />} />
             <Route path="/courses" element={<ExploreCourses />} />
             <Route path="/problems" element={<ExploreProblems />} />
-            <Route path="auth/lessons/:lessonId" element={<LessonPage />} />
-            <Route path="auth/problems/:problemId" element={<ProblemPageAuth />} />
+            <Route path="/auth/lessons/:lessonId" element={<LessonPage />} />
+            <Route path="/auth/problems/:problemId" element={<ProblemPageAuth />} />
+            <Route path="/problems/:problemId" element={<ProblemPage />} />
+
 
 
         </ReactRoutes>

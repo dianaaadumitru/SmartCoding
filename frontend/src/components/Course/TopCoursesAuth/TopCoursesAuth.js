@@ -32,7 +32,6 @@ function TopCoursesAuth() {
 
     const handleItemClick = (itemId) => {
         navigate(`/auth/courses/${itemId}`); 
-        // navigate('/mainpage')
     };
 
     return (

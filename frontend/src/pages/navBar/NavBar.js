@@ -1,23 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './NavBar.css';
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 
 function NavBar(props) {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   function handleListItemClick() {
     props.targetRef.current.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function handleProfileHover() {
+    setIsDropdownOpen(true);
+  }
+
+  function handleProfileLeave() {
+    setIsDropdownOpen(false);
   }
 
   return (
     <nav className="nav-bar">
       <ul className="nav-list">
-        {/* <li className="nav-item"><a href="/">Home</a></li> */}
-        {/* <li className="nav-item" onClick={handleListItemClick}>Explore</li> */}
-        <li className="nav-item" ><a href="/mainpage">Explore</a></li>
-
+        <li className="nav-item"><a href="/mainpage">Explore</a></li>
         <li className="nav-item"><a href="#">Developer</a></li>
       </ul>
-      <div className="profile-button">
-        <button><AiOutlineUser /> My Profile</button>
+      <div
+        className="profile-button"
+        onMouseEnter={handleProfileHover}
+        onMouseLeave={handleProfileLeave}
+      >
+        <button>
+          <AiOutlineUser /> My Profile
+        </button>
+        {isDropdownOpen && (
+          <div className="dropdown-menu">
+            <a href="#">username</a>
+            <hr className="dropdown-line" />
+            <button onClick={props.onLogout}><AiOutlineLogout /> Logout</button>
+          </div>
+        )}
       </div>
     </nav>
   );

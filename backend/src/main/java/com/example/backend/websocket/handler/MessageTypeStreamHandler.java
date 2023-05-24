@@ -19,8 +19,6 @@ public class MessageTypeStreamHandler implements Consumer<WebSocketResponseJsonD
     public void accept(WebSocketResponseJsonDto webSocketResponseJsonDto) {
         String printedResult = webSocketResponseJsonDto.getContent().getText();
         log.info("received printed code - " + printedResult);
-//        var pipelineResults = pipelineResultService.convertResultStringToHashMap(printedResult);
-//        pipelineResultService.addAllPipelineResults(pipelineResults, pipelineId);
-//        codeExecutionResult.setPrintedResult(printedResult);
+        codeExecutionResult.setPrintedResult(printedResult);
     }
 }

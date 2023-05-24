@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.client.JupyterClient;
+import com.example.backend.dto.CodeDto;
 import com.example.backend.dto.CodeValueToCompileDto;
 import com.example.backend.dto.ResultDto;
 import com.example.backend.exceptions.CrudOperationException;
@@ -126,6 +127,35 @@ public class JupyterService {
             }
         }
         return ResultDto.builder().finalResult(((double) successes / valuesToCheck.length) * 100).build();
+    }
+
+    public RunRequestResult readFinalResultDeveloper(CodeDto data) throws ExecutionException, InterruptedException {
+        if (data.getCode().isEmpty()) {
+            throw new CrudOperationException("empty code");
+        }
+
+        ExecutorService threadpool = Executors.newCachedThreadPool();
+        Future<RunRequestResultIdDto> futureTask = threadpool.submit(() -> sendRunRequest(data.getCode()));
+
+        while (!futureTask.isDone()) {
+
+        }
+        RunRequestResultIdDto runRequestResultId = futureTask.get();
+
+        threadpool.shutdown();
+
+        RunRequestResult result = readRunRequestResult(runRequestResultId.getRequestId());
+        while (result.getRequestStatus() == RunRequestResult.RequestStatusLevel.PENDING) {
+            result = readRunRequestResult(runRequestResultId.getRequestId());
+            if (result.getRequestStatus() == RunRequestResult.RequestStatusLevel.PENDING) {
+                try {
+                    Thread.sleep(1000); // Wait for 1 second before calling the method again
+                } catch (InterruptedException e) {
+
+                }
+            }
+        }
+        return result;
     }
 
 }

@@ -69,9 +69,10 @@ TODO - backend
 
 
 TODO - frontend
-    - my profile page (edit profile + my courses + my problems
+    - my profile page (edit profile + my courses + my problems)
 DONE    - problem page
-    - developer section
+DONE    - developer section
+DONE    - navbars - dropdown
     - navbars
 
 code snippets for jupyter calls:

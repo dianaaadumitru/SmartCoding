@@ -53,15 +53,18 @@ function DeveloperComponent() {
         }
 
         setIsLoading(true);
+        console.log("final result before ", finalResult);
         const result = await runCodeDeveloper(textToCompile);
-        setFinalResult({
-            ...finalResult,
-            codeExecutionResult: {
-                printedResult: result.printedResult,
-                returnedResult: result.returnedResult,
-                pythonCodeStatus: result.pythonCodeStatus
-            }
-        });
+        // setFinalResult({
+        //     ...finalResult,
+        //     codeExecutionResult: {
+        //         printedResult: result.printedResult,
+        //         returnedResult: result.returnedResult,
+        //         pythonCodeStatus: result.pythonCodeStatus
+        //     }
+        // });
+        setFinalResult(result)
+        console.log("final result ", result);
         setIsLoading(false);
     };
 
@@ -133,7 +136,7 @@ function DeveloperComponent() {
 
     useEffect(() => {
         displayResult();
-      }, [finalResult]);
+    }, [finalResult]);
 
     return (
         <div className="developer-page-container">
@@ -159,7 +162,34 @@ function DeveloperComponent() {
                 </div>
 
                 <div className="developer-right-column">
-                    {(!isLoading ? (displayResult()) :null)}
+                    {finalResult.requestStatus != '' && (
+                        <>
+                            {
+                                finalResult.requestStatus == 'DONE' && (
+                                    <>
+                                        <p style={{ color: "black", fontWeight: "bold"}}>Result: </p>
+
+                                        {
+                                            finalResult.codeExecutionResult.pythonCodeStatus == 'ok' ? (
+                                                <>
+                                                    {
+                                                        finalResult.codeExecutionResult.printedResult != null ? (
+                                                            <p style={{ color: "black" }}>{`Printed result: ${finalResult.codeExecutionResult.printedResult}`}</p>
+                                                        ) : (
+                                                            <p style={{ color: "black" }}>{`Returned result: ${finalResult.codeExecutionResult.returnedResult}`}</p>
+                                                        )
+                                                    }
+                                                </>
+                                            ) : (
+                                                <p style={{ color: "red" }}>An error occurred during code execution.</p>
+                                            )
+                                        }
+                                    </>
+                                )
+                            }
+                        </>
+
+                    )}
 
                 </div>
             </div>

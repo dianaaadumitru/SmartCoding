@@ -65,7 +65,7 @@ TODO - backend
     - when compiling code check if there exists a method for splitting string
     - check if code is with print
     - check if there is an error compiling
-    - make a call for developer method
+DONE    - make a call for developer method
 
 
 TODO - frontend

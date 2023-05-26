@@ -1,0 +1,70 @@
+.myProfile-page-container {
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+}
+
+.content-container {
+    flex: 1;
+    display: flex;
+}
+
+.left-column {
+    width: 300px;
+    /* Adjust the width as needed */
+    background-color: #c2c2c2;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.right-column {
+    flex: 1;
+    background-color: black;
+    overflow-y: auto;
+}
+
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    /* Adjust the margin-top as needed */
+}
+
+.centered-content label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.centered-content input {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.2em; /* Adjust the font-size as needed */
+    color: black; /* Set the color to black */
+}
+
+.update-button {
+    flex: 0;
+    margin-right: 10px;
+    display: block;
+    margin: 0 auto;
+    background-color: #DA5218;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.update-button:hover {
+    background-color: #ba3d07;
+}
+
+.my-courses {
+    color: #C2C2C2;
+    font-size: 1.7em;
+  }

@@ -140,7 +140,6 @@ function DeveloperComponent() {
 
     return (
         <div className="developer-page-container">
-            <NavBar />
             <div className="developer-column-container">
                 <div className="developer-left-column">
                     <div className="developer-editor-wrapper">

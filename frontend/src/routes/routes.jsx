@@ -12,6 +12,7 @@ import CoursePageAuth from 'pages/coursePageAuth/CoursePageAuth';
 import LessonPage from 'pages/lessonPage/LessonPage';
 import ProblemPageAuth from 'pages/problemPageAuth/ProblemPageAuth';
 import ProblemPage from 'pages/problemPage/ProblemPage';
+import MyProfile from 'pages/myProfilePage/MyProfile';
 
 const Routes = () => {
     return (
@@ -27,8 +28,7 @@ const Routes = () => {
             <Route path="/auth/lessons/:lessonId" element={<LessonPage />} />
             <Route path="/auth/problems/:problemId" element={<ProblemPageAuth />} />
             <Route path="/problems/:problemId" element={<ProblemPage />} />
-
-
+            <Route path="/auth/myProfile/:userId" element={<MyProfile />} />
 
         </ReactRoutes>
     )

@@ -60,6 +60,7 @@ DONE    - for last lesson when clicking next back to course page
 DONE    - enable next button only when isCompleted = 100 and go to lessonNextNo
 
 
+DONE ---- !!! logout !!!
 
 TODO - backend
     - when compiling code check if there exists a method for splitting string

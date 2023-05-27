@@ -76,9 +76,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/resultsProblem/{problemId}")
-    public ResponseEntity<Double> getProblemScoreForAProblemSoledByUser(@PathVariable Long userId, @PathVariable Long problemId) {
-        Double score = userService.getProblemScoreForAProblemSoledByUser(userId, problemId);
-        return new ResponseEntity<>(score, HttpStatus.OK);
+    public ResponseEntity<ScoreAnswerDto> getProblemScoreForAProblemSoledByUser(@PathVariable Long userId, @PathVariable Long problemId) {
+        return ResponseEntity.ok(userService.getProblemScoreForAProblemSoledByUser(userId, problemId));
     }
 
     @GetMapping("/resultsQuiz/{userId}")

@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 public class UserProblemResultDto {
     private Long userId;
 
-    private String userFirstName;
-
-    private String userLastName;
-
     private Long problemId;
 
+    private String problemName;
+
     private String problemDescription;
+
+    private String problemDifficulty;
 
     private double percentage;
 

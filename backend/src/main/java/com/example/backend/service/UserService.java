@@ -5,6 +5,7 @@ import com.example.backend.entity.*;
 import com.example.backend.entity.embeddableIds.UserLessonId;
 import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.embeddableIds.UserQuestionId;
+import com.example.backend.entity.enums.Difficulty;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +90,6 @@ public class UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(userDto.getPassword());
         user.setUsername(userDto.getUsername());
         userRepository.save(user);
         userDto.setUserId(user.getUserId());
@@ -292,12 +292,12 @@ public class UserService {
 
         return UserProblemResultDto.builder()
                 .userId(userId)
-                .userFirstName(user.getFirstName())
-                .userLastName(user.getLastName())
                 .problemId(problemId)
                 .problemDescription(problem.getDescription())
                 .percentage(userProblemResult.getPercentage())
                 .answer(userProblemResult.getAnswer())
+                .problemName(userProblemResult.getProblem().getName())
+                .problemDifficulty(userProblemResult.getProblem().getDifficulty().toString())
                 .build();
     }
 
@@ -316,11 +316,14 @@ public class UserService {
                 .build()).toList();
     }
 
-    public double getProblemScoreForAProblemSoledByUser(Long userId, Long problemId) {
+    public ScoreAnswerDto getProblemScoreForAProblemSoledByUser(Long userId, Long problemId) {
         Optional<UserProblemResults> problemResultOptional = userProblemResultsRepository.findById(new UserProblemId(userId, problemId));
         if (problemResultOptional.isEmpty())
-            return -1;
-        return problemResultOptional.get().getPercentage();
+            return null;
+        return ScoreAnswerDto.builder()
+                .score(problemResultOptional.get().getPercentage())
+                .answer(problemResultOptional.get().getAnswer())
+                .build();
     }
 
     public List<UserResultsDto> getQuestionsResultsForStudent(Long userId) {
@@ -341,12 +344,12 @@ public class UserService {
         List<UserProblemResults> userProblemResults = userProblemResultsRepository.findByUser_UserId(userId);
         return userProblemResults.stream().map((userProblemResult -> UserProblemResultDto.builder()
                         .userId(userProblemResult.getUser().getUserId())
-                        .userFirstName(userProblemResult.getUser().getFirstName())
-                        .userLastName(userProblemResult.getUser().getLastName())
+                        .problemName(userProblemResult.getProblem().getName())
                         .problemId(userProblemResult.getProblem().getProblemId())
                         .problemDescription(userProblemResult.getProblem().getDescription())
                         .percentage(userProblemResult.getPercentage())
                         .answer(userProblemResult.getAnswer())
+                        .problemDifficulty(userProblemResult.getProblem().getDifficulty().toString())
                         .build()))
                 .toList();
     }

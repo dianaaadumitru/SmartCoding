@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import './NavBar.css';
+import React, { useEffect, useState } from "react";
+import "./NavBar.css";
 import { AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
-import { useNavigate } from 'react-router-dom';
-import getUserById from 'services/userService/getUserById';
-import Logout from 'services/authController/Logout';
+import { useNavigate } from "react-router-dom";
+import getUserById from "services/userService/getUserById";
+import Logout from "services/authController/Logout";
 
 function NavBar(props) {
   const navigate = useNavigate();
@@ -14,29 +14,33 @@ function NavBar(props) {
     firstName: "",
     lastName: "",
     username: "",
-    email: ""
-  })
+    email: "",
+  });
 
   const getUserId = () => {
-    setUserId(parseInt(localStorage.getItem('userId')));
-  }
+    setUserId(parseInt(localStorage.getItem("userId")));
+  };
 
   useEffect(() => {
     getUserId();
-  }, [])
+  }, []);
 
-  const userById = async() => {
-    const id = parseInt(localStorage.getItem('userId'));
+  const userById = async () => {
+    const id = parseInt(localStorage.getItem("userId"));
     const result = await getUserById(id);
     setUser(result);
-  } 
+  };
 
   useEffect(() => {
     userById();
-  }, [userId])
+  }, [userId]);
 
-  function handleListItemClick() {
-    props.targetRef.current.scrollIntoView({ behavior: 'smooth' });
+  function handleExploreClick() {
+    props.exploreRef.current.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function handleDeveloperClick() {
+    props.developerRef.current.scrollIntoView({ behavior: "smooth" });
   }
 
   function handleProfileHover() {
@@ -46,22 +50,31 @@ function NavBar(props) {
   function handleProfileLeave() {
     setIsDropdownOpen(false);
   }
-  const handleUsernameClick = () => navigate(`/auth/myProfile/${userId}`);
 
-  const handleLogoutClick = async() => {
+  const handleUsernameClick = () =>
+    navigate(`/auth/myProfile/${userId}`);
+
+  const handleLogoutClick = async () => {
     const result = await Logout();
-    if (result.status == 200) {
+    if (result.status === 200) {
       localStorage.clear();
       navigate(`/`);
     }
-
-  }
+  };
 
   return (
     <nav className="nav-bar">
       <ul className="nav-list">
-        <li className="nav-item"><a href="/mainpage">Explore</a></li>
-        <li className="nav-item"><a href="#">Developer</a></li>
+        <li className="nav-item">
+          <a href="/mainpage#explore" onClick={handleExploreClick}>
+            Explore
+          </a>
+        </li>
+        <li className="nav-item">
+          <a href="/mainpage#developer" onClick={handleDeveloperClick}>
+            Developer
+          </a>
+        </li>
       </ul>
       <div
         className="profile-button"
@@ -75,7 +88,9 @@ function NavBar(props) {
           <div className="dropdown-menu">
             <button onClick={handleUsernameClick}>{user.username}</button>
             <hr className="dropdown-line" />
-            <button onClick={handleLogoutClick}><AiOutlineLogout /> Logout</button>
+            <button onClick={handleLogoutClick}>
+              <AiOutlineLogout /> Logout
+            </button>
           </div>
         )}
       </div>

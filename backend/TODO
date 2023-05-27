@@ -69,12 +69,18 @@ TODO - backend
 DONE    - make a call for developer method
 
 
-TODO - frontend
+frontend
 DONE    - my profile page (edit profile + my courses + my problems)
 DONE    - problem page
 DONE    - developer section
 DONE    - navbars - dropdown
-    - navbars
+DONE    - navbars
+
+TODO !!! compute the course time to complete !!!
+
+I think I have to create one more navbar but not sure - look into it
+
+
 
 code snippets for jupyter calls:
 primes:

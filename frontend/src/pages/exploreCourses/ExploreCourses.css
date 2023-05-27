@@ -11,7 +11,7 @@
   align-items: flex-start;
   margin-right: 20px;
   width: 300px;
-  position: fixed; 
+  position: fixed;
 }
 
 .page-heading-courses {
@@ -19,4 +19,19 @@
   color: #C2C2C2;
   margin-top: 60px;
   margin-bottom: 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-section {
+    width: 100%;
+    position: static;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .page-heading-courses {
+    font-size: 28px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }

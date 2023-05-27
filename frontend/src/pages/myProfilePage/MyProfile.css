@@ -3,14 +3,14 @@
     min-height: 100vh;
     display: flex;
     margin-top: 40px;
-}
-
-.content-container-myProfile {
+  }
+  
+  .content-container-myProfile {
     flex: 1;
     display: flex;
-}
-
-.left-column-myProfile {
+  }
+  
+  .left-column-myProfile {
     width: 300px;
     background-color: #c2c2c2;
     padding: 20px;
@@ -18,15 +18,15 @@
     top: 0;
     height: 100vh;
     overflow-y: auto;
-}
-
-.right-column-myProfile {
+  }
+  
+  .right-column-myProfile {
     flex: 1;
     background-color: black;
     overflow-y: auto;
-}
-
-.centered-content-myProfile {
+  }
+  
+  .centered-content-myProfile {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,21 +34,21 @@
     margin-top: 50px;
     position: sticky;
     top: 0;
-}
-
-.centered-content-myProfile label {
+  }
+  
+  .centered-content-myProfile label {
     display: inline-block;
     margin-bottom: 10px;
-}
-
-.centered-content-myProfile input {
+  }
+  
+  .centered-content-myProfile input {
     display: block;
     margin-bottom: 10px;
     font-size: 1.2em;
     color: black;
-}
-
-.update-button-myProfile {
+  }
+  
+  .update-button-myProfile {
     flex: 0;
     margin-right: 10px;
     display: block;
@@ -62,13 +62,71 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-weight: bold;
-}
-
-.update-button:hover {
+  }
+  
+  .update-button-myProfile:hover {
     background-color: #ba3d07;
-}
-
-.my-courses-myProfile {
+  }
+  
+  .my-courses-myProfile {
     color: #C2C2C2;
     font-size: 1.7em;
-}
+  }
+  
+  @media screen and (max-width: 768px) {
+    .myProfile-page-container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .content-container-myProfile {
+      flex-direction: column;
+    }
+  
+    .left-column-myProfile {
+      width: 100%;
+      height: auto;
+      position: relative;
+      top: unset;
+      padding-bottom: 20px;
+    }
+  
+    .right-column-myProfile {
+      width: 100%;
+      height: auto;
+      overflow-y: visible;
+    }
+  
+    .centered-content-myProfile {
+      margin-top: 20px;
+      position: static;
+    }
+  
+    .update-button-myProfile {
+      margin-top: 10px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .left-column-myProfile {
+      padding: 10px;
+    }
+  
+    .centered-content-myProfile label {
+      font-size: 1em;
+    }
+  
+    .centered-content-myProfile input {
+      font-size: 1em;
+    }
+  
+    .update-button-myProfile {
+      font-size: 1em;
+      padding: 8px 16px;
+    }
+  
+    .my-courses-myProfile {
+      font-size: 1.4em;
+    }
+  }
+  

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-import NavBar from '../navBar/NavBar';
 import './CreateAccountPage.css';
 import signUp from "services/authController/SignUp";
 
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import NavBarSignIn from "pages/navBar-signIn/NavBarSignIn";
 
 function CreateAccountPage() {
   const navigate = useNavigate()
@@ -89,7 +89,7 @@ function CreateAccountPage() {
 
   return (
     <div className="page-section">
-      <NavBar />
+      <NavBarSignIn />
       <div className="rectangle">
         <div className="content">
           <h2>Smart coding</h2>
@@ -124,7 +124,6 @@ function CreateAccountPage() {
 
           <div className="password-wrapper">
             <input
-              type="password"
               placeholder="Password"
               className="input-class password-textbox"
               type={showPassword ? "text" : "password"}
@@ -137,7 +136,6 @@ function CreateAccountPage() {
 
           <div className="password-wrapper move-upper">
             <input
-              type="password"
               placeholder="Confirm Password"
               className="input-class password-textbox"
               type={showConfirmPassword ? "text" : "password"}

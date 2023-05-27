@@ -19,7 +19,6 @@
   background-color: #c2c2c2;
   padding: 20px;
   overflow-y: auto;
-  /* Enable vertical scrolling */
 }
 
 .right-column {
@@ -48,7 +47,6 @@
   align-items: center;
   justify-content: flex-end;
   margin-top: 10px;
-  /* Adjust the margin as needed */
 }
 
 .button-text {
@@ -70,7 +68,6 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-right: 10px;
-  /* Adjust the margin as needed */
 }
 
 .button:hover {
@@ -164,14 +161,6 @@
   100% { transform: rotate(360deg); }
 }
 
-
-
-
-
-
-
-
-
 @media screen and (max-width: 1200px) {
   .column-container {
     max-width: 900px;
@@ -197,5 +186,15 @@
   .button {
     position: static;
     margin-top: 20px;
+  }
+  
+  .problem-name {
+    font-size: 16px;
+    padding-left: 10px;
+  }
+  
+  .problem-description {
+    font-size: 10px;
+    padding-left: 10px;
   }
 }

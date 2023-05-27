@@ -3,48 +3,48 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin-top: 20px;
-}
-
-.filter-section {
+  }
+  
+  .filter-section {
     width: 200px;
     padding: 10px;
     left: 20px;
-}
-
-.filter-section label {
+  }
+  
+  .filter-section label {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
     color: #c2c2c2;
-}
-
-.filter-section input[type="checkbox"] {
+  }
+  
+  .filter-section input[type="checkbox"] {
     width: 20px;
     height: 20px;
     margin-right: 5px;
-}
-
-.filter-section label span {
+  }
+  
+  .filter-section label span {
     display: inline-flex;
     align-items: center;
     vertical-align: middle;
-}
-
-.filter-heading {
+  }
+  
+  .filter-heading {
     font-weight: bold;
     font-size: 1.7em;
-}
-
-.all-courses-section {
+  }
+  
+  .all-courses-section {
     flex: 1;
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     align-items: flex-start;
     margin-left: 240px;
-}
-
-.list-item-courses {
+  }
+  
+  .list-item-courses {
     width: 170px;
     height: 250px;
     background-color: #c2c2c2;
@@ -54,69 +54,75 @@
     flex-direction: column;
     position: relative;
     padding: 10px;
-}
-
-.list-item-header-courses {
+  }
+  
+  .list-item-header-courses {
     font-weight: bold;
     text-align: left;
     background: linear-gradient(to right, #4a8fb8, transparent);
     padding: 5px;
-}
-
-.list-item-heading-courses {
+  }
+  
+  .list-item-heading-courses {
     margin: 10px 0;
     text-align: left;
-}
-
-.list-item-description-courses {
+  }
+  
+  .list-item-description-courses {
     flex-grow: 1;
     text-align: left;
     color: black;
-}
-
-.list-item-footer-courses {
+  }
+  
+  .list-item-footer-courses {
     font-style: italic;
     text-align: left;
     position: absolute;
     bottom: 10px;
     left: 10px;
     width: calc(100% - 20px);
-}
-
-.list-item-footer-courses::before {
+  }
+  
+  .list-item-footer-courses::before {
     content: "";
     display: block;
     width: 100%;
     border-top: 1px dashed #ccc;
     margin-top: 5px;
-}
-
-.fixed-filter {
+  }
+  
+  .fixed-filter {
     position: fixed;
     top: 50px;
     bottom: 20px;
     overflow-y: auto;
     left: 20px;
-}
-
-@media (max-width: 600px) {
+  }
+  
+  @media only screen and (max-width: 768px) {
     .list-container-courses {
-        flex-direction: column;
-        align-items: flex-start;
+      flex-direction: column;
     }
-
+  
     .filter-section {
-        width: 100%;
-        margin-bottom: 20px;
+      width: 100%;
+      left: 0;
     }
-
+  
     .all-courses-section {
-        margin-left: 0;
+      margin-left: 0;
     }
-
+  
     .list-item-courses {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 20px;
+      width: 100%;
+      margin-right: 0;
     }
-}
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .list-item-courses {
+      height: auto;
+      min-height: 250px;
+    }
+  }
+  

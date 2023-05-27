@@ -7,7 +7,6 @@
   flex-direction: column;
 }
 
-
 .homepage-content-wrapper {
   min-height: 100vh;
   overflow: auto;
@@ -23,8 +22,6 @@
   font-family: Arial, sans-serif;
   flex: 1;
 }
-
-/* Rest of the CSS */
 
 .center {
   margin: 0;
@@ -88,9 +85,6 @@
   flex-direction: column;
 }
 
-
-
-
 @media screen and (max-width: 768px) {
   .content-block {
     margin-left: 5%;
@@ -109,5 +103,13 @@
   .create-account-btn {
     font-size: 1.2em;
     padding: 0.8em 1.6em;
+  }
+
+  .explore-section {
+    height: auto;
+  }
+
+  .developer-section {
+    height: auto;
   }
 }

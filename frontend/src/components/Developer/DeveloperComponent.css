@@ -4,59 +4,59 @@
     height: 100vh;
     align-items: center;
     justify-content: center;
-}
-
-.developer-column-container {
+  }
+  
+  .developer-column-container {
     flex: 1;
     display: flex;
     margin-top: 60px;
     max-width: 1100px;
     max-height: 470px;
-}
-
-.developer-left-column {
+  }
+  
+  .developer-left-column {
     flex: 1;
     position: relative;
     width: 550px;
     background-color: #1e1e1e;
-}
-
-.developer-right-column {
+  }
+  
+  .developer-right-column {
     flex: 1;
     width: 550px;
     background-color: #c2c2c2;
     padding: 20px;
     position: relative;
-}
-
-.developer-monaco-editor-wrapper {
+  }
+  
+  .developer-monaco-editor-wrapper {
     width: 100%;
     height: 400px;
-}
-
-.developer-monaco-editor-wrapper .monaco-editor {
+  }
+  
+  .developer-monaco-editor-wrapper .monaco-editor {
     text-align: left;
-}
-
-.developer-editor-wrapper {
+  }
+  
+  .developer-editor-wrapper {
     display: flex;
     flex-direction: column;
-}
-
-.developer-button-wrapper {
+  }
+  
+  .developer-button-wrapper {
     position: absolute;
     bottom: 10px;
     left: 10px;
-}
-
-.developer-loading-indicator {
+  }
+  
+  .developer-loading-indicator {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
-}
-
-.developer-loader {
+  }
+  
+  .developer-loader {
     border: 8px solid #f3f3f3;
     border-top: 8px solid #3498db;
     border-radius: 50%;
@@ -64,14 +64,34 @@
     height: 60px;
     animation: spin 2s linear infinite;
     position: relative;
-}
-
-@keyframes spin {
+  }
+  
+  @keyframes spin {
     0% {
-        transform: rotate(0deg);
+      transform: rotate(0deg);
     }
-
+  
     100% {
-        transform: rotate(360deg);
+      transform: rotate(360deg);
     }
-}
+  }
+    
+  @media (max-width: 768px) {
+    .developer-column-container {
+      flex-direction: column;
+      max-width: 100%;
+      max-height: none;
+    }
+  
+    .developer-left-column,
+    .developer-right-column {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .developer-monaco-editor-wrapper {
+      height: 300px;
+    }
+  }
+  

@@ -1,9 +1,9 @@
 .page-section {
-    background-color: #C2C2C2;
+    background-color: black;
     height: 100vh;
     display: flex;
     flex-direction: column;
-  }
+}
 
 .square {
     position: absolute;
@@ -12,7 +12,7 @@
     transform: translate(-50%, -50%);
     height: 400px;
     width: 40%;
-    background-color: #FFFFFF;
+    background-color: #C2C2C2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,6 +78,33 @@ input::placeholder {
     color: red;
     margin-top: -1.5rem;
     position: relative;
+}
+
+.view-password-button-login {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    right: 5px;
+    border: none;
+    background-color: transparent;
+    color: #424242;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.password-wrapper-login {
+    top: -8px;
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    max-width: 400px;
+}
+
+.password-textbox-login {
+    position: relative;
+    display: inline-block;
+    width: 99%;
+    margin-left: -10px;
 }
 
 @media (max-width: 600px) {

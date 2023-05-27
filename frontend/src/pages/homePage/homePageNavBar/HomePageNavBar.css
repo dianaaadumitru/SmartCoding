@@ -7,25 +7,42 @@ nav {
     padding-top: 10px;
     font-family: Arial, sans-serif;
     font-size: 1.2em;
-    /* position: fixed; */
-}
-
-nav ul {
+  }
+  
+  nav ul {
     display: flex;
     list-style: none;
     margin: 0;
     padding: 0;
-}
-
-nav li {
+  }
+  
+  nav li {
     margin-left: 30px;
-}
-
-nav li:first-child {
+  }
+  
+  nav li:first-child {
     margin-left: 0;
-}
-
-nav a {
+  }
+  
+  nav a {
     color: #fff;
     text-decoration: none;
-}
+  }
+  
+  @media screen and (max-width: 768px) {
+    nav {
+      justify-content: center;
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+  
+    nav ul {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    nav li {
+      margin: 10px 0;
+    }
+  }
+  

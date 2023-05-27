@@ -1,129 +1,131 @@
 .page-section {
-    background-color: #C2C2C2;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
+  background-color: #C2C2C2;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .rectangle {
-    position: absolute;
-    top: 40px;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40%;
-    max-width: 500px; 
-    background-color: #FFFFFF;
+  position: absolute;
+  top: 40px;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  max-width: 500px;
+  background-color: #FFFFFF;
 }
 
 .rectangle * {
-    padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 1rem;
 }
 
 h2 {
-    margin-bottom: 1rem;
-    color: #424242;
-    font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #424242;
+  font-size: 2.5rem;
 }
 
 .input-class {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    border: 2px solid #C2C2C2;
-    border-radius: 5px;
-    width: 70%;
-    max-width: 400px; /* Add max-width to prevent the input field from becoming too large on larger screens */
-    color: #424242;
-    font-size: 0.8rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #C2C2C2;
+  border-radius: 5px;
+  width: 70%;
+  max-width: 400px;
+  color: #424242;
+  font-size: 0.8rem;
 }
 
 .input-class::placeholder {
-    color: #C2C2C2;
-    font-size: 0.7rem;
+  color: #C2C2C2;
+  font-size: 0.7rem;
 }
 
 .signup-button {
-    border: none;
-    border-radius: 5px;
-    background-color: #424242;
-    color: white;
-    width: 75%;
-    height: 2.5rem;
-    margin-top: -1.7rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #424242;
+  color: white;
+  width: 75%;
+  height: 2.5rem;
+  margin-top: -1.7rem;
 }
 
 .signup-button:hover {
-    background-color: #5c5959;
+  background-color: #5c5959;
 }
 
 p {
-    margin-top: 1rem;
-    font-size: 0.8rem;
-    color: #C2C2C2;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #C2C2C2;
 }
 
 a {
-    color: #0563B9;
-    text-decoration: none;
-    font-family: Arial, sans-serif;
+  color: #0563B9;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
 }
 
 .error-message {
-    color: red;
-    margin-top: -1.5rem;
-    position: relative;
+  color: red;
+  margin-top: -1.5rem;
+  position: relative;
 }
 
 .password-input-container {
-    position: relative; 
-    margin-bottom: 1rem;
-  }
+  position: relative;
+  margin-bottom: 1rem;
+}
 
-  .password-wrapper {
-    top: -8px;
-    position: relative;
-    display: inline-block;
-    width: 80%;
-    max-width: 400px; /* Add max-width to prevent the password field from becoming too large on larger screens */
-  }
-  
-  .view-password-button {
-    position: absolute;
-    top: 45%;
-    transform: translateY(-50%);
-    right: 25px;
-    border: none;
-    background-color: transparent;
-    color: #424242;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .password-textbox {
-    position: relative;
-    display: inline-block;
-    width: 87%;
-  }
+.password-wrapper {
+  top: -8px;
+  position: relative;
+  display: inline-block;
+  width: 80%;
+  max-width: 400px;
+}
 
-  .move-upper {
-    top: -22px;
-  }
+.view-password-button {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  right: 25px;
+  border: none;
+  background-color: transparent;
+  color: #424242;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.password-textbox {
+  position: relative;
+  display: inline-block;
+  width: 87%;
+}
+
+.move-upper {
+  top: -22px;
+}
 
 @media (max-width: 768px) {
   /* Adjust the styles for screens smaller than 768px */
   .rectangle {
     width: 80%;
   }
-  .input-class, .signup-button, .password-wrapper {
+  .input-class,
+  .signup-button,
+  .password-wrapper {
     width: 90%;
     max-width: none;
   }

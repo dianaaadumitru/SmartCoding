@@ -92,6 +92,11 @@ public class AuthController {
         userRepository.save(user);
 
         return new ResponseEntity<>("true", HttpStatus.OK);
+    }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout() {
+        SecurityContextHolder.clearContext();
+        return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
     }
 }

@@ -49,6 +49,11 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
 
                 )
+
+//                .logout()
+//                .logoutUrl("/auth/logout")
+//                .invalidateHttpSession(true)
+//                .and()
                 .cors(cors -> cors
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();

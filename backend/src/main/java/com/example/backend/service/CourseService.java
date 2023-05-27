@@ -169,7 +169,8 @@ public class CourseService {
         Lesson lesson = lessonRepository.findById(lessonId).orElseThrow(() -> {
             throw new CrudOperationException("Lesson does not exist!");
         });
-
+        if (course.getLessons() == null || course.getLessons().isEmpty())
+            return;
         course.getLessons().remove(lesson);
         lesson.setCourse(null);
         lessonRepository.save(lesson);

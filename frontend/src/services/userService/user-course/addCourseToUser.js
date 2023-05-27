@@ -1,4 +1,4 @@
-import { API } from "../../utility/api";
+import { API } from "../../../utility/api";
 
 const addCourseToUser = async (userId, courseId) => {
     try {

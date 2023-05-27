@@ -5,7 +5,7 @@ import getCourseById from "services/courseService/getCourseById";
 import { AiFillSignal, AiOutlineClockCircle, AiOutlineLock } from "react-icons/ai";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 import NavBar from "pages/navBar/NavBar";
-import addCourseToUser from "services/userService/addCourseToUser";
+import addCourseToUser from "services/userService/user-course/addCourseToUser";
 import isUserEnrolledToCourse from "services/userService/user-course/isUserEnrolledToCourse";
 import checkIfCourseIsCompleted from "services/userService/user-course/checkIfCourseIsCompleted";
 import LessonItem from "components/Lesson/LessonItem";

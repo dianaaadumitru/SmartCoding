@@ -62,7 +62,7 @@ function LessonPage() {
 
   const getProblemResult = async () => {
     const result = await getProblemScoreForAProblemSoledByUser(userId, currentProblem.problemId);
-    if (result === 100) {
+    if (result.score === 100) {
       setIsConditionMet(true);
       await markLessonAsCompleted(userId, lessonId, courseId);
     } else {

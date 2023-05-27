@@ -9,7 +9,7 @@ import addAnswerAndProblemPercentageToStudent from "services/userService/addAnsw
 import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
 import getProblemById from "services/problemService/getProblemById";
 
-function ProblemPageAuth() {
+function SolvedProblemPage() {
     const [userId, setUserId] = useState(0);
     const { problemId } = useParams();
     const [problem, setProblem] = useState({
@@ -29,6 +29,8 @@ function ProblemPageAuth() {
 
     const [finalResult, setFinalResult] = useState(-1);
 
+    const [givenAnswer, setGivenAnswer] = useState('');
+
     const [isLoading, setIsLoading] = useState(false);
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -41,6 +43,10 @@ function ProblemPageAuth() {
 
     const getProblemResult = async () => {
         const result = await getProblemScoreForAProblemSoledByUser(userId, problemId);
+        setFinalResult(result.score);
+        setGivenAnswer(result.answer);
+        setTextToCompile(result.answer);
+        localStorage.setItem("givenAnswer", result.answer);
         if (result.score === 100) {
             setIsConditionMet(true);
         } else {
@@ -56,36 +62,56 @@ function ProblemPageAuth() {
         getProblem();
         getUserId();
 
-        const editor = monacoEditor.editor.create(document.getElementById("editor"), {
-            value: "",
-            language: "python",
-            theme: "vs-dark",
-            fontSize: 14,
-            automaticLayout: true,
-            wordWrap: "on",
-            scrollBeyondLastLine: false,
-            minimap: {
-                enabled: false
-            }
-        });
-
-        editor.onDidChangeModelContent(() => {
-            const value = editor.getValue();
-            const modifiedText = JSON.stringify(value).replace(/"/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r');
-            setTextToCompile(modifiedText);
-        });
-
-        return () => {
-            editor.dispose();
-        };
+        const storedGivenAnswer = localStorage.getItem("givenAnswer");
+        if (storedGivenAnswer) {
+            setGivenAnswer(storedGivenAnswer);
+        }
     }, []);
+
+    useEffect(() => {
+        if (givenAnswer !== '') {
+            const editor = monacoEditor.editor.create(document.getElementById("editor"), {
+                value: givenAnswer,
+                language: "python",
+                theme: "vs-dark",
+                fontSize: 14,
+                automaticLayout: true,
+                wordWrap: "on",
+                scrollBeyondLastLine: false,
+                minimap: {
+                    enabled: false
+                }
+            });
+
+
+            editor.onDidChangeModelContent(() => {
+                const value = editor.getValue();
+                console.log("value: ", value)
+                const modifiedText = JSON.stringify(value).replace(/"/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+                setTextToCompile(modifiedText);
+            });
+
+            return () => {
+                editor.dispose();
+            };
+        }
+    }, [givenAnswer])
 
 
     useEffect(() => {
         if (userId !== -1 && parseInt(problemId) !== 0) {
             getProblemResult();
+
         }
     }, [userId, problem]);
+
+    useEffect(() => {
+        // Retrieve the givenAnswer value from local storage when the component mounts
+        const storedGivenAnswer = localStorage.getItem("givenAnswer");
+        if (storedGivenAnswer) {
+            setGivenAnswer(storedGivenAnswer);
+        }
+    }, []);
 
 
     const renderText = (someText) => {
@@ -116,38 +142,38 @@ function ProblemPageAuth() {
 
     const popUpComponent = () => {
         return (
-          <Modal
-            isOpen={isPopupOpen}
-            onRequestClose={() => setIsPopupOpen(false)}
-            contentLabel="No Code to Compile"
-            style={{
-              overlay: {
-                position: "fixed",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0, 0, 0, 0.5)"
-              },
-              content: {
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: "300px",
-                padding: "20px",
-                background: "white",
-                borderRadius: "4px",
-                outline: "none"
-              }
-            }}
-          >
-            <h1>No code to compile!</h1>
-            <p>Please enter your code before running.</p>
-            <button className="button" onClick={() => setIsPopupOpen(false)}>Close</button>
-          </Modal>
+            <Modal
+                isOpen={isPopupOpen}
+                onRequestClose={() => setIsPopupOpen(false)}
+                contentLabel="No Code to Compile"
+                style={{
+                    overlay: {
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: "rgba(0, 0, 0, 0.5)"
+                    },
+                    content: {
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: "300px",
+                        padding: "20px",
+                        background: "white",
+                        borderRadius: "4px",
+                        outline: "none"
+                    }
+                }}
+            >
+                <h1>No code to compile!</h1>
+                <p>Please enter your code before running.</p>
+                <button className="button" onClick={() => setIsPopupOpen(false)}>Close</button>
+            </Modal>
         );
-      };
+    };
 
     return (
         <div className="lesson-page-container">
@@ -156,7 +182,7 @@ function ProblemPageAuth() {
                 <div className="left-column">
                     <h2 className="header-text">Problem</h2>
                     <h2 className="course-name">{problem.name}</h2>
-                    {/* {renderText(lesson.description)} */}
+                    <p className="problem-description">The solution you provided for this problem works for {finalResult}% of cases.</p>
                     <div className="line"></div>
 
                     <div className="additional-content">
@@ -204,4 +230,7 @@ function ProblemPageAuth() {
     );
 }
 
-export default ProblemPageAuth;
+export default SolvedProblemPage;
+
+
+

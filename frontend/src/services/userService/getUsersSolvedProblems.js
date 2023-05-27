@@ -1,8 +1,8 @@
 import { API } from "../../utility/api";
 
-const editUser = async (userId, firstName, lastName, username, email) => {
+const getUsersSolvedProblems = async (userId) => {
     try {
-        const response = await API.put(`/users/${userId}`, {firstName, lastName, username, email});
+        const response = await API.get(`/users/${userId}/resultsProblems`);
         console.log(response.data);
         return response.data;
     } catch (e) {
@@ -11,4 +11,4 @@ const editUser = async (userId, firstName, lastName, username, email) => {
     }
 };
 
-export default editUser;
+export default getUsersSolvedProblems;

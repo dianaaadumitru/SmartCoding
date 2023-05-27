@@ -2,49 +2,53 @@
     background-color: black;
     min-height: 100vh;
     display: flex;
+    margin-top: 40px;
 }
 
-.content-container {
+.content-container-myProfile {
     flex: 1;
     display: flex;
 }
 
-.left-column {
+.left-column-myProfile {
     width: 300px;
-    /* Adjust the width as needed */
     background-color: #c2c2c2;
     padding: 20px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
     overflow-y: auto;
 }
 
-.right-column {
+.right-column-myProfile {
     flex: 1;
     background-color: black;
     overflow-y: auto;
 }
 
-.centered-content {
+.centered-content-myProfile {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-top: 50px;
-    /* Adjust the margin-top as needed */
+    position: sticky;
+    top: 0;
 }
 
-.centered-content label {
+.centered-content-myProfile label {
     display: inline-block;
     margin-bottom: 10px;
 }
 
-.centered-content input {
+.centered-content-myProfile input {
     display: block;
     margin-bottom: 10px;
-    font-size: 1.2em; /* Adjust the font-size as needed */
-    color: black; /* Set the color to black */
+    font-size: 1.2em;
+    color: black;
 }
 
-.update-button {
+.update-button-myProfile {
     flex: 0;
     margin-right: 10px;
     display: block;
@@ -64,7 +68,7 @@
     background-color: #ba3d07;
 }
 
-.my-courses {
+.my-courses-myProfile {
     color: #C2C2C2;
     font-size: 1.7em;
-  }
+}

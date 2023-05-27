@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import getUserById from "services/userService/getUserById";
 import EnrolledCourses from "components/Course/EnrolledCourses/EnrolledCourses";
 import editUser from "services/userService/editUser";
+import UserProblems from "components/Problem/UsersProblems/UserProblems";
 
 function MyProfile() {
     const { userId } = useParams();
@@ -44,7 +45,7 @@ function MyProfile() {
         setUser((prevState) => ({ ...prevState, email: e.target.value }));
     };
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         console.log(user)
         const result = await editUser(userId, user.firstName, user.lastName, user.username, user.email);
         console.log(user);
@@ -53,9 +54,9 @@ function MyProfile() {
     return (
         <div className="myProfile-page-container">
             <NavBar />
-            <div className="content-container">
-                <div className="left-column">
-                    <div className="centered-content">
+            <div className="content-container-myProfile">
+                <div className="left-column-myProfile">
+                    <div className="centered-content-myProfile">
                         <h1>Edit profile</h1>
                         <label>First name </label>
                         <input
@@ -85,13 +86,14 @@ function MyProfile() {
                             value={user.email}
                             onChange={handleEmailChange}
                         />
-                        <button className="update-button" onClick={handleSubmit}>Submit</button>
+                        <button className="update-button-myProfile" onClick={handleSubmit}>Submit</button>
                     </div>
                 </div>
-                <div className="right-column">
-                    <p className='my-courses'>My courses: </p>
+                <div className="right-column-myProfile">
+                    <p className='my-courses-myProfile'>My courses: </p>
                     <EnrolledCourses />
-                    <p className='my-courses'>Solved Problems: </p>
+                    <p className='my-courses-myProfile'>Solved Problems: </p>
+                    <UserProblems />
                 </div>
             </div>
         </div>

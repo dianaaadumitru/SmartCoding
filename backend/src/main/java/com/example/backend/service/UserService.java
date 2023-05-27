@@ -5,7 +5,6 @@ import com.example.backend.entity.*;
 import com.example.backend.entity.embeddableIds.UserLessonId;
 import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.embeddableIds.UserQuestionId;
-import com.example.backend.entity.enums.Difficulty;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
 import lombok.extern.slf4j.Slf4j;

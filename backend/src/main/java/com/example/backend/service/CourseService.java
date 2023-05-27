@@ -200,7 +200,7 @@ public class CourseService {
 
     public LessonDto getCourseLessonByNoLesson(Long courseId, int noLesson) {
         List<LessonDto> lessonDtos = getAllCourseLessons(courseId);
-        for (LessonDto lessonDto: lessonDtos) {
+        for (LessonDto lessonDto : lessonDtos) {
             if (lessonDto.getNoLesson() == noLesson)
                 return lessonDto;
         }

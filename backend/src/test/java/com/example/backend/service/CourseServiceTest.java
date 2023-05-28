@@ -426,49 +426,6 @@ class CourseServiceTest {
     }
 
     @Test
-    void findByDifficultyIn_ValidDifficulties_ReturnsCourseDtos() {
-        // given
-        List<String> difficulties = Arrays.asList("BEGINNER", "INTERMEDIATE");
-
-        List<Course> courses = new ArrayList<>();
-        courses.add(Course.builder()
-                .courseId(1L)
-                .name("Course 1")
-                .description("Description 1")
-                .difficulty(Difficulty.BEGINNER)
-                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
-                .build());
-        courses.add((Course.builder()
-                .courseId(2L)
-                .name("Course 2")
-                .description("Description 2")
-                .difficulty(Difficulty.INTERMEDIATE)
-                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
-                .build()));
-
-        when(courseRepository.findByDifficultyIn(difficulties.stream()
-                .map(Difficulty::valueOf)
-                .collect(Collectors.toList())))
-                .thenReturn(courses);
-
-        // when
-        List<CourseDto> result = courseService.findByDifficultyIn(difficulties);
-
-        // assert
-        assertEquals(2, result.size());
-        assertEquals(1L, result.get(0).getId());
-        assertEquals("Course 1", result.get(0).getName());
-        assertEquals("Description 1", result.get(0).getDescription());
-        assertEquals("BEGINNER", result.get(0).getDifficulty());
-        assertEquals("course type", result.get(0).getCourseType());
-        assertEquals(2L, result.get(1).getId());
-        assertEquals("Course 2", result.get(1).getName());
-        assertEquals("Description 2", result.get(1).getDescription());
-        assertEquals("INTERMEDIATE", result.get(1).getDifficulty());
-        assertEquals("course type", result.get(1).getCourseType());
-    }
-
-    @Test
     void givenCourseWithLessonsAndLessonNo_getCourseLessonByNoLesson_returnLessonIfExists() {
         // given
         int lessonNo = 2;
@@ -509,6 +466,49 @@ class CourseServiceTest {
 
         // assert
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void findByDifficultyIn_ValidDifficulties_ReturnsCourseDtos() {
+        // given
+        List<String> difficulties = Arrays.asList("BEGINNER", "INTERMEDIATE");
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(Course.builder()
+                .courseId(1L)
+                .name("Course 1")
+                .description("Description 1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build());
+        courses.add((Course.builder()
+                .courseId(2L)
+                .name("Course 2")
+                .description("Description 2")
+                .difficulty(Difficulty.INTERMEDIATE)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build()));
+
+        when(courseRepository.findByDifficultyIn(difficulties.stream()
+                .map(Difficulty::valueOf)
+                .collect(Collectors.toList())))
+                .thenReturn(courses);
+
+        // when
+        List<CourseDto> result = courseService.findByDifficultyIn(difficulties);
+
+        // assert
+        assertEquals(2, result.size());
+        assertEquals(1L, result.get(0).getId());
+        assertEquals("Course 1", result.get(0).getName());
+        assertEquals("Description 1", result.get(0).getDescription());
+        assertEquals("BEGINNER", result.get(0).getDifficulty());
+        assertEquals("course type", result.get(0).getCourseType());
+        assertEquals(2L, result.get(1).getId());
+        assertEquals("Course 2", result.get(1).getName());
+        assertEquals("Description 2", result.get(1).getDescription());
+        assertEquals("INTERMEDIATE", result.get(1).getDifficulty());
+        assertEquals("course type", result.get(1).getCourseType());
     }
 
     @Test

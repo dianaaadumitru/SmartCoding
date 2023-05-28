@@ -5,6 +5,7 @@ import getCourseById from "services/courseService/getCourseById";
 import { AiFillSignal, AiOutlineClockCircle } from "react-icons/ai";
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 import HomePageNavBar from "pages/homePage/homePageNavBar/HomePageNavBar";
+import computeTimeNeededToFinishCourse from "services/courseService/computeTimeNeededToFinishCourse";
 
 function CoursePage() {
     const navigate = useNavigate();
@@ -17,11 +18,17 @@ function CoursePage() {
         courseType: ''
     });
     const [lessons, setLessons] = useState([]);
+    const [timeToFinish, setTimeToFinish] = useState(0);
 
     const getLessons = async () => {
         const result = await getAllLessonsOfACourse(courseId);
         const sortedLessons = result.sort((a, b) => a.noLesson - b.noLesson);
         setLessons(sortedLessons);
+    }
+
+    const getExpectedTimeToFinishCourse = async() => {
+        const result = await computeTimeNeededToFinishCourse(courseId);
+        setTimeToFinish(result);
     }
 
     const getCourse = async () => {
@@ -32,13 +39,14 @@ function CoursePage() {
     useEffect(() => {
         getCourse()
         getLessons()
+        getExpectedTimeToFinishCourse()
     }, [])
 
     const handleClick = async () => navigate('/signin')
 
     return (
         <div className="page-section-course">
-            <HomePageNavBar />
+            <HomePageNavBar onExploreClick={undefined} onDeveloperClick={undefined} />
 
             <div className="course-container">
                 <div className="course-rectangle">
@@ -61,7 +69,7 @@ function CoursePage() {
                                 <AiOutlineClockCircle className="info-icon" />
                                 <div>
                                     <p className="bottom-text">Time to complete</p>
-                                    <p className="bottom-text second-line">approx. 2 hours</p>
+                                    <p className="bottom-text second-line">approx. {timeToFinish} hours</p>
                                 </div>
                             </div>
                         </div>

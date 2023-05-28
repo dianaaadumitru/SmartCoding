@@ -11,6 +11,7 @@ import checkIfCourseIsCompleted from "services/userService/user-course/checkIfCo
 import LessonItem from "components/Lesson/LessonItem";
 import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByNoLesson";
 import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
+import computeTimeNeededToFinishCourse from "services/courseService/computeTimeNeededToFinishCourse";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -29,6 +30,7 @@ function CoursePageAuth() {
     const [startButtonVisible, setStartButtonVisible] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [isCourseCompleted, setIsCourseCompleted] = useState(false);
+    const [timeToFinish, setTimeToFinish] = useState(0);
     localStorage.setItem('courseId', courseId);
 
     const getUserId = () => {
@@ -41,6 +43,11 @@ function CoursePageAuth() {
         localStorage.setItem('lessonsLength', sortedLessons.length);
         setLessons(sortedLessons);
     };
+
+    const getExpectedTimeToFinishCourse = async() => {
+        const result = await computeTimeNeededToFinishCourse(courseId);
+        setTimeToFinish(result);
+    }
 
     const getCourse = async () => {
         const result = await getCourseById(courseId);
@@ -93,6 +100,7 @@ function CoursePageAuth() {
                 await getCourse();
                 await getLessons();
                 await checkIfCourseCompleted();
+                await getExpectedTimeToFinishCourse();
             })();
         }
     }, [userId]);
@@ -149,7 +157,7 @@ function CoursePageAuth() {
                                 <AiOutlineClockCircle className="info-icon" />
                                 <div>
                                     <p className="bottom-text">Time to complete</p>
-                                    <p className="bottom-text second-line">approx. 2 hours</p>
+                                    <p className="bottom-text second-line">approx. {timeToFinish} hours</p>
                                 </div>
                             </div>
                         </div>

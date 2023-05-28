@@ -17,13 +17,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.function.Executable;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceTest {
@@ -176,7 +176,6 @@ class CourseServiceTest {
         assertThrows(RuntimeException.class, call);
     }
 
-
     @Test
     public void givenCourse_findCourseById_returnEqualCourseIfFound() {
         // given
@@ -301,37 +300,81 @@ class CourseServiceTest {
         verify(courseRepository).findById(course.getCourseId());
     }
 
+    @Test
+    public void givenCourseWithLessons_testGetAllCourseLessons_returnListOfLessonsIfFound() {
+        //given
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
 
-//    @Test
-//    public void givenLessonAndCourse_removeLessonFromCourse_removeLessonFromCourse() {
-//        Course course = Course.builder()
-//                .courseId(1L)
-//                .name("course name")
-//                .difficulty(Difficulty.BEGINNER)
-//                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
-//                .build();
-//
-//        Lesson lesson = Lesson.builder()
-//                .lessonId(2L)
-//                .name("lesson")
-//                .build();
-//
-//        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
-//        when(lessonRepository.findById(lesson.getLessonId())).thenReturn(Optional.of(lesson));
-//        when(courseRepository.save(ArgumentMatchers.any(Course.class))).thenReturn(course);
-//        when(lessonRepository.save(ArgumentMatchers.any(Lesson.class))).thenReturn(lesson);
-//
-//
-//        // when
-//        courseService.removeLessonFromCourse(course.getCourseId(), lesson.getLessonId());
-//
-//        // then
-//        verify(courseRepository).findById(course.getCourseId());
-//        verify(lessonRepository).findById(lesson.getLessonId());
-//        verify(courseRepository).save(ArgumentMatchers.any(Course.class));
-//        verify(lessonRepository).save(ArgumentMatchers.any(Lesson.class));
-//
-//    }
+        Lesson lesson1 = Lesson.builder()
+                .lessonId(2L)
+                .name("lesson1")
+                .build();
+
+        Lesson lesson2 = Lesson.builder()
+                .lessonId(3L)
+                .name("lesson2")
+                .build();
+
+        List<Lesson> lessons = new ArrayList<>();
+        lessons.add(lesson1);
+        lessons.add(lesson2);
+
+        course.setLessons(lessons);
+
+        // Mock repository behavior
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+
+        // when
+        List<LessonDto> lessonDtos = courseService.getAllCourseLessons(course.getCourseId());
+
+        // assert
+        assertEquals(2, lessonDtos.size());
+
+        LessonDto lessonDto1 = lessonDtos.get(0);
+        assertEquals(2L, lessonDto1.getId());
+        assertEquals("lesson1", lessonDto1.getName());
+
+        LessonDto lessonDto2 = lessonDtos.get(1);
+        assertEquals(3L, lessonDto2.getId());
+        assertEquals("lesson2", lessonDto2.getName());
+    }
+
+    @Test
+    public void givenLessonAndCourse_removeLessonFromCourse_removeLessonFromCourse() {
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Lesson lesson = Lesson.builder()
+                .lessonId(2L)
+                .name("lesson")
+                .build();
+
+        List<Lesson> lessons = new ArrayList<>();
+        lessons.add(lesson);
+        course.setLessons(lessons);
+
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+        when(lessonRepository.findById(lesson.getLessonId())).thenReturn(Optional.of(lesson));
+
+        // Act
+        courseService.removeLessonFromCourse(course.getCourseId(), lesson.getLessonId());
+
+        // Assert
+        assertTrue(course.getLessons().isEmpty());
+        assertNull(lesson.getCourse());
+        verify(lessonRepository, times(1)).save(lesson);
+        verify(courseRepository, times(1)).save(course);
+
+    }
 
     @Test
     public void givenLessonAndNotOkCourse_removeLessonFromCourse_throwExceptionIfCourseDoesntExist() {
@@ -358,6 +401,7 @@ class CourseServiceTest {
 
     @Test
     public void givenNotOkLessonAndCourse_removeLessonFromCourse_throwExceptionIfLessonDoesntExist() {
+        // given
         Course course = Course.builder()
                 .courseId(1L)
                 .name("course name")
@@ -381,4 +425,101 @@ class CourseServiceTest {
         verify(courseRepository).findById(course.getCourseId());
     }
 
+    @Test
+    void findByDifficultyIn_ValidDifficulties_ReturnsCourseDtos() {
+        // given
+        List<String> difficulties = Arrays.asList("BEGINNER", "INTERMEDIATE");
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(Course.builder()
+                .courseId(1L)
+                .name("Course 1")
+                .description("Description 1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build());
+        courses.add((Course.builder()
+                .courseId(2L)
+                .name("Course 2")
+                .description("Description 2")
+                .difficulty(Difficulty.INTERMEDIATE)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build()));
+
+        when(courseRepository.findByDifficultyIn(difficulties.stream()
+                .map(Difficulty::valueOf)
+                .collect(Collectors.toList())))
+                .thenReturn(courses);
+
+        // when
+        List<CourseDto> result = courseService.findByDifficultyIn(difficulties);
+
+        // assert
+        assertEquals(2, result.size());
+        assertEquals(1L, result.get(0).getId());
+        assertEquals("Course 1", result.get(0).getName());
+        assertEquals("Description 1", result.get(0).getDescription());
+        assertEquals("BEGINNER", result.get(0).getDifficulty());
+        assertEquals("course type", result.get(0).getCourseType());
+        assertEquals(2L, result.get(1).getId());
+        assertEquals("Course 2", result.get(1).getName());
+        assertEquals("Description 2", result.get(1).getDescription());
+        assertEquals("INTERMEDIATE", result.get(1).getDifficulty());
+        assertEquals("course type", result.get(1).getCourseType());
+    }
+
+    @Test
+    void givenCourseWithLessonsAndLessonNo_getCourseLessonByNoLesson_returnLessonIfExists() {
+        // given
+        int lessonNo = 2;
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Lesson lesson1 = Lesson.builder()
+                .lessonId(2L)
+                .name("lesson1")
+                .noLesson(1)
+                .build();
+
+        Lesson lesson2 = Lesson.builder()
+                .lessonId(3L)
+                .name("lesson2")
+                .noLesson(2)
+                .build();
+
+        List<Lesson> lessons = new ArrayList<>();
+        lessons.add(lesson1);
+        lessons.add(lesson2);
+
+        course.setLessons(lessons);
+
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+
+        // when
+        LessonDto expected = courseService.getCourseLessonByNoLesson(course.getCourseId(), lessonNo);
+        LessonDto actual = LessonDto.builder()
+                .name(lesson2.getName())
+                .id(lesson2.getLessonId())
+                .noLesson(lesson2.getNoLesson())
+                .build();
+
+        // assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void findByDifficultyIn_EmptyDifficulties_ReturnsEmptyList() {
+        // given
+        List<String> difficulties = new ArrayList<>();
+
+        // when
+        List<CourseDto> result = courseService.findByDifficultyIn(difficulties);
+
+        // assert
+        assertTrue(result.isEmpty());
+    }
 }

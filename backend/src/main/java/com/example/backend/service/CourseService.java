@@ -63,7 +63,6 @@ public class CourseService {
         return courseDto;
     }
 
-
     public void removeCourse(Long id) {
         courseRepository.findById(id).orElseThrow(() -> {
             throw new CrudOperationException("Course does not exist!");

@@ -33,7 +33,10 @@ function LessonPage() {
 
   const [textToCompile, setTextToCompile] = useState('');
 
-  const [finalResult, setFinalResult] = useState(-1);
+  const [finalResult, setFinalResult] = useState({
+    finalResult: -1,
+    printedResult: null
+  });
 
   const [currentProblem, setCurrentProblem] = useState({
     problemId: 0,
@@ -141,10 +144,10 @@ function LessonPage() {
     }
 
     setIsLoading(true);
-    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode)
-    setFinalResult(result.finalResult);
+    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode, currentProblem.returnType)
+    setFinalResult(result);
     await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
-    if (result.finalResult == 100) {
+    if (result.finalResult == 100 || result.printedResult != null) {
       setIsConditionMet(true);
       await markLessonAsCompleted(userId, lessonId, courseId);
     } else {
@@ -250,8 +253,12 @@ function LessonPage() {
                 </div>
               ) : (
                 <>
-                  {finalResult !== -1 && (
-                    <p className="button-text">This code works for {finalResult}% of cases.</p>
+                  {finalResult.finalResult !== -1 && finalResult.finalResult != null ? (
+                    <p className="button-text">This code works for {finalResult.finalResult}% of cases.</p>
+                  ) : (
+                    finalResult.printedResult != null && (
+                      <p className="button-text">printed code: {finalResult.printedResult}</p>
+                    )
                   )}
                   <button className="button" onClick={handleClick}>Run</button>
                 </>

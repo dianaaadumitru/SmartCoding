@@ -63,8 +63,8 @@ DONE    - enable next button only when isCompleted = 100 and go to lessonNextNo
 DONE ---- !!! logout !!!
 
 TODO - backend
-    - when compiling code check if there exists a method for splitting string
-    - check if code is with print
+DONE    - when compiling code check if there exists a method for splitting string
+DONE    - check if code is with print
     - check if there is an error compiling
 DONE    - make a call for developer method
 

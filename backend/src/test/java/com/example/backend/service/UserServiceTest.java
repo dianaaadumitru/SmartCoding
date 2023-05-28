@@ -2,11 +2,12 @@ package com.example.backend.service;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.*;
+import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.embeddableIds.UserQuestionId;
-import com.example.backend.repository.QuestionRepository;
-import com.example.backend.repository.RoleRepository;
-import com.example.backend.repository.UserRepository;
-import com.example.backend.repository.UserResultsRepository;
+import com.example.backend.entity.enums.Difficulty;
+import com.example.backend.entity.enums.ReturnType;
+import com.example.backend.repository.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,11 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -38,12 +37,23 @@ public class UserServiceTest {
     @Mock
     private UserResultsRepository userResultsRepository;
 
+    @Mock
+    private UserProblemResultsRepository userProblemResultsRepository;
+
+    @Mock
+    private ProblemRepository problemRepository;
+
+    @Mock
+    private CourseRepository courseRepository;
+
     @InjectMocks
     private UserService userService;
 
     private Role role;
 
     private Question question;
+
+    private Problem problem;
 
 
     @BeforeEach
@@ -64,6 +74,13 @@ public class UserServiceTest {
         role = Role.builder()
                 .roleId(100L)
                 .role("test")
+                .build();
+
+        problem = Problem.builder()
+                .problemId(2L)
+                .name("test")
+                .returnType(ReturnType.RETURN)
+                .difficulty(Difficulty.BEGINNER)
                 .build();
     }
 
@@ -680,6 +697,93 @@ public class UserServiceTest {
         verify(userRepository).findById(user.getUserId());
     }
 
+    @Test
+    public void givenUserAndProblemAndAnswerAndScore_addAnswerAndProblemScoreToStudent_addToUserResults() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        String answer = "answer";
+        double score = 3;
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+        when(problemRepository.findById(problem.getProblemId())).thenReturn(Optional.of(problem));
+
+        // when
+        UserProblemResultDto expected = userService.addAnswerAndProblemPercentageToStudent(user.getUserId(), problem.getProblemId(), new ScoreAnswerDto(score, answer));
+        UserProblemResultDto actual = UserProblemResultDto.builder()
+                .userId(user.getUserId())
+                .problemName(problem.getName())
+                .problemId(problem.getProblemId())
+                .problemDifficulty(problem.getDifficulty().toString())
+                .percentage(score)
+                .answer(answer)
+                .build();
+
+        // then
+        assertEquals(expected, actual);
+        verify(userRepository).findById(user.getUserId());
+        verify(problemRepository).findById(problem.getProblemId());
+    }
+
+    @Test
+    public void givenUserAndProblemAndAnswerAndScore_addAnswerAndProblemScoreToStudent_throwExceptionIfUserDoesntExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        String answer = "answer";
+        double score = 3;
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addAnswerAndProblemPercentageToStudent(user.getUserId(), problem.getProblemId(), new ScoreAnswerDto(score, answer));
+
+        // then
+        assertThrows(RuntimeException.class, call);
+    }
+
+    @Test
+    public void givenUserAndProblemAndAnswerAndScore_addAnswerAndProblemScoreToStudent_throwExceptionIfProblemDoesntExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        String answer = "answer";
+        double score = 3;
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+        when(problemRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addAnswerAndProblemPercentageToStudent(user.getUserId(), problem.getProblemId(), new ScoreAnswerDto(score, answer));
+
+        // then
+        assertThrows(RuntimeException.class, call);
+        verify(userRepository).findById(user.getUserId());
+    }
 
     @Test
     public void givenUser_getResultsForStudent_returnAllResultsForUser() {
@@ -725,6 +829,51 @@ public class UserServiceTest {
         // then
         assertEquals(expected, actual);
         verify(userResultsRepository).findByUser_UserId(user.getUserId());
+    }
+
+    @Test
+    public void givenUser_getProblemResultsForStudent_returnAllResultsForUser() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        String answer = "answer";
+        double score = 3;
+
+        UserProblemResults userResult = UserProblemResults.builder()
+                .userProblemId(new UserProblemId(user.getUserId(), problem.getProblemId()))
+                .user(user)
+                .problem(problem)
+                .percentage(score)
+                .answer(answer)
+                .build();
+        List<UserProblemResults> userProblemResults = new ArrayList<>();
+        userProblemResults.add(userResult);
+
+        when(userProblemResultsRepository.findByUser_UserId(user.getUserId())).thenReturn(userProblemResults);
+
+        // when
+        List<UserProblemResultDto> expected = userService.getProblemsResultsForStudent(user.getUserId());
+        List<UserProblemResultDto> actual = userProblemResults.stream().map(userResults1 ->
+                UserProblemResultDto.builder()
+                        .userId(userResults1.getUser().getUserId())
+                        .problemId(userResults1.getProblem().getProblemId())
+                        .problemName(userResults1.getProblem().getName())
+                        .problemDifficulty(userResults1.getProblem().getDifficulty().toString())
+                        .percentage(userResults1.getPercentage())
+                        .answer(userResults1.getAnswer())
+                        .build()).toList();
+
+        // then
+        assertEquals(expected, actual);
+        verify(userProblemResultsRepository).findByUser_UserId(user.getUserId());
     }
 
     @Test
@@ -823,4 +972,462 @@ public class UserServiceTest {
         assertEquals(expected, actual);
         verify(userRepository).findAll();
     }
+
+    @Test
+    public void givenUserAndCourses_findTop8Courses_returnCourseDtos() {
+        // given
+        Course course1 = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Course course2 = Course.builder()
+                .courseId(2L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(course1);
+        courses.add(course2);
+
+        when(userRepository.findTop8Courses()).thenReturn(courses);
+
+        // Invoke the method
+        List<CourseDto> dtos = userService.findTop8Courses();
+
+        // Assertions
+        assertEquals(2, dtos.size());
+        verify(userRepository).findTop8Courses();
+    }
+
+    @Test
+    public void givenUserAndProblems_findTop8Courses_returnProblemDtos() {
+        // given
+        Problem problem1 = Problem.builder()
+                .problemId(1L)
+                .name("test")
+                .returnType(ReturnType.RETURN)
+                .difficulty(Difficulty.BEGINNER)
+                .build();
+
+        Problem problem2 = Problem.builder()
+                .problemId(2L)
+                .name("test")
+                .returnType(ReturnType.RETURN)
+                .difficulty(Difficulty.BEGINNER)
+                .build();
+
+        List<Problem> problems = new ArrayList<>();
+        problems.add(problem1);
+        problems.add(problem2);
+
+        when(userRepository.findTop8Problems()).thenReturn(problems);
+
+        // Invoke the method
+        List<ProblemDto> dtos = userService.findTop8Problems();
+
+        // Assertions
+        assertEquals(2, dtos.size());
+        verify(userRepository).findTop8Problems();
+    }
+
+    @Test
+    public void givenCourseAndUser_addLCourseToUser_addLCourseToUser() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        // when
+        CourseDto expected = userService.addCourseToStudent(user.getUserId(), course.getCourseId());
+        CourseDto actual = CourseDto.builder()
+                .id(course.getCourseId())
+                .name(course.getName())
+                .difficulty(course.getDifficulty().toString())
+                .courseType(course.getCourseTypes().iterator().next().getType())
+                .build();
+
+        // then
+        assertEquals(expected, actual);
+        verify(courseRepository).findById(course.getCourseId());
+        verify(userRepository).findById(user.getUserId());
+    }
+
+    @Test
+    public void givenLessonAndNotOkCourse_addLessonToCourse_throwExceptionIfCourseDoesntExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addCourseToStudent(user.getUserId(), course.getCourseId());
+
+        // then
+        assertThrows(RuntimeException.class, call);
+    }
+
+    @Test
+    public void givenNotOkLessonAndCourse_addLessonToCourse_throwExceptionIfLessonDoesntExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+        when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addCourseToStudent(user.getUserId(), course.getCourseId());
+
+        // then
+        assertThrows(RuntimeException.class, call);
+        verify(courseRepository).findById(course.getCourseId());
+    }
+
+    @Test
+    public void givenUserAndCourse_removeCourseFromUser_removeCourseFromUser() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(course);
+        user.setCourses(courses);
+
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        // Act
+        userService.removeCourseFromStudent(user.getUserId(), course.getCourseId());
+
+        // Assert
+        assertTrue(user.getCourses().isEmpty());
+        assertNull(course.getUsers());
+        verify(userRepository, times(1)).save(user);
+        verify(courseRepository).findById(course.getCourseId());
+    }
+
+    @Test
+    public void givenCourseAndNotOkUser_removeCourseFromUser_throwExceptionIfUserDoesntExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.removeCourseFromStudent(user.getUserId(), course.getCourseId());
+
+
+        // then
+        assertThrows(RuntimeException.class, call);
+    }
+
+    @Test
+    public void givenNotOkCourseAndUser_removeCourseFromUser_throwExceptionIfCourseDoesntExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+        when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.removeCourseFromStudent(user.getUserId(), course.getCourseId());
+
+        // then
+        assertThrows(RuntimeException.class, call);
+        verify(userRepository).findById(user.getUserId());
+    }
+
+    @Test
+    public void givenUserWithCourses_testGetAllUserCourses_returnListOfCoursesIfFound() {
+        //given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course1 = Course.builder()
+                .courseId(1L)
+                .name("course name1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Course course2 = Course.builder()
+                .courseId(2L)
+                .name("course name2")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(course1);
+        courses.add(course2);
+
+        user.setCourses(courses);
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        // when
+        List<CourseDto> lessonDtos = userService.getUserCourses(user.getUserId());
+
+        // assert
+        assertEquals(2, lessonDtos.size());
+        verify(userRepository).findById(user.getUserId());
+    }
+
+    @Test
+    public void givenNotOkUserWithCourses_testGetAllUserCourses_returnListOfCoursesIfFound() {
+        //given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course1 = Course.builder()
+                .courseId(1L)
+                .name("course name1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Course course2 = Course.builder()
+                .courseId(2L)
+                .name("course name2")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(course1);
+        courses.add(course2);
+
+        user.setCourses(courses);
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call =() -> userService.getUserCourses(user.getUserId());
+
+        // assert
+        assertThrows(RuntimeException.class, call);
+    }
+
+    @Test
+    public void givenUserAndCourse_checkIfUserEnrolledToCourse_UserEnrolled() {
+        //given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course1 = Course.builder()
+                .courseId(1L)
+                .name("course name1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Course course2 = Course.builder()
+                .courseId(2L)
+                .name("course name2")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(course1);
+        courses.add(course2);
+
+        user.setCourses(courses);
+
+        // Mock repository behavior
+       when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        // Invoke the method
+        boolean result = userService.checkIfUserEnrolledToCourse(user.getUserId(), course1.getCourseId());
+
+        // Assertion
+        Assertions.assertTrue(result);
+    }
+
+    @Test
+    public void givenUserAndCourse_checkIfUserEnrolledToCourse_userNotEnrolled() {
+        //given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course1 = Course.builder()
+                .courseId(1L)
+                .name("course name1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Course course2 = Course.builder()
+                .courseId(2L)
+                .name("course name2")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        List<Course> courses = new ArrayList<>();
+        courses.add(course1);
+
+        user.setCourses(courses);
+
+        // Mock repository behavior
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        // Invoke the method
+        boolean result = userService.checkIfUserEnrolledToCourse(user.getUserId(), course2.getCourseId());
+
+        // Assertion
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void givenNotOkUserAndCourse_checkIfUserEnrolledToCourse_userNotFound() {
+        //given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course1 = Course.builder()
+                .courseId(1L)
+                .name("course name1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call =() -> userService.checkIfUserEnrolledToCourse(user.getUserId(), course1.getCourseId());
+
+        // assert
+        assertThrows(RuntimeException.class, call);
+    }
+
 }

@@ -207,8 +207,6 @@ public class UserService {
             throw new CrudOperationException("User does not exist");
         });
 
-        log.info(user.getRoles().toString());
-
         if (user.getRoles() == null || user.getRoles().isEmpty()) {
             user.setRoles(new HashSet<>());
         } else {
@@ -277,7 +275,6 @@ public class UserService {
         if (user.getUserProblemResults() == null) {
             user.setUserProblemResults(new ArrayList<>());
         }
-        log.info("im here");
 
         UserProblemResults userProblemResult = UserProblemResults.builder()
                 .userProblemId(new UserProblemId(userId, problemId))

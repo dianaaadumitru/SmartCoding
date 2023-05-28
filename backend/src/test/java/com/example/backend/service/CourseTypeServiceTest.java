@@ -37,11 +37,11 @@ class CourseTypeServiceTest {
                 .type("test")
                 .build();
 
-        CourseType quiz = CourseType.builder()
+        CourseType courseType = CourseType.builder()
                 .type(courseTypeDto.getType())
                 .build();
 
-        when(courseTypeRepository.save(ArgumentMatchers.any(CourseType.class))).thenReturn(quiz);
+        when(courseTypeRepository.save(ArgumentMatchers.any(CourseType.class))).thenReturn(courseType);
 
         // when
         CourseTypeDto created = courseTypeService.addCourseType(courseTypeDto);
@@ -61,37 +61,37 @@ class CourseTypeServiceTest {
 
         // when
         List<CourseTypeDto> expected = courseTypeService.getAllCourseTypes();
-        List<CourseTypeDto> quizDtos = courseTypes.stream().map(courseType ->
+        List<CourseTypeDto> courseTypeDtos = courseTypes.stream().map(courseType ->
                 CourseTypeDto.builder()
                         .type(courseType.getType())
                         .build()).toList();
 
         // then
-        assertEquals(expected, quizDtos);
+        assertEquals(expected, courseTypeDtos);
         verify(courseTypeRepository).findAll();
     }
 
     @Test
     public void givenCourseType_removeCourseType_deleteCourseTypeIfFound() {
         // given
-        CourseType quiz = CourseType.builder()
+        CourseType courseType = CourseType.builder()
                 .courseTypeId(1L)
                 .type("test")
                 .build();
 
-        when(courseTypeRepository.findById(quiz.getCourseTypeId())).thenReturn(Optional.of(quiz));
+        when(courseTypeRepository.findById(courseType.getCourseTypeId())).thenReturn(Optional.of(courseType));
 
         // when
-        courseTypeService.removeCourseType(quiz.getCourseTypeId());
+        courseTypeService.removeCourseType(courseType.getCourseTypeId());
 
         // then
-        verify(courseTypeRepository).deleteById(quiz.getCourseTypeId());
+        verify(courseTypeRepository).deleteById(courseType.getCourseTypeId());
     }
 
     @Test
     public void givenCourseType_removeCourseType_throwExceptionIfCourseTypeDoesntExist() {
         // given
-        CourseType quiz = CourseType.builder()
+        CourseType courseType = CourseType.builder()
                 .courseTypeId(1L)
                 .type("test")
                 .build();
@@ -99,7 +99,7 @@ class CourseTypeServiceTest {
         when(courseTypeRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call = () -> courseTypeService.removeCourseType(quiz.getCourseTypeId());
+        Executable call = () -> courseTypeService.removeCourseType(courseType.getCourseTypeId());
 
         // then
         assertThrows(RuntimeException.class, call);

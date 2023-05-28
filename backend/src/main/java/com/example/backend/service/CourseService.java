@@ -10,6 +10,7 @@ import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.CourseRepository;
 import com.example.backend.repository.CourseTypeRepository;
 import com.example.backend.repository.LessonRepository;
+import com.example.backend.utils.CourseNeededTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -219,6 +220,21 @@ public class CourseService {
                 .courseType(course.getCourseTypes().iterator().next().getType())
                 .build()).toList();
 
+    }
+
+    public String computeTimeNeededToFinishCourse(Long courseId) {
+        courseRepository.findById(courseId).orElseThrow(() -> {
+            throw new CrudOperationException("Course does not exist!");
+        });
+
+        List<LessonDto> lessonDtos = getAllCourseLessons(courseId);
+        double expectedTime = 0;
+
+        for (LessonDto lessonDto: lessonDtos) {
+            expectedTime += CourseNeededTime.extractValueFromString(lessonDto.getExpectedTime());
+        }
+
+        return CourseNeededTime.convertDoubleIntoHoursAndMinutes(expectedTime);
     }
 
 

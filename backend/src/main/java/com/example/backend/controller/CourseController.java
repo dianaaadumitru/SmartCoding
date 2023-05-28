@@ -70,6 +70,11 @@ public class CourseController {
         return ResponseEntity.ok(courseService.findByDifficultyIn(difficulties));
     }
 
+    @GetMapping("{courseId}/expectedTime")
+    public ResponseEntity<String> computeTimeNeededToFinishCourse(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.computeTimeNeededToFinishCourse(courseId));
+    }
+
 //    @GetMapping("/courseTypes")
 //    public ResponseEntity<List<CourseDto>> getAllCoursesByCourseType(@RequestParam String courseType) {
 //        return ResponseEntity.ok(courseService.getAllCoursesByCourseType(courseType));

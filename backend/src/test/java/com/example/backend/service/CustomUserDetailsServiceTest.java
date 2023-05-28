@@ -15,8 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -57,9 +55,6 @@ class CustomUserDetailsServiceTest {
 
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-        Set<GrantedAuthority> authoritiesSet = authorities.stream()
-                .map(authority -> (GrantedAuthority) authority)
-                .collect(Collectors.toSet());
         assertEquals(1, authorities.size());
         GrantedAuthority authority = authorities.iterator().next();
         assertEquals(role, authority.getAuthority());
@@ -74,9 +69,7 @@ class CustomUserDetailsServiceTest {
         when(userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)).thenReturn(Optional.empty());
 
         // then
-        assertThrows(UsernameNotFoundException.class, () -> {
-            userDetailsService.loadUserByUsername(usernameOrEmail);
-        });
+        assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(usernameOrEmail));
     }
 
 }

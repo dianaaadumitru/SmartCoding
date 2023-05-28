@@ -125,7 +125,7 @@ class CourseServiceTest {
     }
 
     @Test
-    public void givenCourseAndQuestionDto_updateCourse_updateCourseIfFound() {
+    public void givenCourseAndCourseDto_updateCourse_updateCourseIfFound() {
         // given
         Course course = Course.builder()
                 .name("course name")
@@ -151,7 +151,7 @@ class CourseServiceTest {
     }
 
     @Test
-    public void givenCourseAndQuestionDto_updateCourse_throwExceptionIfCourseDoesntExist() {
+    public void givenCourseAndCourseDto_updateCourse_throwExceptionIfCourseDoesntExist() {
         // given
         Course course = Course.builder()
                 .courseId(1L)

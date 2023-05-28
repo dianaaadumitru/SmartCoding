@@ -41,13 +41,13 @@ public class UserService {
     private final LessonRepository lessonRepository;
 
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, UserProblemResultsRepository userProblemResultsRepository1, CourseRepository courseRepository, UserLessonRepository userLessonRepository, LessonRepository lessonRepository) {
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, CourseRepository courseRepository, UserLessonRepository userLessonRepository, LessonRepository lessonRepository) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
         this.roleRepository = roleRepository;
         this.problemRepository = problemRepository;
-        this.userProblemResultsRepository = userProblemResultsRepository1;
+        this.userProblemResultsRepository = userProblemResultsRepository;
         this.courseRepository = courseRepository;
         this.userLessonRepository = userLessonRepository;
         this.lessonRepository = lessonRepository;

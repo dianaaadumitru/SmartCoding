@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.dto.*;
 import com.example.backend.entity.*;
+import com.example.backend.entity.embeddableIds.UserLessonId;
 import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.embeddableIds.UserQuestionId;
 import com.example.backend.entity.enums.Difficulty;
@@ -45,6 +46,12 @@ public class UserServiceTest {
 
     @Mock
     private CourseRepository courseRepository;
+
+    @Mock
+    private LessonRepository lessonRepository;
+
+    @Mock
+    private UserLessonRepository userLessonRepository;
 
     @InjectMocks
     private UserService userService;
@@ -1310,7 +1317,7 @@ public class UserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call =() -> userService.getUserCourses(user.getUserId());
+        Executable call = () -> userService.getUserCourses(user.getUserId());
 
         // assert
         assertThrows(RuntimeException.class, call);
@@ -1350,7 +1357,7 @@ public class UserServiceTest {
         user.setCourses(courses);
 
         // Mock repository behavior
-       when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
 
         // Invoke the method
         boolean result = userService.checkIfUserEnrolledToCourse(user.getUserId(), course1.getCourseId());
@@ -1424,10 +1431,324 @@ public class UserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         // when
-        Executable call =() -> userService.checkIfUserEnrolledToCourse(user.getUserId(), course1.getCourseId());
+        Executable call = () -> userService.checkIfUserEnrolledToCourse(user.getUserId(), course1.getCourseId());
 
         // assert
         assertThrows(RuntimeException.class, call);
     }
 
+    @Test
+    public void givenUserLessonAndCourse_addEnrolledLessonToUser_lessonAndCourseExist() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Course course = Course.builder()
+                .courseId(1L)
+                .name("course name1")
+                .difficulty(Difficulty.BEGINNER)
+                .courseTypes(new HashSet<>(Collections.singleton(CourseType.builder().type("course type").build())))
+                .build();
+
+        Lesson lesson = Lesson.builder()
+                .lessonId(2L)
+                .name("lesson")
+                .build();
+
+        // Mock repository behavior
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+        when(lessonRepository.findById(lesson.getLessonId())).thenReturn(Optional.of(lesson));
+        when(courseRepository.findById(course.getCourseId())).thenReturn(Optional.of(course));
+
+        // Invoke the method
+        LessonDto expected = userService.addEnrolledLessonToUser(user.getUserId(), lesson.getLessonId(), course.getCourseId());
+        LessonDto actual = LessonDto.builder()
+                .id(lesson.getLessonId())
+                .name(lesson.getName())
+                .build();
+
+        // Assertion
+        assertEquals(expected, actual);
+        verify(userRepository).findById(user.getUserId());
+        verify(courseRepository).findById(course.getCourseId());
+        verify(lessonRepository).findById(lesson.getLessonId());
+    }
+
+    @Test
+    public void givenNotOkUserLessonAndCourse_addEnrolledLessonToUser_userNotFound() {
+        // Mock data
+        Long userId = 1L;
+        Long lessonId = 1L;
+        Long courseId = 1L;
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addEnrolledLessonToUser(userId, lessonId, courseId);
+
+        // assert
+        assertThrows(RuntimeException.class, call);
+    }
+
+    @Test
+    public void givenUserNotOkLessonAndCourse_addEnrolledLessonToUser_lessonNotFound() {
+        // given
+        Long userId = 1L;
+        Long lessonId = 1L;
+        Long courseId = 1L;
+
+        User user = new User();
+        user.setUserId(userId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(lessonRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addEnrolledLessonToUser(userId, lessonId, courseId);
+
+        // assert
+        assertThrows(RuntimeException.class, call);
+        verify(userRepository).findById(userId);
+    }
+
+    @Test
+    public void givenUserLessonAndNotOkCourse_addEnrolledLessonToUser_courseNotFound() {
+        // given
+        Long userId = 1L;
+        Long lessonId = 1L;
+        Long courseId = 1L;
+
+        User user = new User();
+        user.setUserId(userId);
+
+        Lesson lesson = new Lesson();
+        lesson.setLessonId(lessonId);
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(lessonRepository.findById(lessonId)).thenReturn(Optional.of(lesson));
+        when(courseRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.addEnrolledLessonToUser(userId, lessonId, courseId);
+
+        // assert
+        assertThrows(RuntimeException.class, call);
+        verify(userRepository).findById(userId);
+        verify(lessonRepository).findById(lessonId);
+    }
+
+    @Test
+    public void givenUserLessonAndCourse_checkIfAUserLessonIsComplete_lessonComplete() {
+        // Mock data
+        Long userId = 1L;
+        Long lessonId = 1L;
+        Long courseId = 1L;
+
+        UserLessons userLessons = UserLessons.builder()
+                .userLessonId(new UserLessonId(userId, lessonId))
+                .courseId(courseId)
+                .completed(true)
+                .build();
+
+
+        when(userLessonRepository.findByUserLessonIdAndCourseId(
+                any(UserLessonId.class),
+                any(Long.class)
+        ))
+                .thenReturn(Optional.of(userLessons));
+
+        // when
+        boolean result = userService.checkIfAUserLessonIsComplete(userId, lessonId, courseId);
+
+        // then
+        Assertions.assertTrue(result);
+    }
+
+    @Test
+    public void givenUserLessonAndCourse_checkIfAUserLessonIsComplete_lessonNotComplete() {
+        // when
+        Long userId = 1L;
+        Long lessonId = 1L;
+        Long courseId = 1L;
+
+        UserLessons userLessons = new UserLessons();
+        userLessons.setCompleted(false);
+
+        when(userLessonRepository.findByUserLessonIdAndCourseId(
+                any(UserLessonId.class),
+                any(Long.class)
+        ))
+                .thenReturn(Optional.of(userLessons));
+
+        // when
+        boolean result = userService.checkIfAUserLessonIsComplete(userId, lessonId, courseId);
+
+        // then
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void givenUserLessonAndCourse_checkIfAUserLessonIsComplete_userLessonNotFound() {
+        // given
+        Long userId = 1L;
+        Long lessonId = 1L;
+        Long courseId = 1L;
+
+        when(userLessonRepository.findByUserLessonIdAndCourseId(
+                any(UserLessonId.class),
+                any(Long.class)
+        ))
+                .thenReturn(Optional.empty());
+
+        // when
+        boolean result = userService.checkIfAUserLessonIsComplete(userId, lessonId, courseId);
+
+        // then
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    void givenUserLessonAndCourse_markLessonAsCompleted_lessonMarked() {
+        // given
+        Long userId = 1L;
+        Long lessonId = 2L;
+        Long courseId = 3L;
+
+        UserLessons userLessons = new UserLessons();
+        userLessons.setCompleted(false);
+        Optional<UserLessons> userLessonsOptional = Optional.of(userLessons);
+
+        when(userLessonRepository.findByUserLessonIdAndCourseId(any(UserLessonId.class), any(Long.class)))
+                .thenReturn(userLessonsOptional);
+
+        // when
+        userService.markLessonAsCompleted(userId, lessonId, courseId);
+
+        // then
+        assertTrue(userLessons.isCompleted());
+        verify(userLessonRepository, times(1)).save(userLessons);
+    }
+
+    @Test
+    void givenUserLessonAndCourse_markLessonAsCompleted_NotEnrolledUser_throwsException() {
+        // given
+        Long userId = 1L;
+        Long lessonId = 2L;
+        Long courseId = 3L;
+
+        Optional<UserLessons> userLessonsOptional = Optional.empty();
+
+        when(userLessonRepository.findByUserLessonIdAndCourseId(any(UserLessonId.class), any(Long.class)))
+                .thenReturn(userLessonsOptional);
+
+        // when
+        Executable call = () -> userService.markLessonAsCompleted(userId, lessonId, courseId);
+
+        // then
+        assertThrows(RuntimeException.class, call);
+        verify(userLessonRepository, never()).save(any(UserLessons.class));
+    }
+
+    @Test
+    void givenUserLessonAndCourse_checkIfAllLessonsOfACourseAreComplete_allLessonsComplete_returnsTrue() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Long courseId = 2L;
+        int length = 3;
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        List<UserLessons> userLessons = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            UserLessons lesson = new UserLessons();
+            lesson.setCompleted(true);
+            userLessons.add(lesson);
+        }
+        when(userLessonRepository.findAllByUserAndCourseId(any(User.class), any(Long.class)))
+                .thenReturn(userLessons);
+
+        // when
+        boolean result = userService.checkIfAllLessonsOfACourseAreComplete(user.getUserId(), courseId, length);
+
+        // then
+        assertTrue(result);
+    }
+
+    @Test
+    void givenUserLessonAndCourse_checkIfAllLessonsOfACourseAreComplete_notAllLessonsComplete_returnsFalse() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Long courseId = 2L;
+        int length = 3;
+
+        when(userRepository.findById(user.getUserId())).thenReturn(Optional.of(user));
+
+        List<UserLessons> userLessons = new ArrayList<>();
+        for (int i = 0; i < length - 1; i++) {
+            UserLessons lesson = new UserLessons();
+            lesson.setCompleted(true);
+            userLessons.add(lesson);
+        }
+
+        userLessons.add(new UserLessons());
+
+        when(userLessonRepository.findAllByUserAndCourseId(any(User.class), any(Long.class)))
+                .thenReturn(userLessons);
+
+        // Act
+        boolean result = userService.checkIfAllLessonsOfACourseAreComplete(user.getUserId(), courseId, length);
+
+        // Assert
+        assertFalse(result);
+    }
+
+    @Test
+    void givenUserLessonAndCourse_checkIfAllLessonsOfACourseAreComplete_userNotFound_throwsException() {
+        // given
+        User user = User.builder()
+                .userId(11L)
+                .firstName("first name")
+                .lastName("last name")
+                .username("username")
+                .email("email")
+                .password("password")
+                .roles(new HashSet<>(Collections.singletonList(role)))
+                .build();
+
+        Long courseId = 2L;
+        int length = 3;
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when
+        Executable call = () -> userService.checkIfAllLessonsOfACourseAreComplete(user.getUserId(), courseId, length);
+
+        // then
+        assertThrows(RuntimeException.class, call);
+    }
 }

@@ -76,7 +76,7 @@ DONE    - developer section
 DONE    - navbars - dropdown
 DONE    - navbars
 
-TODO !!! compute the course time to complete !!!
+DONE --- !!! compute the course time to complete !!!
 
 I think I have to create one more navbar but not sure - look into it
 
@@ -88,7 +88,8 @@ primes:
     "code": "def isPrim(a):\n if (a < 2 or (a > 2 and a % 2 == 0)): \n\t return False \n for d in range(3, a, 2): \n\t if (a % d == 0): \n\t\t return False\n return True",
     "valuesType": "Integer",
     "valuesToCheckCode": "2;3;4",
-    "resultsToCheckCode": "True; True; False"
+    "resultsToCheckCode": "True; True; False",
+    "returnType": "RETURN"
 }
 
 vowels:
@@ -96,7 +97,8 @@ vowels:
     "code": "def noVowels(word):\n\t nr = 0 \n\t for letter in word: \n\t\t if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u':\n\t\t\t nr += 1\n\t return nr",
     "valuesType": "String",
     "valuesToCheckCode": "abcdaae;aaaaa;dfsgt",
-    "resultsToCheckCode": "4; 5; 0"
+    "resultsToCheckCode": "4; 5; 0",
+    "returnType": "RETURN"
 }
 
 seqOfEvenNo
@@ -104,7 +106,8 @@ seqOfEvenNo
     "code": "def seqOfEvenNo(seq): \n\t for elem in seq: \n\t\t if elem % 2 == 1: \n\t\t\t return False \n\t return True",
     "valuesType": "List",
     "valuesToCheckCode": "[2, 4, 6]; [1,2,4]; [4,5,6]; [8,8,8,8,8,8,9]",
-    "resultsToCheckCode": "True; False; False; False"
+    "resultsToCheckCode": "True; False; False; False",
+    "returnType": "RETURN"
 }
 
 seqOfPrimes
@@ -112,7 +115,17 @@ seqOfPrimes
     "code": "def seqOfPrimes(seq): \n\tfor elem in seq: \n\t\tif not isPrime(elem): \n\t\t\treturn False\n\treturn True \ndef isPrime(a): \n\tif (a < 2 or (a > 2 and a % 2 == 0)): \n\t\treturn False \n\tfor d in range(3, a, 2): \n\t\tif (a % d == 0): \n\t\t\treturn False \n\treturn True",
     "valuesType": "List",
     "valuesToCheckCode": "[2,3,5]; [7,8,9,10]; [11,11,11,11,11]; [11,11,11,11,11,1]",
-    "resultsToCheckCode": "True; False; True; True"
+    "resultsToCheckCode": "True; False; True; True",
+    "returnType": "RETURN"
+}
+
+print
+{
+    "code": "print('hello')",
+    "valuesType": "String",
+    "valuesToCheckCode": "",
+    "resultsToCheckCode": "",
+    "returnType": "PRINT"
 }
 
 

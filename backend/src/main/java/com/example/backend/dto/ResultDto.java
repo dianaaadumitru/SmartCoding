@@ -8,5 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ResultDto { //todo: add here the error string and check if the code returns an error and handle it
-    private double finalResult;
+    private Double finalResult;
+    private String printedResult;
 }

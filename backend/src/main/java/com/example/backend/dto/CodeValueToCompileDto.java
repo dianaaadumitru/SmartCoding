@@ -15,4 +15,6 @@ public class CodeValueToCompileDto {
     private String valuesToCheckCode;
 
     private String resultsToCheckCode;
+
+    private String returnType;
 }

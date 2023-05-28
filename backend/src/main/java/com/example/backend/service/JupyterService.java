@@ -86,6 +86,7 @@ public class JupyterService {
             throw new CrudOperationException("empty code");
         }
         int successes = 0;
+        String printedResult = "";
         String[] valuesToCheck = data.getValuesToCheckCode().split(";");
         String[] resultsToCheck = data.getResultsToCheckCode().split(";");
         for (int i = 0; i < valuesToCheck.length; i++) {
@@ -98,11 +99,17 @@ public class JupyterService {
                 currentValue = valuesToCheck[i].strip();
             }
             System.out.println("value that is checked: " + currentValue + " having result: " + resultsToCheck[i]);
-            String codeToCompile = codeGeneratingService.generateCode(data.getCode(), currentValue);
-            log.info("code to compile\n" + codeToCompile);
-
+            String codeToCompile = "";
+            if (Objects.equals(data.getReturnType(), "RETURN")) {
+                codeToCompile = codeGeneratingService.generateCode(data.getCode(), currentValue);
+                log.info("code to compile\n" + codeToCompile);
+            } else {
+                codeToCompile = data.getCode();
+                log.info("code to compile\n" + codeToCompile);
+            }
             ExecutorService threadpool = Executors.newCachedThreadPool();
-            Future<RunRequestResultIdDto> futureTask = threadpool.submit(() -> sendRunRequest(codeToCompile));
+            String finalCodeToCompile = codeToCompile;
+            Future<RunRequestResultIdDto> futureTask = threadpool.submit(() -> sendRunRequest(finalCodeToCompile));
 
             while (!futureTask.isDone()) {
 
@@ -125,8 +132,16 @@ public class JupyterService {
             if (Objects.equals(result.getCodeExecutionResult().getReturnedResult(), resultsToCheck[i].strip())) {
                 successes++;
             }
+            // check if printedResult != null
+            printedResult = result.getCodeExecutionResult().getPrintedResult();
         }
-        return ResultDto.builder().finalResult(((double) successes / valuesToCheck.length) * 100).build();
+        ResultDto resultDto = null;
+        if ("RETURN".equals(data.getReturnType())) {
+            resultDto = ResultDto.builder().printedResult(null).finalResult(((double) successes / valuesToCheck.length) * 100).build();
+        } else {
+            resultDto = ResultDto.builder().printedResult(printedResult).finalResult(null).build();
+        }
+        return resultDto;
     }
 
     public RunRequestResult readFinalResultDeveloper(CodeDto data) throws ExecutionException, InterruptedException {

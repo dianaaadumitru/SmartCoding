@@ -23,10 +23,10 @@ const LessonItem = ({ lesson, userId, courseId, isEnrolled, index, lessons, hand
     return (
       <div
         className={`additional-content ${
-          (!isEnrolled || (isEnrolled && !isLessonCompleted)) && lesson.noLesson !== 1 ? 'disabled' : ''
+          !isEnrolled || (isEnrolled && (!isLessonCompleted && lesson.noLesson !== 1)) ? 'disabled' : ''
         }`}
         onClick={
-          (!isEnrolled || (isEnrolled && !isLessonCompleted)) && lesson.noLesson !== 1 ? null : () =>
+          !isEnrolled || (isEnrolled && (!isLessonCompleted && lesson.noLesson !== 1)) ? null : () =>
             handleClickLesson(lesson.id)
         }
       >
@@ -38,7 +38,7 @@ const LessonItem = ({ lesson, userId, courseId, isEnrolled, index, lessons, hand
                 <input type="checkbox" readOnly className="lesson-checkbox" />
             )}
             
-            {(!isEnrolled || (isEnrolled && !isLessonCompleted)) && lesson.noLesson !== 1 ? (
+            {!isEnrolled || (isEnrolled && (!isLessonCompleted && lesson.noLesson !== 1)) ? (
               <>
               {console.log("isEnrolled: ", {isEnrolled}, " isCompleted: ", {isLessonCompleted}, " no lesson: ", lesson.noLesson)}
                 <AiOutlineLock className="lesson-icon" />

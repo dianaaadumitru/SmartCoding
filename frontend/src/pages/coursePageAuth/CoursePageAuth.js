@@ -44,7 +44,7 @@ function CoursePageAuth() {
         setLessons(sortedLessons);
     };
 
-    const getExpectedTimeToFinishCourse = async() => {
+    const getExpectedTimeToFinishCourse = async () => {
         const result = await computeTimeNeededToFinishCourse(courseId);
         setTimeToFinish(result);
     }
@@ -74,10 +74,12 @@ function CoursePageAuth() {
         await enrolUserToCourse();
         setIsLoading(false);
         setStartButtonVisible(false);
-        addLessonsToUser().then( async() => {
-            const result = await getCourseLessonByNoLesson(courseId, 1);
-            navigate(`/auth/lessons/${result.id}`);
-        })
+        if (lessons.length > 0) {
+            addLessonsToUser().then(async () => {
+                const result = await getCourseLessonByNoLesson(courseId, 1);
+                navigate(`/auth/lessons/${result.id}`);
+            })
+        }
     };
 
     const addLessonsToUser = async () => {
@@ -87,7 +89,11 @@ function CoursePageAuth() {
         });
     }
 
-    const handleClickLesson = async (itemId) => navigate(`/auth/lessons/${itemId}`);
+    const handleClickLesson = async (itemId) => {
+        console.log("here " + lessons.length)
+        if (lessons.length > 0)
+            navigate(`/auth/lessons/${itemId}`);
+    }
 
     useEffect(() => {
 
@@ -125,7 +131,7 @@ function CoursePageAuth() {
                         <h2 className="course-name">
                             {course.name}
                         </h2>
-                        {isCourseCompleted && (
+                        {isEnrolled && isCourseCompleted && (
                             <span className="completed-text">Completed</span>
                         )}
 
@@ -142,7 +148,7 @@ function CoursePageAuth() {
                             </div>
 
                             {isEnrolled ? (
-                                <p className="already-enrolled-text">You are already enrolled</p>
+                                <p className="already-enrolled-text">Enrolled</p>
                             ) : isLoading ? (
                                 <div className="loading-indicator"></div>
                             ) : (

@@ -80,6 +80,14 @@ DONE --- !!! compute the course time to complete !!!
 
 I think I have to create one more navbar but not sure - look into it
 
+FRONT BUGS!!!
+completed message for course appears even though user not enrolled
+if user not enrolled why first lesson is unlocked???
+add constraint for navigate if course doesnt have any lessons
+
+TODO
+add course completion for explore catalog and also top courses
+
 
 
 code snippets for jupyter calls:

@@ -13,7 +13,7 @@
   transform: translateX(-50%);
   width: 40%;
   max-width: 500px;
-  background-color: #FFFFFF;
+  background-color: #C2C2C2;
 }
 
 .rectangle * {
@@ -116,6 +116,10 @@ a {
 
 .move-upper {
   top: -22px;
+}
+
+.have-an-account-text {
+  color: #424242;
 }
 
 @media (max-width: 768px) {

@@ -147,7 +147,7 @@ function CreateAccountPage() {
           </div>
 
           <button className='signup-button' onClick={() => handleSignup()}>Sign Up</button>
-          <p>Have an account? <a href='/signin'>Sign in</a></p>
+          <p className="have-an-account-text">Have an account? <a href='/signin'>Sign in</a></p>
         </div>
       </div>
     </div>

@@ -71,7 +71,6 @@ function EnrolledCourses() {
         {paginatedItems.map((item) => {
           const course = courses.find((c) => c.id === item.id);
           const isCompleted = course ? course.isCompleted || false : false;
-          console.log("is course completed??? ", isCompleted);
           return (
             <div
               key={item.id}

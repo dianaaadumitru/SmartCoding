@@ -65,7 +65,6 @@ function CoursePageAuth() {
 
     const checkIfCourseCompleted = async () => {
         const result = await checkIfCourseIsCompleted(userId, courseId, lessons.length);
-        console.log("length: ", lessons.length)
         setIsCourseCompleted(result);
     }
 
@@ -85,12 +84,10 @@ function CoursePageAuth() {
     const addLessonsToUser = async () => {
         lessons.forEach(async lesson => {
             await addEnrolledLessonToUser(userId, lesson.id, courseId)
-            console.log("added")
         });
     }
 
     const handleClickLesson = async (itemId) => {
-        console.log("here " + lessons.length)
         if (lessons.length > 0)
             navigate(`/auth/lessons/${itemId}`);
     }

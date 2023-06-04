@@ -45,10 +45,13 @@ function AllCourses() {
   const getCoursesByDifficulty = async (checkedDifficulties) => {
     if (checkedDifficulties.length === 0) {
       getCourses();
+      setIsCompletionFetched(false)
+      
     } else {
       try {
         const result = await getAllCoursesByDifficulties(checkedDifficulties);
         setCourses(result);
+        setIsCompletionFetched(false)
       } catch (error) {
         console.error(error);
       }
@@ -56,6 +59,7 @@ function AllCourses() {
   };
 
   const fetchCompletionStatus = async () => {
+    console.log("in fetch")
     const promises = courses.map((item) => checkCourseCompletionStatus(item.id));
     const completionStatuses = await Promise.all(promises);
 
@@ -146,7 +150,7 @@ function AllCourses() {
           const isEnrolled = item.isEnrolled || false;
           const isCompleted = item.isCompleted || false;
           const isFiltered = checkedDifficulties.length > 0 && !checkedDifficulties.includes(item.difficulty);
-
+          console.log("course name " + item.name + " comp " + item.isCompleted)
           return (
             <div
               key={item.id}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { AiFillSignal } from "react-icons/ai";
 import { useNavigate } from "react-router-dom"; 
+
+import './UserProblems.css'
 import getUsersSolvedProblems from "services/userService/getUsersSolvedProblems";
 
 function UserProblems() {
@@ -43,7 +45,11 @@ function UserProblems() {
                     </button>
                 )}
                 {paginatedItems.map((item) => (
-                    <div key={item.problemId} className="list-item" onClick={() => handleItemClick(item.problemId)}>
+                    <div 
+                    key={item.problemId} 
+                    onClick={() => handleItemClick(item.problemId)}
+                    className={`list-item ${item.percentage == 100 ? "completed" : ""}`}
+                    >
                         <div className="list-item-header">Problem</div>
                         <h3 className="list-item-heading">{item.problemName}</h3>
                         <p className="list-item-description">{item.problemDescription}</p>

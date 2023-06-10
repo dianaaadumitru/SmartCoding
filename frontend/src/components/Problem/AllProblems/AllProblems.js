@@ -13,6 +13,8 @@ function AllProblems() {
   const [checkedDifficulties, setCheckedDifficulties] = useState([]);
   const navigate = useNavigate();
   const filterRef = useRef(null);
+  const userId = parseInt(localStorage.getItem("userId"));
+
 
   const getProblems = async () => {
     const result = await getAllProblems();

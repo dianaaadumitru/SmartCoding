@@ -10,6 +10,7 @@ function TopProblemsAuth() {
 
     const itemsPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
+    const userId = parseInt(localStorage.getItem("userId"));
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;

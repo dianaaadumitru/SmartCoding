@@ -59,7 +59,6 @@ function AllCourses() {
   };
 
   const fetchCompletionStatus = async () => {
-    console.log("in fetch")
     const promises = courses.map((item) => checkCourseCompletionStatus(item.id));
     const completionStatuses = await Promise.all(promises);
 

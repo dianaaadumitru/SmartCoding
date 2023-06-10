@@ -35,7 +35,8 @@ function LessonPage() {
 
   const [finalResult, setFinalResult] = useState({
     finalResult: -1,
-    printedResult: null
+    printedResult: null,
+    pythonCodeStatus: null
   });
 
   const [currentProblem, setCurrentProblem] = useState({
@@ -107,7 +108,7 @@ function LessonPage() {
 
     editor.onDidChangeModelContent(() => {
       const value = editor.getValue();
-      const modifiedText = JSON.stringify(value).replace(/"/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+      const modifiedText = JSON.stringify(value).replace(/^"|"$/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\/g, '');
       setTextToCompile(modifiedText);
     });
 
@@ -145,6 +146,11 @@ function LessonPage() {
 
     setIsLoading(true);
     const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode, currentProblem.returnType)
+
+    if (result.printedResult !== null) {
+      result.finalResult = 100;
+    }
+
     setFinalResult(result);
     await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
     if (result.finalResult == 100 || result.printedResult != null) {
@@ -253,12 +259,18 @@ function LessonPage() {
                 </div>
               ) : (
                 <>
-                  {finalResult.finalResult !== -1 && finalResult.finalResult != null ? (
-                    <p className="button-text">This code works for {finalResult.finalResult}% of cases.</p>
-                  ) : (
-                    finalResult.printedResult != null && (
-                      <p className="button-text">printed code: {finalResult.printedResult}</p>
-                    )
+                  {finalResult.pythonCodeStatus === 'ok' && (
+                    <>
+                      {finalResult.finalResult !== -1 && finalResult.finalResult !== null && (
+                        <p className="button-text">This code works for {finalResult.finalResult}% of cases.</p>
+                      )}
+                      {finalResult.printedResult !== null && (
+                        <p className="button-text">printed code: {finalResult.printedResult}</p>
+                      )}
+                    </>
+                  )}
+                  {finalResult.pythonCodeStatus === 'error' && (
+                    <p className="button-text" style={{ color: "red" }}>An error occurred during code execution.</p>
                   )}
                   <button className="button" onClick={handleClick}>Run</button>
                 </>

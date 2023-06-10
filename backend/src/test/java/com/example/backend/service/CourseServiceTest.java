@@ -222,6 +222,7 @@ class CourseServiceTest {
 
     @Test
     public void givenLessonAndCourse_addLessonToCourse_addLessonToCourse() {
+        // given
         Course course = Course.builder()
                 .courseId(1L)
                 .name("course name")

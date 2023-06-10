@@ -37,13 +37,3 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: admissionApp
-
-
-
-
-
-#version: "3"
-#services:
-#  jupyter:
-#    build: ./jupyter
-#    image: jupyter-image

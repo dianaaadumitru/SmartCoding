@@ -68,7 +68,7 @@ function AllProblems() {
   };
 
   const handleItemClick = (itemId) => {
-    navigate(`/courses/${itemId}`);
+    navigate(`/auth/problems/${itemId}`);
   };
 
   return (
@@ -105,9 +105,9 @@ function AllProblems() {
       <div className="all-courses-section">
         {problems.map((item, index) => (
           <div
-            key={item.id}
+            key={item.problemId}
             className="list-item-courses"
-            onClick={() => handleItemClick(item.id)}
+            onClick={() => handleItemClick(item.problemId)}
           >
             <div className="list-item-header-courses">Problem</div>
             <h3 className="list-item-heading-courses">{item.name}</h3>

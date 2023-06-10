@@ -36,7 +36,7 @@ function DeveloperComponent() {
 
         editor.onDidChangeModelContent(() => {
             const value = editor.getValue();
-            const modifiedText = JSON.stringify(value).replace(/"/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+            const modifiedText = JSON.stringify(value).replace(/^"|"$/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r').replace(/\\/g, '');
             setTextToCompile(modifiedText);
             console.log("text ", modifiedText)
         });
@@ -55,14 +55,6 @@ function DeveloperComponent() {
         setIsLoading(true);
         console.log("final result before ", finalResult);
         const result = await runCodeDeveloper(textToCompile);
-        // setFinalResult({
-        //     ...finalResult,
-        //     codeExecutionResult: {
-        //         printedResult: result.printedResult,
-        //         returnedResult: result.returnedResult,
-        //         pythonCodeStatus: result.pythonCodeStatus
-        //     }
-        // });
         setFinalResult(result)
         console.log("final result ", result);
         setIsLoading(false);
@@ -116,11 +108,13 @@ function DeveloperComponent() {
                 return (
                     <p style={{ color: "black" }}>{`Returned Result: ${returnedResult}`}</p>
                 );
-            } else if (printedResult !== null) {
+            }
+            if (printedResult !== null) {
                 return (
                     <p style={{ color: "black" }}>{`Printed Result: ${printedResult}`}</p>
                 );
-            } else {
+            }
+            if (printedResult == null && returnedResult == null) {
                 return (
                     <p style={{ color: "black" }}>No result to display.</p>
                 );
@@ -166,19 +160,19 @@ function DeveloperComponent() {
                             {
                                 finalResult.requestStatus == 'DONE' && (
                                     <>
-                                        <p style={{ color: "black", fontWeight: "bold"}}>Result: </p>
+                                        <p style={{ color: "black", fontWeight: "bold" }}>Result: </p>
 
                                         {
                                             finalResult.codeExecutionResult.pythonCodeStatus == 'ok' ? (
                                                 <>
-                                                    {
-                                                        finalResult.codeExecutionResult.printedResult != null ? (
-                                                            <p style={{ color: "black" }}>{`Printed result: ${finalResult.codeExecutionResult.printedResult}`}</p>
-                                                        ) : (
-                                                            <p style={{ color: "black" }}>{`Returned result: ${finalResult.codeExecutionResult.returnedResult}`}</p>
-                                                        )
-                                                    }
+                                                    {finalResult.codeExecutionResult.printedResult != null && (
+                                                        <p style={{ color: "black" }}>{`Printed result: ${finalResult.codeExecutionResult.printedResult}`}</p>
+                                                    )}
+                                                    {finalResult.codeExecutionResult.returnedResult != null && (
+                                                        <p style={{ color: "black" }}>{`Returned result: ${finalResult.codeExecutionResult.returnedResult}`}</p>
+                                                    )}
                                                 </>
+
                                             ) : (
                                                 <p style={{ color: "red" }}>An error occurred during code execution.</p>
                                             )

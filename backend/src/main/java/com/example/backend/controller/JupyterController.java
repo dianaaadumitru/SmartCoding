@@ -21,12 +21,12 @@ import java.util.concurrent.ExecutionException;
 public class JupyterController {
     private final JupyterService jupyterService;
 
-    private final CodeGeneratingService codeGeneratingService;
+//    private final CodeGeneratingService codeGeneratingService;
 
 
-    public JupyterController(JupyterService jupyterService, CodeGeneratingService codeGeneratingService) {
+    public JupyterController(JupyterService jupyterService) {
         this.jupyterService = jupyterService;
-        this.codeGeneratingService = codeGeneratingService;
+//        this.codeGeneratingService = codeGeneratingService;
     }
 
     @GetMapping("/sessions")
@@ -49,18 +49,18 @@ public class JupyterController {
         return ResponseEntity.ok(jupyterService.getCreatedSession());
     }
 
-    @GetMapping("/run")
-    public ResponseEntity<RunRequestResultIdDto> sendRunRequest(@RequestBody CodeValueToCompileDto data) {
-//        String codeToCompile = codeGeneratingService.generateCode(data.getCode(), data.getValue());
-        log.info("\n" + data.getCode());
-        return ResponseEntity.ok(jupyterService.sendRunRequest(data.getCode()));
-    }
-
-
-    @GetMapping("/run/{requestId}")
-    public ResponseEntity<RunRequestResult> readRunRequestResult(@PathVariable int requestId) {
-        return ResponseEntity.ok(jupyterService.readRunRequestResult(requestId));
-    }
+//    @GetMapping("/run")
+//    public ResponseEntity<RunRequestResultIdDto> sendRunRequest(@RequestBody CodeValueToCompileDto data) {
+////        String codeToCompile = codeGeneratingService.generateCode(data.getCode(), data.getValue());
+//        log.info("\n" + data.getCode());
+//        return ResponseEntity.ok(jupyterService.sendRunRequest(data.getCode()));
+//    }
+//
+//
+//    @GetMapping("/run/{requestId}")
+//    public ResponseEntity<RunRequestResult> readRunRequestResult(@PathVariable int requestId) {
+//        return ResponseEntity.ok(jupyterService.readRunRequestResult(requestId));
+//    }
 
     @PostMapping("/run/results")
     public ResponseEntity<ResultDto> readFinalResult(@RequestBody CodeValueToCompileDto data) throws ExecutionException, InterruptedException {

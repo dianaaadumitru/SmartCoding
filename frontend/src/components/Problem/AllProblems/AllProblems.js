@@ -6,6 +6,7 @@ import getDifficulties from "services/difficulty/getDifficulties";
 import { AiTwotoneFilter } from "react-icons/ai";
 import getAllProblems from "services/problemService/getAllProblems";
 import getAllProblemsByDifficulties from "services/problemService/getAllProblemsByDifficulty";
+import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
 
 function AllProblems() {
   const [problems, setProblems] = useState([]);
@@ -14,7 +15,7 @@ function AllProblems() {
   const navigate = useNavigate();
   const filterRef = useRef(null);
   const userId = parseInt(localStorage.getItem("userId"));
-
+  const [isCompletionFetched, setIsCompletionFetched] = useState(false);
 
   const getProblems = async () => {
     const result = await getAllProblems();
@@ -28,11 +29,13 @@ function AllProblems() {
 
   const getProblemsByDifficulty = async (checkedDifficulties) => {
     if (checkedDifficulties.length === 0) {
-        getProblems();
+      getProblems();
+      setIsCompletionFetched(false)
     } else {
       try {
         const result = await getAllProblemsByDifficulties(checkedDifficulties);
         setProblems(result);
+        setIsCompletionFetched(false)
       } catch (error) {
         console.error(error);
       }
@@ -73,6 +76,33 @@ function AllProblems() {
     navigate(`/auth/problems/${itemId}`);
   };
 
+  const getProblemScoreForUser = async (problemId) => {
+    const result = await getProblemScoreForAProblemSoledByUser(userId, problemId);
+    if (result.score === 100)
+      return true;
+    return false;
+  }
+
+  const fetchCompletionStatus = async () => {
+    const promises = problems.map((item) => getProblemScoreForUser(item.problemId));
+    const completionStatuses = await Promise.all(promises);
+
+    setProblems((prevProblems) => {
+      const updatedProblems = prevProblems.map((problem, index) => ({
+        ...problem,
+        isCompleted: completionStatuses[index],
+      }));
+      return updatedProblems;
+    });
+    setIsCompletionFetched(true);
+  };
+
+  useEffect(() => {
+    if (problems.length > 0 && !isCompletionFetched) {
+      fetchCompletionStatus();
+    }
+  }, [problems, isCompletionFetched]);
+
   return (
     <div className="list-container-courses">
 
@@ -105,21 +135,29 @@ function AllProblems() {
         ))}
       </div>
       <div className="all-courses-section">
-        {problems.map((item, index) => (
-          <div
-            key={item.problemId}
-            className="list-item-courses"
-            onClick={() => handleItemClick(item.problemId)}
-          >
-            <div className="list-item-header-courses">Problem</div>
-            <h3 className="list-item-heading-courses">{item.name}</h3>
-            <p className="list-item-description-courses">{item.description}</p>
-            <div className="list-item-footer-courses">
-              <AiFillSignal />
-              {item.difficulty}
+        {problems.map((item) => {
+          const isCompleted = item.isCompleted || false;
+          const isFiltered = checkedDifficulties.length > 0 && !checkedDifficulties.includes(item.difficulty);
+          return (
+            <div
+              key={item.id}
+              className={`list-item-courses ${isFiltered ? "" : (isCompleted ? "completed" : "")}`}
+              onClick={() => handleItemClick(item.id)}
+            >
+              <div className="list-item-header-courses">Problem</div>
+              <h3 className="list-item-heading-courses">{item.name}</h3>
+              <p className="list-item-description-courses">{item.description}</p>
+              <div className="list-item-footer-courses">
+                <AiFillSignal />
+                {item.difficulty}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
+
+
+
+
       </div>
     </div>
   );

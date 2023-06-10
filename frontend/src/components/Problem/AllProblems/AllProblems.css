@@ -98,7 +98,10 @@
     overflow-y: auto;
     left: 20px;
   }
-  
+
+  .completed {
+    background-color: #65bc79;
+  }
   
   @media (max-width: 768px) {
     .list-container-courses {

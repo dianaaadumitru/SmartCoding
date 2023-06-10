@@ -70,6 +70,10 @@
   margin-top: 5px;
 }
 
+.completed {
+  background-color: #65bc79;
+}
+
 @media (max-width: 600px) {
   .list-container {
     flex-wrap: wrap;

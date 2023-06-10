@@ -80,16 +80,6 @@ public class UserController {
         return ResponseEntity.ok(userService.getProblemScoreForAProblemSoledByUser(userId, problemId));
     }
 
-    @GetMapping("/resultsQuiz/{userId}")
-    public ResponseEntity<UserTestResultDto> getUserFinalScore(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.computeTestScoreForUser(userId));
-    }
-
-    @GetMapping("/resultsQuiz")
-    public ResponseEntity<List<UserAndFinalScoreDto>> getAllUsersFinalScore() {
-        return ResponseEntity.ok(userService.getAllUsersFinalScores());
-    }
-
     @GetMapping("/topCourses")
     public ResponseEntity<List<CourseDto>> findTop8Courses() {
         return ResponseEntity.ok(userService.findTop8Courses());

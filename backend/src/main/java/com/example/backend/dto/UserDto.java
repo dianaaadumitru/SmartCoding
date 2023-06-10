@@ -23,5 +23,4 @@ public class UserDto {
 
     private String userType;
 
-    private double testResult;
 }

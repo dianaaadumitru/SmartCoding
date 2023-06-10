@@ -127,7 +127,6 @@ public class UserService {
                             .email(user.getEmail())
                             .username(user.getUsername())
                             .password(user.getPassword())
-                            .testResult(user.getTestResult())
                             .build();
                     if (user.getRoles() != null && user.getRoles().size() > 0) {
                         userDto.setUserType(user.getRoles().iterator().next().getRole());
@@ -348,44 +347,6 @@ public class UserService {
                         .problemDifficulty(userProblemResult.getProblem().getDifficulty().toString())
                         .build()))
                 .toList();
-    }
-
-    public UserTestResultDto computeTestScoreForUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> {
-            throw new CrudOperationException("User does not exist");
-        });
-
-        List<UserQuestionResults> userQuestionResults = userResultsRepository.findByUser_UserId(userId);
-        double sum = 0;
-        for (UserQuestionResults result : userQuestionResults) {
-            sum += result.getScore();
-        }
-
-        user.setTestResult(sum);
-        userRepository.save(user);
-
-        return UserTestResultDto.builder()
-                .userId(userId)
-                .userFirstName(user.getFirstName())
-                .userLastName(user.getLastName())
-                .testResult(sum)
-                .build();
-    }
-
-    public List<UserAndFinalScoreDto> getAllUsersFinalScores() {
-        Iterable<User> users = userRepository.findAll();
-        List<UserAndFinalScoreDto> userAndFinalScoreDtos = new ArrayList<>();
-
-        users.forEach(user -> {
-            UserAndFinalScoreDto userAndFinalScoreDto = UserAndFinalScoreDto.builder()
-                    .firstName(user.getFirstName())
-                    .lastName(user.getLastName())
-                    .userId(user.getUserId())
-                    .testResult(user.getTestResult())
-                    .build();
-            userAndFinalScoreDtos.add(userAndFinalScoreDto);
-        });
-        return userAndFinalScoreDtos;
     }
 
     public List<CourseDto> findTop8Courses() {

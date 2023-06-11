@@ -62,10 +62,9 @@ DONE    - enable next button only when isCompleted = 100 and go to lessonNextNo
 
 DONE ---- !!! logout !!!
 
-TODO - backend
 DONE    - when compiling code check if there exists a method for splitting string
 DONE    - check if code is with print
-    - check if there is an error compiling
+DONE    - check if there is an error compiling
 DONE    - make a call for developer method
 
 
@@ -85,8 +84,18 @@ done --- completed message for course appears even though user not enrolled
 done --- if user not enrolled why first lesson is unlocked???
 done --- add constraint for navigate if course doesnt have any lessons
 
-TODO
-add course completion for explore catalog and also top courses
+DONE ---- add course completion for explore catalog and also top courses
+
+
+add:
+MAKE IT SECURED
+populate db
+make solved problems green
+add course type
+maybe add problem type (if you have time)
+add that feature search by type
+suggested courses based on type maybe?
+NAVBARS
 
 
 

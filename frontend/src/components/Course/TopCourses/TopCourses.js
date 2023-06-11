@@ -46,7 +46,7 @@ function TopCourses() {
                     <div key={item.id} className="list-item" onClick={() => handleItemClick(item.id)}>
                         <div className="list-item-header">Course</div>
                         <h3 className="list-item-heading">{item.name}</h3>
-                        <p className="list-item-description">{item.description}</p>
+                        <p className="list-item-description">{item.courseType}</p>
                         <div className="list-item-footer"><AiFillSignal />{item.difficulty}</div>
                     </div>
                 ))}

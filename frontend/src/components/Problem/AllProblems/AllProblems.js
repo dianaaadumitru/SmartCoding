@@ -140,9 +140,9 @@ function AllProblems() {
           const isFiltered = checkedDifficulties.length > 0 && !checkedDifficulties.includes(item.difficulty);
           return (
             <div
-              key={item.id}
+              key={item.problemId}
               className={`list-item-courses ${isFiltered ? "" : (isCompleted ? "completed" : "")}`}
-              onClick={() => handleItemClick(item.id)}
+              onClick={() => handleItemClick(item.problemId)}
             >
               <div className="list-item-header-courses">Problem</div>
               <h3 className="list-item-heading-courses">{item.name}</h3>

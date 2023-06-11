@@ -79,7 +79,7 @@ function EnrolledCourses() {
             >
               <div className="list-item-header">Course</div>
               <h3 className="list-item-heading">{item.name}</h3>
-              <p className="list-item-description">{item.description}</p>
+              <p className="list-item-description">{item.courseType}</p>
               <div className="list-item-footer">
                 <AiFillSignal />
                 {item.difficulty}

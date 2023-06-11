@@ -77,9 +77,9 @@ function TopProblemsAuth() {
                     const isCompleted = problem ? problem.isCompleted || false : false;
                     return (
                         <div
-                            key={item.id}
+                            key={item.problemId}
                             className={`list-item ${isCompleted ? "completed" : ""}`}
-                            onClick={() => handleItemClick(item.id)}
+                            onClick={() => handleItemClick(item.problemId)}
                         >
                             <div className="list-item-header">Problem</div>
                             <h3 className="list-item-heading">{item.name}</h3>

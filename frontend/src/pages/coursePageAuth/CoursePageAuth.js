@@ -12,6 +12,7 @@ import LessonItem from "components/Lesson/LessonItem";
 import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByNoLesson";
 import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
 import computeTimeNeededToFinishCourse from "services/courseService/computeTimeNeededToFinishCourse";
+import RecommendedCourses from "components/Course/RecommendedCourses/RecommendedCourses";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -188,6 +189,7 @@ function CoursePageAuth() {
                     </div>
                 </div>
             </div>
+            <RecommendedCourses courseId={courseId} />
         </div>
     );
 }

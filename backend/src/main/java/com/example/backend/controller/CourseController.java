@@ -79,4 +79,9 @@ public class CourseController {
     public ResponseEntity<List<CourseDto>> searchCoursesByCourseType(@RequestParam String courseType) {
         return ResponseEntity.ok(courseService.searchCoursesByCourseType(courseType));
     }
+
+    @GetMapping("/recommendedCourses/{courseId}")
+    public ResponseEntity<List<CourseDto>> getRecommendedCourses(@PathVariable Long courseId) {
+        return ResponseEntity.ok(courseService.getRecommendedCourses(courseId));
+    }
 }

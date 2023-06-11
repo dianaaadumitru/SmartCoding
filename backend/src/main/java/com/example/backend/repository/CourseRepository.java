@@ -12,4 +12,6 @@ public interface CourseRepository extends CrudRepository<Course, Long> {
     List<Course> findByCourseTypeKeyword(String keyword);
     @Query("SELECT DISTINCT c FROM Course c WHERE c.difficulty IN :difficulties")
     List<Course> findByDifficultyIn(List<Difficulty> difficulties);
+
+    List<Course> findByNameContaining(String name);
 }

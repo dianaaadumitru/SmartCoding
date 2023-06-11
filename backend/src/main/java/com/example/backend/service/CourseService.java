@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.text.similarity.JaccardSimilarity;
+
 @Service
 public class CourseService {
     private final CourseRepository courseRepository;
@@ -249,4 +251,35 @@ public class CourseService {
                 .courseType(course.getCourseTypes().iterator().next().getType())
                 .build()).toList();
     }
+
+    public List<CourseDto> getRecommendedCourses(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> {
+            throw new CrudOperationException("Course does not exist!");
+        });
+
+        String courseName = course.getName();
+
+        List<CourseDto> recommendedCourses =  this.getAllCourses();
+
+
+        JaccardSimilarity jaccardSimilarity = new JaccardSimilarity();
+        double similarityThreshold = 0.5;
+
+        List<CourseDto> recommendedCourseDtos = new ArrayList<>();
+        recommendedCourses.forEach(recommendedCourse -> {
+            double similarity = jaccardSimilarity.apply(courseName, recommendedCourse.getName());
+            if (similarity >= similarityThreshold && !(recommendedCourse.getId() == courseId)) {
+                recommendedCourseDtos.add(CourseDto.builder()
+                        .id(recommendedCourse.getId())
+                        .name(recommendedCourse.getName())
+                        .description(recommendedCourse.getDescription())
+                        .difficulty(recommendedCourse.getDifficulty())
+                        .courseType(recommendedCourse.getCourseType())
+                        .build());
+            }
+        });
+
+        return recommendedCourseDtos;
+    }
+
 }

@@ -90,12 +90,13 @@ DONE ---- add course completion for explore catalog and also top courses
 add:
 MAKE IT SECURED
 populate db
-make solved problems green
-add course type
+DONE --- make solved problems green
+DONE --- add course type
 maybe add problem type (if you have time)
-add that feature search by type
-suggested courses based on type maybe?
+DONE --- add that feature search by type
+suggested courses based on type maybe? backend done
 NAVBARS
+you can also add in the written part about the recommended courses functionality
 
 
 

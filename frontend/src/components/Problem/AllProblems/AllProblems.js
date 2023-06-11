@@ -105,7 +105,6 @@ function AllProblems() {
 
   return (
     <div className="list-container-courses">
-
       <div className="filter-section" ref={filterRef}>
         <p className="filter-heading"><AiTwotoneFilter /> Filter</p>
         {difficulties.map((difficulty, index) => (

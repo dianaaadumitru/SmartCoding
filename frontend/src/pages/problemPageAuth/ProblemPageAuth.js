@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import NavBar from "pages/navBar/NavBar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import * as monacoEditor from "monaco-editor";
 import Modal from "react-modal";
 
@@ -8,6 +7,7 @@ import runCode from "services/jupyterService/runCode";
 import addAnswerAndProblemPercentageToStudent from "services/userService/addAnswerAndProblemPercentageToStudent";
 import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
 import getProblemById from "services/problemService/getProblemById";
+import NavBarRest from "pages/navBar-restOfApplication/NavBarRest";
 
 function ProblemPageAuth() {
   const [userId, setUserId] = useState(0);
@@ -189,7 +189,7 @@ function ProblemPageAuth() {
 
   return (
     <div className="lesson-page-container">
-      <NavBar />
+      <NavBarRest />
       <div className="column-container">
         <div className="left-column">
           <h2 className="header-text">Problem</h2>

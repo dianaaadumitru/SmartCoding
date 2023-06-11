@@ -13,6 +13,7 @@ import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByN
 import addEnrolledLessonToUser from "services/userService/user-lesson/addEnrolledLessonToUser";
 import computeTimeNeededToFinishCourse from "services/courseService/computeTimeNeededToFinishCourse";
 import RecommendedCourses from "components/Course/RecommendedCourses/RecommendedCourses";
+import NavBarRest from "pages/navBar-restOfApplication/NavBarRest";
 
 function CoursePageAuth() {
     const navigate = useNavigate();
@@ -120,7 +121,7 @@ function CoursePageAuth() {
 
     return (
         <div className="page-section-course">
-            <NavBar />
+            <NavBarRest />
 
             <div className="course-container">
                 <div className="course-rectangle">

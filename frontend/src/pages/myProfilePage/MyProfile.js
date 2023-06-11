@@ -1,13 +1,11 @@
-import NavBar from "pages/navBar/NavBar";
 import React, { useEffect, useState } from "react";
 import './MyProfile.css';
-import TopCourses from "components/Course/TopCourses/TopCourses";
-import TopProblems from "components/Problem/TopProblems/TopProblems";
 import { useParams } from "react-router-dom";
 import getUserById from "services/userService/getUserById";
 import EnrolledCourses from "components/Course/EnrolledCourses/EnrolledCourses";
 import editUser from "services/userService/editUser";
 import UserProblems from "components/Problem/UsersProblems/UserProblems";
+import NavBarRest from "pages/navBar-restOfApplication/NavBarRest";
 
 function MyProfile() {
     const { userId } = useParams();
@@ -53,7 +51,7 @@ function MyProfile() {
 
     return (
         <div className="myProfile-page-container">
-            <NavBar />
+            <NavBarRest />
             <div className="content-container-myProfile">
                 <div className="left-column-myProfile">
                     <div className="centered-content-myProfile">

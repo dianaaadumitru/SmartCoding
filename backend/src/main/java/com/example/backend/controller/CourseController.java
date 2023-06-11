@@ -75,8 +75,8 @@ public class CourseController {
         return ResponseEntity.ok(courseService.computeTimeNeededToFinishCourse(courseId));
     }
 
-//    @GetMapping("/courseTypes")
-//    public ResponseEntity<List<CourseDto>> getAllCoursesByCourseType(@RequestParam String courseType) {
-//        return ResponseEntity.ok(courseService.getAllCoursesByCourseType(courseType));
-//    }
+    @GetMapping("/courseTypes")
+    public ResponseEntity<List<CourseDto>> searchCoursesByCourseType(@RequestParam String courseType) {
+        return ResponseEntity.ok(courseService.searchCoursesByCourseType(courseType));
+    }
 }

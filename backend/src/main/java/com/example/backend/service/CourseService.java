@@ -238,21 +238,15 @@ public class CourseService {
     }
 
 
-//    public List<CourseDto> getAllCoursesByCourseType(String courseType) {
-//        Set<CourseType> courseTypes = new HashSet<>();
-//        courseTypes.add(CourseType.builder().type(courseType).build());
-//        List<Course> courses = courseRepository.getAllByCourseTypesContains(courseTypes);
-//
-//        List<CourseDto> courseDtos = new ArrayList<>();
-//
-//        courses.forEach(course ->
-//                courseDtos.add(CourseDto.builder()
-//                        .id(course.getCourseId())
-//                        .name(course.getName())
-//                        .description(course.getDescription())
-//                        .difficulty(course.getDifficulty().toString())
-//                        .courseType(course.getCourseTypes().iterator().next().getType())
-//                        .build()));
-//        return courseDtos;
-//    }
+    public List<CourseDto> searchCoursesByCourseType(String keyword) {
+        List<Course> courses = courseRepository.findByCourseTypeKeyword(keyword);
+
+        return courses.stream().map(course -> CourseDto.builder()
+                .id(course.getCourseId())
+                .name(course.getName())
+                .description(course.getDescription())
+                .difficulty(course.getDifficulty().toString())
+                .courseType(course.getCourseTypes().iterator().next().getType())
+                .build()).toList();
+    }
 }

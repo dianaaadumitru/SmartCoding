@@ -9,12 +9,14 @@ import getAllCoursesByDifficulties from "services/courseService/getAllCoursesByD
 import getAllLessonsOfACourse from "services/courseService/getAllLessonsOfACourse";
 import checkIfCourseIsCompleted from "services/userService/user-course/checkIfCourseIsCompleted";
 import isUserEnrolledToCourse from "services/userService/user-course/isUserEnrolledToCourse";
+import searchCoursesByCourseType from "services/courseService/searchCoursesByCourseType";
 
 function AllCourses() {
   const [courses, setCourses] = useState([]);
   const [difficulties, setDifficulties] = useState([]);
   const [checkedDifficulties, setCheckedDifficulties] = useState([]);
   const [isCompletionFetched, setIsCompletionFetched] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // New state for search term
 
   const userId = parseInt(localStorage.getItem("userId"));
 
@@ -29,7 +31,18 @@ function AllCourses() {
   const getAllDifficulties = async () => {
     const result = await getDifficulties();
     setDifficulties(result);
-  }
+  };
+
+  const searchByCourseType = async (courseType) => {
+    if (courseType === "") {
+      getCourses();
+      setIsCompletionFetched(false);
+    } else {
+      const result = await searchCoursesByCourseType(courseType);
+      setCourses(result);
+      setIsCompletionFetched(false);
+    }
+  };
 
   const isUserEnrolled = async (courseId) => {
     const result = await isUserEnrolledToCourse(userId, courseId);
@@ -38,20 +51,23 @@ function AllCourses() {
 
   const checkCourseCompletionStatus = async (courseId) => {
     const lessons = await getAllLessonsOfACourse(courseId);
-    const isCompleted = await checkIfCourseIsCompleted(userId, courseId, lessons.length);
+    const isCompleted = await checkIfCourseIsCompleted(
+      userId,
+      courseId,
+      lessons.length
+    );
     return isCompleted;
   };
 
   const getCoursesByDifficulty = async (checkedDifficulties) => {
     if (checkedDifficulties.length === 0) {
       getCourses();
-      setIsCompletionFetched(false)
-      
+      setIsCompletionFetched(false);
     } else {
       try {
         const result = await getAllCoursesByDifficulties(checkedDifficulties);
         setCourses(result);
-        setIsCompletionFetched(false)
+        setIsCompletionFetched(false);
       } catch (error) {
         console.error(error);
       }
@@ -59,10 +75,12 @@ function AllCourses() {
   };
 
   const fetchCompletionStatus = async () => {
-    const promises = courses.map((item) => checkCourseCompletionStatus(item.id));
+    const promises = courses.map((item) =>
+      checkCourseCompletionStatus(item.id)
+    );
     const completionStatuses = await Promise.all(promises);
 
-    const promises2 = courses.map((item) => isUserEnrolled(item.id))
+    const promises2 = courses.map((item) => isUserEnrolled(item.id));
     const completionStatuses2 = await Promise.all(promises2);
 
     setCourses((prevCourses) => {
@@ -100,7 +118,8 @@ function AllCourses() {
 
   const handleScroll = () => {
     const filterSection = filterRef.current;
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop =
+      window.pageYOffset || document.documentElement.scrollTop;
     const isScrollingDown = scrollTop > 0;
 
     if (isScrollingDown) {
@@ -113,6 +132,14 @@ function AllCourses() {
   const handleItemClick = (itemId) => {
     navigate(`/auth/courses/${itemId}`);
   };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredCourses = courses.filter((course) =>
+    course.courseType.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="list-container-courses">
@@ -145,15 +172,23 @@ function AllCourses() {
         ))}
       </div>
       <div className="all-courses-section">
-        {courses.map((item) => {
+        <input
+          type="text"
+          placeholder="Search by course type"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        {filteredCourses.map((item) => {
           const isEnrolled = item.isEnrolled || false;
           const isCompleted = item.isCompleted || false;
-          const isFiltered = checkedDifficulties.length > 0 && !checkedDifficulties.includes(item.difficulty);
-          console.log("course name " + item.name + " comp " + item.isCompleted)
+          const isFiltered =
+            checkedDifficulties.length > 0 &&
+            !checkedDifficulties.includes(item.difficulty);
           return (
             <div
               key={item.id}
-              className={`list-item ${isFiltered ? "" : (isCompleted && isEnrolled ? "completed" : "")}`}
+              className={`list-item ${isFiltered ? "" : isCompleted && isEnrolled ? "completed" : ""
+                }`}
               onClick={() => handleItemClick(item.id)}
             >
               <div className="list-item-header">Course</div>

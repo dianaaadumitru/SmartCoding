@@ -103,6 +103,13 @@
   background-color: #65bc79;
 }
 
+.search-bar-section {
+  /* position: fixed;
+  top: 0; */
+  /* left: 240px; */
+  width: calc(100% - 240px);
+}
+
 @media only screen and (max-width: 768px) {
   .list-container-courses {
     flex-direction: column;

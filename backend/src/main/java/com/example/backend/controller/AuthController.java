@@ -7,6 +7,8 @@ import com.example.backend.entity.User;
 import com.example.backend.exceptions.AuthenticationException;
 import com.example.backend.repository.RoleRepository;
 import com.example.backend.repository.UserRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +23,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Optional;
+
+import static javax.crypto.Cipher.SECRET_KEY;
 
 @RestController
 @RequestMapping("/auth")
@@ -37,11 +45,24 @@ public class AuthController {
 
     private final PasswordEncoder passwordEncoder;
 
+    private static final long EXPIRATION_TIME = 86400000;
+
+    private final SecretKey secretKey = generateSecretKey();
+
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    private SecretKey generateSecretKey() {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA512");
+            return keyGenerator.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to generate secret key", e);
+        }
     }
 
     @PostMapping("/login")
@@ -62,23 +83,29 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Generate JWT token
+        String token = Jwts.builder()
+                .setSubject(userByUsername.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(secretKey, SignatureAlgorithm.HS512)
+                .compact();
+
+
+        // Return the token in the response
         return new ResponseEntity<>(userByUsername.getUserId(), HttpStatus.OK);
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
-
-        // add check for username exists in a DB
         if (userRepository.existsByUsername(signUpDto.getUsername())) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
-
-        // add check for email exists in DB
         if (userRepository.existsByEmail(signUpDto.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        // create user object
         User user = new User();
         user.setFirstName(signUpDto.getFirstName());
         user.setLastName(signUpDto.getLastName());

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./LessonPage.css";
-import NavBar from "pages/navBar/NavBar";
 import Modal from "react-modal";
 import { useNavigate, useParams } from "react-router-dom";
 import getLessonById from "services/lessonService/getLessonById";
@@ -11,6 +10,7 @@ import addAnswerAndProblemPercentageToStudent from "services/userService/addAnsw
 import getProblemScoreForAProblemSoledByUser from "services/userService/getProblemScoreForAProblemSoledByUser";
 import markLessonAsCompleted from "services/userService/user-lesson/markLessonAsCompleted";
 import getCourseLessonByNoLesson from "services/courseService/getCourseLessonByNoLesson";
+import NavBarRest from "pages/navBar-restOfApplication/NavBarRest";
 
 function LessonPage() {
   const navigate = useNavigate();
@@ -216,7 +216,7 @@ function LessonPage() {
 
   return (
     <div className="lesson-page-container">
-      <NavBar />
+      <NavBarRest />
       <div className="column-container">
         <div className="left-column">
           <h2 className="header-text">Lesson</h2>

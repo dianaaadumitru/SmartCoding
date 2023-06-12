@@ -23,7 +23,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query("SELECT c, COUNT(c.courseId) as courseCount " +
             "FROM User u JOIN u.courses c " +
             "GROUP BY c " +
-            "ORDER BY courseCount DESC")
+            "ORDER BY courseCount DESC ")
     List<Course> findTop8Courses();
 
     @Query("SELECT p, COUNT(upr.userProblemId.problemId) as problemCount " +

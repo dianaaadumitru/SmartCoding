@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './Lesson.css'
-import { useNavigate } from 'react-router-dom';
-import { AiFillSignal } from 'react-icons/ai';
 
 const Lesson = ({courses}) => {  return (
       <div className="list-container-lesson">

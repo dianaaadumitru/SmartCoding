@@ -350,7 +350,7 @@ public class UserService {
     }
 
     public List<CourseDto> findTop8Courses() {
-        List<Course> courses = userRepository.findTop8Courses();
+        List<Course> courses = userRepository.findTop8Courses().stream().limit(8).toList();
         return courses.stream().map(course ->
                 CourseDto.builder()
                         .id(course.getCourseId())
@@ -362,7 +362,7 @@ public class UserService {
     }
 
     public List<ProblemDto> findTop8Problems() {
-        List<Problem> problems = userRepository.findTop8Problems();
+        List<Problem> problems = userRepository.findTop8Problems().stream().limit(8).toList();
 
         return problems.stream().map(problem ->
                 ProblemDto.builder()

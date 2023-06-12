@@ -151,6 +151,8 @@ function LessonPage() {
       result.finalResult = 100;
     }
 
+    console.log("finalResult: " + result.finalResult)
+
     setFinalResult(result);
     await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);
     if (result.finalResult == 100 || result.printedResult != null) {
@@ -261,7 +263,7 @@ function LessonPage() {
                 <>
                   {finalResult.pythonCodeStatus === 'ok' && (
                     <>
-                      {finalResult.finalResult !== -1 && finalResult.finalResult !== null && (
+                      {finalResult.finalResult !== -1 && finalResult.finalResult !== null && finalResult.printedResult == null && (
                         <p className="button-text">This code works for {finalResult.finalResult}% of cases.</p>
                       )}
                       {finalResult.printedResult !== null && (

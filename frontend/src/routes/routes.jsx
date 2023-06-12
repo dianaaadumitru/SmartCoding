@@ -40,24 +40,21 @@ const RoutesComponent = () => {
     }, []);
 
     return (
-        <>
-            {console.log("isLoggedIn: ", isLoggedIn)}
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/createAccount" element={<CreateAccountPage />} />
-                <Route path="/signin" element={<SignInPage />} />
-                <Route path="/problems/:problemId" element={<ProblemPage />} />
-                <Route path="/courses/:courseId" element={<CoursePage />}/>
-                <Route path="/mainpage" element={<PrivateRoute element={MainPage} />} />
-                <Route path="/auth/courses/:courseId" element={<PrivateRoute element={CoursePageAuth} />} />
-                <Route path="/courses" element={<PrivateRoute element={ExploreCourses} />} />
-                <Route path="/problems" element={<PrivateRoute element={ExploreProblems} />} />
-                <Route path="/auth/lessons/:lessonId" element={<PrivateRoute element={LessonPage} />} />
-                <Route path="/auth/problems/:problemId" element={<PrivateRoute element={ProblemPageAuth} />} />
-                <Route path="/auth/solvedProblems/:problemId" element={<PrivateRoute element={SolvedProblemPage} />} />
-                <Route path="/auth/myProfile/:userId" element={<PrivateRoute element={MyProfile} />} />
-            </Routes>
-        </>
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/createAccount" element={<CreateAccountPage />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/problems/:problemId" element={<ProblemPage />} />
+            <Route path="/courses/:courseId" element={<CoursePage />} />
+            <Route path="/mainpage" element={<PrivateRoute element={MainPage} />} />
+            <Route path="/auth/courses/:courseId" element={<PrivateRoute element={CoursePageAuth} />} />
+            <Route path="/courses" element={<PrivateRoute element={ExploreCourses} />} />
+            <Route path="/problems" element={<PrivateRoute element={ExploreProblems} />} />
+            <Route path="/auth/lessons/:lessonId" element={<PrivateRoute element={LessonPage} />} />
+            <Route path="/auth/problems/:problemId" element={<PrivateRoute element={ProblemPageAuth} />} />
+            <Route path="/auth/solvedProblems/:problemId" element={<PrivateRoute element={SolvedProblemPage} />} />
+            <Route path="/auth/myProfile/:userId" element={<PrivateRoute element={MyProfile} />} />
+        </Routes>
     );
 };
 

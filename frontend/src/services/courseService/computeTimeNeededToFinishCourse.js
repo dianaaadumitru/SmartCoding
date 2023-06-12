@@ -4,7 +4,7 @@ const computeTimeNeededToFinishCourse
 = async courseId => {
   try {
     const response = await API.get(`/courses/${courseId}/expectedTime`)
-    console.log(response.data)
+    // console.log(response.data)
     return response.data
   } catch (e) {
     console.log(e)

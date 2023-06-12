@@ -52,7 +52,7 @@ function UserProblems() {
                     >
                         <div className="list-item-header">Problem</div>
                         <h3 className="list-item-heading">{item.problemName}</h3>
-                        <p className="list-item-description">{item.problemDescription}</p>
+                        {/* <p className="list-item-description">{item.problemDescription}</p> */}
                         <div className="list-item-footer"><AiFillSignal />{item.problemDifficulty}</div>
                     </div>
                 ))}

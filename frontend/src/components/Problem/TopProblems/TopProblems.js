@@ -46,7 +46,7 @@ function TopProblems() {
                     <div key={item.problemId} className="list-item" onClick={() => handleItemClick(item.problemId)}>
                         <div className="list-item-header">Problem</div>
                         <h3 className="list-item-heading">{item.name}</h3>
-                        <p className="list-item-description">{item.description}</p>
+                        {/* <p className="list-item-description">{item.description}</p> */}
                         <div className="list-item-footer"><AiFillSignal />{item.difficulty}</div>
                     </div>
                 ))}

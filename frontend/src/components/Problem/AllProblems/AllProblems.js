@@ -145,7 +145,7 @@ function AllProblems() {
             >
               <div className="list-item-header-courses">Problem</div>
               <h3 className="list-item-heading-courses">{item.name}</h3>
-              <p className="list-item-description-courses">{item.description}</p>
+              {/* <p className="list-item-description-courses">{item.description}</p> */}
               <div className="list-item-footer-courses">
                 <AiFillSignal />
                 {item.difficulty}

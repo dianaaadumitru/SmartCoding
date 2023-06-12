@@ -69,17 +69,22 @@ function ProblemPageAuth() {
   }, [userId, problemId]);
   
   useEffect(() => {
-    if (isEditorReady && userAnswer !== "") {
-      editorRef.current.setValue(userAnswer);
+    if (isEditorReady && editorRef.current) { // Add null check for editorRef.current
+      const valueToSet = userAnswer !== "" && userAnswer !== null && userAnswer !== undefined
+        ? userAnswer
+        : "";
+  
+      editorRef.current.setValue(valueToSet);
     }
   }, [isEditorReady, userAnswer]);
 
   useEffect(() => {
-    if (isEditorReady) { // Check if the editor is ready before initializing it
+    if (isEditorReady) { 
+      console.log("user answer: ", userAnswer);
       editorRef.current = monacoEditor.editor.create(
         document.getElementById("editor"),
         {
-          value: userAnswer,
+          // value:  (userAnswer !== "" && userAnswer !== null && userAnswer !== undefined) ? userAnswer: "",
           language: "python",
           theme: "vs-dark",
           fontSize: 14,

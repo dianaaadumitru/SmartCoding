@@ -21,7 +21,7 @@ public class Problem {
 
     private String name;
 
-    @Column(length = 20000)
+    @Column(length = 10000)
     private String description;
 
     @Enumerated(EnumType.STRING)

@@ -83,7 +83,7 @@ function TopProblemsAuth() {
                         >
                             <div className="list-item-header">Problem</div>
                             <h3 className="list-item-heading">{item.name}</h3>
-                            <p className="list-item-description">{item.description}</p>
+                            {/* <p className="list-item-description">{item.description}</p> */}
                             <div className="list-item-footer"><AiFillSignal />{item.difficulty}</div>
                             <div className="list-item-footer">
                                 <AiFillSignal />

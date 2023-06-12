@@ -21,6 +21,7 @@ public class Course {
 
     private String name;
 
+    @Column(length = 20000)
     private String description;
 
     private Difficulty difficulty;

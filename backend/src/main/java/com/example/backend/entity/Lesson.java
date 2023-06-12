@@ -21,6 +21,7 @@ public class Lesson {
 
     private String description;
 
+    @Column(length = 20000)
     private String longDescription;
 
     private String expectedTime;

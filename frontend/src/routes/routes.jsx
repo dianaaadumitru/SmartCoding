@@ -21,24 +21,6 @@ const PrivateRoute = ({ element: Component, ...rest }) => {
 };
 
 const RoutesComponent = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(
-        localStorage.getItem('isLoggedIn')
-    );
-
-    useEffect(() => {
-        const handleStorageChange = () => {
-            setIsLoggedIn(localStorage.getItem('isLoggedIn'));
-        };
-
-        // Listen for changes in local storage
-        window.addEventListener('storage', handleStorageChange);
-
-        // Clean up the event listener when the component unmounts
-        return () => {
-            window.removeEventListener('storage', handleStorageChange);
-        };
-    }, []);
-
     return (
         <Routes>
             <Route path="/" element={<HomePage />} />

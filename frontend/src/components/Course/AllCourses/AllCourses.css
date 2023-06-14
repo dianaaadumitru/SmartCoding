@@ -103,11 +103,21 @@
   background-color: #65bc79;
 }
 
-.search-bar-section {
-  /* position: fixed;
-  top: 0; */
-  /* left: 240px; */
-  width: calc(100% - 240px);
+.search-bar {
+  margin-top: -20px;
+  margin-left: 10px 
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+  .search-bar {
+    margin-top: 0;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -121,7 +131,7 @@
   }
 
   .all-courses-section {
-    margin-left: 0;
+    margin-left: 0px;
   }
 
   .list-item-courses {

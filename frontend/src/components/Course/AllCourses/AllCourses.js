@@ -171,13 +171,15 @@ function AllCourses() {
           </label>
         ))}
       </div>
-      <div className="all-courses-section">
+      <div className="search-bar">
         <input
           type="text"
           placeholder="Search by course type"
           value={searchTerm}
           onChange={handleSearchChange}
         />
+      </div>
+      <div className="all-courses-section">
         {filteredCourses.map((item) => {
           const isEnrolled = item.isEnrolled || false;
           const isCompleted = item.isCompleted || false;

@@ -48,7 +48,7 @@ function LessonPage() {
     valuesToCheckCode: "",
     resultsToCheckCode: "",
     returnType: "",
-    noParametrs: 0
+    noParameters: -1
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -146,14 +146,13 @@ function LessonPage() {
       return;
     }
 
+    console.log("params: " + currentProblem.noParameters)
     setIsLoading(true);
-    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode, currentProblem.returnType, currentProblem.noParametrs)
+    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode, currentProblem.returnType, currentProblem.noParameters)
 
     if (result.printedResult !== null) {
       result.finalResult = 100;
     }
-
-    console.log("finalResult: " + result.finalResult)
 
     setFinalResult(result);
     await addAnswerAndProblemPercentageToStudent(userId, currentProblem.problemId, textToCompile, result.finalResult);

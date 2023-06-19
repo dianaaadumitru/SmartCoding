@@ -100,16 +100,21 @@ public class JupyterService {
                 }
                 valueForTheCode.append(currentValue).append(",");
             }
-            valueForTheCode.deleteCharAt(valueForTheCode.length() - 1);
 
             String codeToCompile = ("RETURN".equals(data.getReturnType()))
-                    ? codeGeneratingService.generateCode(data.getCode(), valueForTheCode.toString())
+                    ? codeGeneratingService.generateCode(data.getCode(), valueForTheCode.deleteCharAt(valueForTheCode.length() - 1).toString())
                     : data.getCode();
 
             RunRequestResult result = sendAndAwaitRunRequest(codeToCompile);
             pythonCodeStatus = result.getCodeExecutionResult().getPythonCodeStatus();
 
-            String expectedValue = resultsToCheck.get(i / data.getNoParameters());
+            String expectedValue = "";
+            if ("RETURN".equals(data.getReturnType())) {
+                expectedValue = resultsToCheck.get(i / data.getNoParameters());
+            } else {
+                expectedValue = resultsToCheck.get(i);
+            }
+
 
             if (expectedValue.strip().equals(result.getCodeExecutionResult().getReturnedResult())) {
                 successes++;

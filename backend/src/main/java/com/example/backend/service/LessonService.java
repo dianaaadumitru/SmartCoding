@@ -122,6 +122,7 @@ public class LessonService {
                 .description(problem.getDescription())
                 .resultsToCheckCode(problem.getResultsToCheckCode())
                 .returnType(problem.getReturnType().toString())
+                .noParameters(problem.getNoParameters())
                 .build();
     }
 
@@ -159,6 +160,7 @@ public class LessonService {
                         .description(problem.getDescription())
                         .resultsToCheckCode(problem.getResultsToCheckCode())
                         .returnType(problem.getReturnType().toString())
+                        .noParameters(problem.getNoParameters())
                         .build()).toList();
     }
 }

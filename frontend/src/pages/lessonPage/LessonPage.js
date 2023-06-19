@@ -122,6 +122,7 @@ function LessonPage() {
     if (problems.length > 0) {
       setCurrentProblem(problems[0]);
     }
+    console.log("params: ", problems[0])
   }, [problems]);
 
   useEffect(() => {

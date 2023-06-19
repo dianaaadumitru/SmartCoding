@@ -64,6 +64,7 @@ public class JupyterController {
 
     @PostMapping("/run/results")
     public ResponseEntity<ResultDto> readFinalResult(@RequestBody CodeValueToCompileDto data) throws ExecutionException, InterruptedException {
+        System.out.println("data: " + data);
         return ResponseEntity.ok(jupyterService.readFinalResult(data));
     }
 

@@ -21,7 +21,7 @@ function ProblemPageAuth() {
     valuesToCheckCode: "",
     resultsToCheckCode: "",
     returnType: "",
-    noParameters: 0
+    noParameters: -1
   });
 
   const [isConditionMet, setIsConditionMet] = useState(false);
@@ -40,6 +40,7 @@ function ProblemPageAuth() {
 
   const getProblem = async () => {
     const result = await getProblemById(problemId);
+    console.log(result)
     setProblem(result);
   };
 
@@ -81,11 +82,9 @@ function ProblemPageAuth() {
 
   useEffect(() => {
     if (isEditorReady) { 
-      console.log("user answer: ", userAnswer);
       editorRef.current = monacoEditor.editor.create(
         document.getElementById("editor"),
         {
-          // value:  (userAnswer !== "" && userAnswer !== null && userAnswer !== undefined) ? userAnswer: "",
           language: "python",
           theme: "vs-dark",
           fontSize: 14,
@@ -149,7 +148,6 @@ function ProblemPageAuth() {
       result.finalResult
     );
     if (result.finalResult === 100 || result.printedResult != null) {
-        console.log("here")
       setIsConditionMet(true);
     } else {
       setIsConditionMet(false);

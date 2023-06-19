@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "pages/navBar/NavBar";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import * as monacoEditor from "monaco-editor";
 import Modal from "react-modal";
 
@@ -20,15 +20,18 @@ function SolvedProblemPage() {
         valuesType: "",
         valuesToCheckCode: "",
         resultsToCheckCode: "",
-        returnType: "", 
-        noParameters: 0
+        returnType: "",
+        noParameters: -1
     })
 
     const [isConditionMet, setIsConditionMet] = useState(false);
 
     const [textToCompile, setTextToCompile] = useState('');
 
-    const [finalResult, setFinalResult] = useState(-1);
+    const [finalResult, setFinalResult] = useState({
+        score: 0,
+        answer: ""
+    });
 
     const [givenAnswer, setGivenAnswer] = useState('');
 
@@ -39,16 +42,17 @@ function SolvedProblemPage() {
 
     const getProblem = async () => {
         const result = await getProblemById(problemId);
+        console.log(result)
         setProblem(result);
     };
 
     const getProblemResult = async () => {
         const result = await getProblemScoreForAProblemSoledByUser(userId, problemId);
-        setFinalResult(result.score);
+        setFinalResult(result);
         setGivenAnswer(result.answer);
         setTextToCompile(result.answer);
         localStorage.setItem("givenAnswer", result.answer);
-        if (result.score === 100) {
+        if (result.score === 100 || result.printedResult != null) {
             setIsConditionMet(true);
         } else {
             setIsConditionMet(false);
@@ -88,7 +92,11 @@ function SolvedProblemPage() {
             editor.onDidChangeModelContent(() => {
                 const value = editor.getValue();
                 console.log("value: ", value)
-                const modifiedText = JSON.stringify(value).replace(/"/g, '').replace(/\\n/g, '\n').replace(/\\r/g, '\r');
+                const modifiedText = JSON.stringify(value)
+                    .replace(/^"|"$/g, "")
+                    .replace(/\\n/g, "\n")
+                    .replace(/\\r/g, "\r")
+                    .replace(/\\/g, "");
                 setTextToCompile(modifiedText);
             });
 
@@ -107,7 +115,6 @@ function SolvedProblemPage() {
     }, [userId, problem]);
 
     useEffect(() => {
-        // Retrieve the givenAnswer value from local storage when the component mounts
         const storedGivenAnswer = localStorage.getItem("givenAnswer");
         if (storedGivenAnswer) {
             setGivenAnswer(storedGivenAnswer);
@@ -130,10 +137,26 @@ function SolvedProblemPage() {
         }
 
         setIsLoading(true);
-        const result = await runCode(textToCompile, problem.valuesType, problem.valuesToCheckCode, problem.resultsToCheckCode, problem.noParameters)
-        setFinalResult(result.finalResult);
+        const result = await runCode(
+            textToCompile,
+            problem.valuesType,
+            problem.valuesToCheckCode,
+            problem.resultsToCheckCode,
+            problem.returnType,
+            problem.noParameters
+        );
+        setFinalResult(result);
+        if (result.printedResult !== null) {
+            result.finalResult = 100;
+        }
+
         await addAnswerAndProblemPercentageToStudent(userId, problem.problemId, textToCompile, result.finalResult);
-        if (result.finalResult == 100) {
+        if (result.finalResult === 100 || result.printedResult != null) {
+            
+            setFinalResult({
+                "score": 100,
+                "answer": textToCompile
+            })
             setIsConditionMet(true);
         } else {
             setIsConditionMet(false);
@@ -183,7 +206,7 @@ function SolvedProblemPage() {
                 <div className="left-column">
                     <h2 className="header-text">Problem</h2>
                     <h2 className="course-name">{problem.name}</h2>
-                    <p className="problem-description">The solution you provided for this problem works for {finalResult}% of cases.</p>
+                    <p className="problem-description">The solution you provided for this problem works for {finalResult.score}% of cases.</p>
                     <div className="line"></div>
 
                     <div className="additional-content">
@@ -215,8 +238,8 @@ function SolvedProblemPage() {
                                 </div>
                             ) : (
                                 <>
-                                    {finalResult !== -1 && (
-                                        <p className="button-text">This code works for {finalResult}% of cases.</p>
+                                    {finalResult.score !== -1 && (
+                                        <p className="button-text">This code works for {finalResult.score}% of cases.</p>
                                     )}
                                     <button className="button" onClick={handleClick}>Run</button>
                                 </>

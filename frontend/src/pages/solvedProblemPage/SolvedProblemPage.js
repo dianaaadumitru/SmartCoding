@@ -20,7 +20,8 @@ function SolvedProblemPage() {
         valuesType: "",
         valuesToCheckCode: "",
         resultsToCheckCode: "",
-        returnType: ""
+        returnType: "", 
+        noParameters: 0
     })
 
     const [isConditionMet, setIsConditionMet] = useState(false);
@@ -129,7 +130,7 @@ function SolvedProblemPage() {
         }
 
         setIsLoading(true);
-        const result = await runCode(textToCompile, problem.valuesType, problem.valuesToCheckCode, problem.resultsToCheckCode)
+        const result = await runCode(textToCompile, problem.valuesType, problem.valuesToCheckCode, problem.resultsToCheckCode, problem.noParameters)
         setFinalResult(result.finalResult);
         await addAnswerAndProblemPercentageToStudent(userId, problem.problemId, textToCompile, result.finalResult);
         if (result.finalResult == 100) {

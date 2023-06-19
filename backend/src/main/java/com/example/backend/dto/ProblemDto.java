@@ -25,4 +25,6 @@ public class ProblemDto {
     private String resultsToCheckCode;
 
     private String returnType;
+
+    private int noParameters;
 }

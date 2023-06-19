@@ -35,6 +35,7 @@ public class ProblemService {
                 .difficulty(Difficulty.valueOf(problemDto.getDifficulty()))
                 .resultsToCheckCode(problemDto.getResultsToCheckCode())
                 .returnType(ReturnType.valueOf(problemDto.getReturnType()))
+                .noParameters(problemDto.getNoParameters())
                 .build();
 
         problemRepository.save(problem);
@@ -61,6 +62,7 @@ public class ProblemService {
         problem.setValuesToCheckCode(problemDto.getValuesToCheckCode());
         problem.setResultsToCheckCode(problemDto.getResultsToCheckCode());
         problem.setReturnType(ReturnType.valueOf(problemDto.getReturnType()));
+        problem.setNoParameters(problemDto.getNoParameters());
         problemRepository.save(problem);
         problemDto.setProblemId(problem.getProblemId());
         return problemDto;
@@ -80,6 +82,7 @@ public class ProblemService {
                 .valuesType(problem.getValuesType())
                 .resultsToCheckCode(problem.getResultsToCheckCode())
                 .returnType(problem.getReturnType().toString())
+                .noParameters(problem.getNoParameters())
                 .build();
     }
 
@@ -97,6 +100,7 @@ public class ProblemService {
                         .description(problem.getDescription())
                         .resultsToCheckCode(problem.getResultsToCheckCode())
                         .returnType(problem.getReturnType().toString())
+                        .noParameters(problem.getNoParameters())
                         .build()
 
                 ));
@@ -125,6 +129,7 @@ public class ProblemService {
                 .description(problem.getDescription())
                 .resultsToCheckCode(problem.getResultsToCheckCode())
                 .returnType(problem.getReturnType().toString())
+                .noParameters(problem.getNoParameters())
                 .build()).toList();
 
     }

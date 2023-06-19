@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -92,19 +91,27 @@ public class JupyterService {
         int successes = 0;
         StringBuilder printedResultBuilder = new StringBuilder();
 
-        for (int i = 0; i < valuesToCheck.size(); i++) {
-            String currentValue = valuesToCheck.get(i).strip();
-            if ("String".equals(data.getValuesType())) {
-                currentValue = "\"" + currentValue + "\"";
+        for (int i = 0; i < valuesToCheck.size(); i += data.getNoParameters()) {
+            StringBuilder valueForTheCode = new StringBuilder();
+            for (int j = i; j < i + data.getNoParameters(); j++) {
+                String currentValue = valuesToCheck.get(j).strip();
+                if ("String".equals(data.getValuesType())) {
+                    currentValue = "\"" + currentValue + "\"";
+                }
+                valueForTheCode.append(currentValue).append(",");
             }
+            valueForTheCode.deleteCharAt(valueForTheCode.length() - 1);
 
             String codeToCompile = ("RETURN".equals(data.getReturnType()))
-                    ? codeGeneratingService.generateCode(data.getCode(), currentValue)
+                    ? codeGeneratingService.generateCode(data.getCode(), valueForTheCode.toString())
                     : data.getCode();
 
             RunRequestResult result = sendAndAwaitRunRequest(codeToCompile);
             pythonCodeStatus = result.getCodeExecutionResult().getPythonCodeStatus();
-            if (resultsToCheck.get(i).strip().equals(result.getCodeExecutionResult().getReturnedResult())) {
+
+            String expectedValue = resultsToCheck.get(i / data.getNoParameters());
+
+            if (expectedValue.strip().equals(result.getCodeExecutionResult().getReturnedResult())) {
                 successes++;
             }
 
@@ -114,7 +121,7 @@ public class JupyterService {
             }
         }
 
-        double finalResult = ((double) successes / valuesToCheck.size()) * 100;
+        double finalResult = ((double) successes / (valuesToCheck.size() / data.getNoParameters())) * 100;
 
         ResultDto resultDto = ("RETURN".equals(data.getReturnType()))
                 ? ResultDto.builder().printedResult(null).finalResult(finalResult).pythonCodeStatus(pythonCodeStatus).build()
@@ -122,6 +129,7 @@ public class JupyterService {
 
         return resultDto;
     }
+
 
     private RunRequestResult sendAndAwaitRunRequest(String codeToCompile) throws InterruptedException, ExecutionException {
         ExecutorService executorService = Executors.newCachedThreadPool();

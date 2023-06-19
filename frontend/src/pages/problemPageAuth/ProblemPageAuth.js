@@ -20,7 +20,8 @@ function ProblemPageAuth() {
     valuesType: "",
     valuesToCheckCode: "",
     resultsToCheckCode: "",
-    returnType: ""
+    returnType: "",
+    noParameters: 0
   });
 
   const [isConditionMet, setIsConditionMet] = useState(false);
@@ -134,7 +135,8 @@ function ProblemPageAuth() {
       problem.valuesType,
       problem.valuesToCheckCode,
       problem.resultsToCheckCode,
-      problem.returnType
+      problem.returnType,
+      problem.noParameters
     );
     setFinalResult(result);
     if (result.printedResult !== null) {

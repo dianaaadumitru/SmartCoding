@@ -47,7 +47,8 @@ function LessonPage() {
     valuesType: "",
     valuesToCheckCode: "",
     resultsToCheckCode: "",
-    returnType: ""
+    returnType: "",
+    noParametrs: 0
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -145,7 +146,7 @@ function LessonPage() {
     }
 
     setIsLoading(true);
-    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode, currentProblem.returnType)
+    const result = await runCode(textToCompile, currentProblem.valuesType, currentProblem.valuesToCheckCode, currentProblem.resultsToCheckCode, currentProblem.returnType, currentProblem.noParametrs)
 
     if (result.printedResult !== null) {
       result.finalResult = 100;

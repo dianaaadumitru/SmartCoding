@@ -36,6 +36,9 @@ public class Problem {
     @Enumerated(EnumType.STRING)
     private ReturnType returnType;
 
+    @Column(columnDefinition = "integer default 0")
+    private int noParameters;
+
     @OneToMany(mappedBy = "problem")
     private List<UserProblemResults> userProblemResults;
 

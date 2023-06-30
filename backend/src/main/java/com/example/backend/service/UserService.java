@@ -5,10 +5,13 @@ import com.example.backend.entity.*;
 import com.example.backend.entity.embeddableIds.UserLessonId;
 import com.example.backend.entity.embeddableIds.UserProblemId;
 import com.example.backend.entity.embeddableIds.UserQuestionId;
+import com.example.backend.exceptions.AuthenticationException;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -40,8 +43,10 @@ public class UserService {
 
     private final LessonRepository lessonRepository;
 
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, CourseRepository courseRepository, UserLessonRepository userLessonRepository, LessonRepository lessonRepository) {
+
+    public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, CourseRepository courseRepository, UserLessonRepository userLessonRepository, LessonRepository lessonRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userResultsRepository = userResultsRepository;
         this.questionRepository = questionRepository;
@@ -51,6 +56,7 @@ public class UserService {
         this.courseRepository = courseRepository;
         this.userLessonRepository = userLessonRepository;
         this.lessonRepository = lessonRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDto addUser(UserDto userDto) {
@@ -90,8 +96,11 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setUsername(userDto.getUsername());
+
         userRepository.save(user);
         userDto.setUserId(user.getUserId());
+        userDto.setPassword(user.getPassword());
+
         return userDto;
     }
 
@@ -135,6 +144,22 @@ public class UserService {
                 }
         );
         return userDtos;
+    }
+
+    public void changePassword(Long id, ChangePasswordDto changePasswordDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> {
+            throw new CrudOperationException("User does not exist");
+        });
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        System.out.println("old password: " + changePasswordDto.getOldPassword() + " password from db: " + user.getPassword());
+        boolean passwordsMatch = passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword());
+        System.out.println("paswword match: " + passwordsMatch);
+        if (!passwordsMatch) {
+            throw new AuthenticationException("Your old password is not correct!");
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(user);
     }
 
     public UserDto findUserByEmail(String email) {

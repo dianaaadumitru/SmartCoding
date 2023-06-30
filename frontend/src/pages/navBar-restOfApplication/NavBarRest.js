@@ -53,6 +53,10 @@ function NavBarRest() {
   const handleUsernameClick = () =>
     navigate(`/auth/myProfile/${userId}`);
 
+  const handleChangePswdClick = () => {
+    navigate(`/auth/myProfile/${userId}/changePassword`);
+  }
+
   const handleLogoutClick = async () => {
     const result = await Logout();
     if (result.status === 200) {
@@ -86,6 +90,7 @@ function NavBarRest() {
         {isDropdownOpen && (
           <div className="dropdown-menu">
             <button onClick={handleUsernameClick}>{user.username}</button>
+            <button onClick={handleChangePswdClick}>change password</button>
             <hr className="dropdown-line" />
             <button onClick={handleLogoutClick}>
               <AiOutlineLogout /> Logout

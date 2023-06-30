@@ -15,7 +15,7 @@ function MyProfile() {
         firstName: "",
         lastName: "",
         username: "",
-        email: ""
+        email: "", 
     });
 
     useEffect(() => {

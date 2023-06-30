@@ -37,6 +37,12 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, userDto));
     }
 
+    @PutMapping("/{id}/changePassword")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody ChangePasswordDto changePasswordDto) {
+        userService.changePassword(id, changePasswordDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeUser(@PathVariable Long id) {
         userService.removeUser(id);

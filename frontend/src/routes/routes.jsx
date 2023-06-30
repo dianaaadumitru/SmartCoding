@@ -13,6 +13,7 @@ import ProblemPageAuth from 'pages/problemPageAuth/ProblemPageAuth';
 import ProblemPage from 'pages/problemPage/ProblemPage';
 import MyProfile from 'pages/myProfilePage/MyProfile';
 import SolvedProblemPage from 'pages/solvedProblemPage/SolvedProblemPage';
+import ChangePswdPage from 'changePswdPage/ChangePswdPage';
 
 const PrivateRoute = ({ element: Component, ...rest }) => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -36,6 +37,7 @@ const RoutesComponent = () => {
             <Route path="/auth/problems/:problemId" element={<PrivateRoute element={ProblemPageAuth} />} />
             <Route path="/auth/solvedProblems/:problemId" element={<PrivateRoute element={SolvedProblemPage} />} />
             <Route path="/auth/myProfile/:userId" element={<PrivateRoute element={MyProfile} />} />
+            <Route path="/auth/myProfile/:userId/changePassword" element={<PrivateRoute element={ChangePswdPage} />} />
         </Routes>
     );
 };

@@ -13,7 +13,6 @@ import java.util.Set;
 @Builder
 @Getter
 @Setter
-//@ToString
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

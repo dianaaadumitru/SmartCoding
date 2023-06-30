@@ -13,7 +13,8 @@ import ProblemPageAuth from 'pages/problemPageAuth/ProblemPageAuth';
 import ProblemPage from 'pages/problemPage/ProblemPage';
 import MyProfile from 'pages/myProfilePage/MyProfile';
 import SolvedProblemPage from 'pages/solvedProblemPage/SolvedProblemPage';
-import ChangePswdPage from 'changePswdPage/ChangePswdPage';
+import ChangePswdPage from 'pages/changePswdPage/ChangePswdPage';
+import ResetPasswordPage from 'pages/resetPasswordPage/ResetPasswordPage';
 
 const PrivateRoute = ({ element: Component, ...rest }) => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -27,6 +28,7 @@ const RoutesComponent = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/createAccount" element={<CreateAccountPage />} />
             <Route path="/signin" element={<SignInPage />} />
+            <Route path="/resetPassword" element={<ResetPasswordPage />} />
             <Route path="/problems/:problemId" element={<ProblemPage />} />
             <Route path="/courses/:courseId" element={<CoursePage />} />
             <Route path="/mainpage" element={<PrivateRoute element={MainPage} />} />

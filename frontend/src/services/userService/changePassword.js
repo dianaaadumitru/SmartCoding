@@ -6,7 +6,6 @@ const changePassword = async (userId, oldPassword, newPassword) => {
         console.log(response);
         return response;
     } catch (e) {
-        // throw new Error(e);
         console.log(e);
     }
 };

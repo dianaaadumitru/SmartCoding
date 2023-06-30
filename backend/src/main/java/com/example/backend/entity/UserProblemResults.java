@@ -29,6 +29,7 @@ public class UserProblemResults {
 
     private double percentage;
 
+    @Column(length = 10000)
     private String answer;
 
 }

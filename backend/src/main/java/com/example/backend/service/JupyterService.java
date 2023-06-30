@@ -92,7 +92,6 @@ public class JupyterService {
         StringBuilder printedResultBuilder = new StringBuilder();
 
         for (int i = 0; i < valuesToCheck.size(); i += data.getNoParameters()) {
-            System.out.println("here with: " + i + " array size: " + valuesToCheck.size() + "params: " + data.getNoParameters());
             StringBuilder valueForTheCode = new StringBuilder();
             for (int j = i; j < i + data.getNoParameters(); j++) {
                 String currentValue = valuesToCheck.get(j).strip();
@@ -115,7 +114,6 @@ public class JupyterService {
             } else {
                 expectedValue = resultsToCheck.get(i);
             }
-
 
             if (expectedValue.strip().equals(result.getCodeExecutionResult().getReturnedResult())) {
                 successes++;

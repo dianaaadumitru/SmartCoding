@@ -8,6 +8,7 @@ import com.example.backend.entity.embeddableIds.UserQuestionId;
 import com.example.backend.exceptions.AuthenticationException;
 import com.example.backend.exceptions.CrudOperationException;
 import com.example.backend.repository.*;
+import com.example.backend.utils.PasswordGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,10 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +45,10 @@ public class UserService {
     private final LessonRepository lessonRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private static final long EXPIRATION_TIME = 36000;
+
+    private final SecretKey secretKey = generateSecretKey();
 
 
     public UserService(UserRepository userRepository, UserResultsRepository userResultsRepository, QuestionRepository questionRepository, RoleRepository roleRepository, ProblemRepository problemRepository, UserProblemResultsRepository userProblemResultsRepository, CourseRepository courseRepository, UserLessonRepository userLessonRepository, LessonRepository lessonRepository, PasswordEncoder passwordEncoder) {
@@ -160,6 +165,28 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
         userRepository.save(user);
+    }
+
+    private SecretKey generateSecretKey() {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA512");
+            return keyGenerator.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to generate secret key", e);
+        }
+    }
+    public String forgotPassword(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new AuthenticationException("This email is not linked to any user!");
+        }
+        User userByEmail = user.get();
+
+        String token = PasswordGenerator.generateRandomPassword();
+
+        userByEmail.setPassword(passwordEncoder.encode(token));
+        userRepository.save(userByEmail);
+        return token;
     }
 
     public UserDto findUserByEmail(String email) {

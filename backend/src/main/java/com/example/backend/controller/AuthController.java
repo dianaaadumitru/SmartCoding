@@ -84,7 +84,6 @@ public class AuthController {
                 loginDto.getUsernameOrEmail(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Generate JWT token
         String token = Jwts.builder()
                 .setSubject(userByUsername.getUsername())
                 .setIssuedAt(new Date())
@@ -92,8 +91,6 @@ public class AuthController {
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
 
-
-        // Return the token in the response
         return new ResponseEntity<>(userByUsername.getUserId(), HttpStatus.OK);
     }
 

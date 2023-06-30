@@ -6,6 +6,7 @@ import signUp from "services/authController/SignUp";
 
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import NavBarSignIn from "pages/navBar-signIn/NavBarSignIn";
+import sendMail from "services/userService/sendMail";
 
 function CreateAccountPage() {
   const navigate = useNavigate()
@@ -28,6 +29,13 @@ function CreateAccountPage() {
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
+
+  const sendWelcomeEmail = async() => {
+    const subject = "It’s nice to meet you"
+    const msgBody = "Hi there \n We're so glad you've decided to learn the modern skills that can transform your life. Whether you want to find a more fulfilling career, build something you're proud of, or expand your understanding of the world, we're here to help make it happen. \n So from everyone at SmartCoding, welcome!"
+    const result = await sendMail(email, msgBody, subject);
+    console.log(result)
+  }
 
   const handleSignup = async () => {
     console.log(firstName, lastName, username, email, password, confirmPassword);
@@ -78,6 +86,7 @@ function CreateAccountPage() {
       const result = await signUp(firstName, lastName, username, email, password);
       console.log(result)
       if (result.data === true && result.status === 200) {
+        await sendWelcomeEmail();
         navigate('/signin');
       }
     } catch (error) {

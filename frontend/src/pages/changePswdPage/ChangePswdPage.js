@@ -61,7 +61,7 @@ function ChangePswdPage() {
             </Modal>
         );
     };
-    
+
 
     const handleChangePswd = async () => {
         if (!oldPassword) {
@@ -84,10 +84,17 @@ function ChangePswdPage() {
             return;
         }
 
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            setErrorMessage('Password must have at least 8 characters and consist of at least one letter and at least one number.');
+            return;
+        }
+
         if (newPassword != confirmNewPassword) {
             setErrorMessage('The passwords you entered do not match.');
             return;
-          }
+        }
+
 
         try {
             const result = await changePassword(userId, oldPassword, newPassword);
@@ -121,7 +128,7 @@ function ChangePswdPage() {
                 <div className="content">
                     <h2>Change Password</h2>
                     {errorMessage && <p className='error-message'>{errorMessage}</p>}
-                    
+
                     <div className="password-wrapper-login">
                         <input
                             type={showPasswordO ? "text" : "password"}

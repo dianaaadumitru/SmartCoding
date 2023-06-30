@@ -74,6 +74,15 @@ input::placeholder {
     font-size: 0.8rem;
 }
 
+.bottom-left-text {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 1rem;
+    color: #0563B9;
+    font-size: 0.8rem;
+}
+
 .error-message {
     color: red;
     margin-top: -1.5rem;

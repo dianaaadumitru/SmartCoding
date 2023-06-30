@@ -62,6 +62,7 @@ function SignInPage() {
                     </div>
                     <button className='signin-button' onClick={() => handleSignin()}>Sign In</button>
                 </div>
+                <a className="bottom-left-text" href='/resetPassword'>Forgot password?</a>
                 <a className="bottom-right-text" href='/createAccount'>Sign Up</a>
             </div>
         </div>

@@ -144,6 +144,14 @@ function AllCourses() {
   return (
     <div className="list-container-courses">
       <div className="filter-section" ref={filterRef}>
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search by course type"
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+      </div>
         <p className="filter-heading">
           <AiTwotoneFilter /> Filter
         </p>
@@ -171,14 +179,7 @@ function AllCourses() {
           </label>
         ))}
       </div>
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search by course type"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
+      
       <div className="all-courses-section">
         {filteredCourses.map((item) => {
           const isEnrolled = item.isEnrolled || false;
